@@ -16,11 +16,11 @@ public class PokeLocationControllerTests
 	public async Task GenerationIi_ReturnsOk_WithLocations()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-ii"))
+		mockService.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-iv"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-1" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var result = await controller.GetPokemonLocationsGenerationIi("pikachu");
+		var result = await controller.GetPokemonLocationsGenerationIV("pikachu");
 
 		result.Should().BeOfType<OkObjectResult>();
 	}
@@ -43,7 +43,7 @@ public class PokeLocationControllerTests
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-1" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var result = await controller.GetPokemonLocationsByGame("pikachu", "gold");
+		var result = await controller.GetPokemonLocationsByGame("pikachu", "heartgold");
 		result.Should().BeOfType<OkObjectResult>();
 	}
 }

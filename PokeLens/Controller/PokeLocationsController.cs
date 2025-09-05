@@ -22,16 +22,28 @@ namespace PokeLens.Controller;
         }
 
         
-    [HttpGet("generation-ii")]
-    public async Task<ActionResult> GetPokemonLocationsGenerationIi(string pokemonName)
+    [HttpGet("generation-iv")]
+    public async Task<ActionResult> GetPokemonLocationsGenerationIV(string pokemonName,
+                                                                  [FromQuery] bool isHeartGold = true)
     {
         try
         {
-            var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, "generation-ii");
+            var gameName = isHeartGold ? "heartgold" : "soulsilver";
+            var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, 
+                                                                                            "generation-iV");
+            
+            var isExclusive = GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName);
+            var availableIn = GetAvailabilityText(pokemonName, isHeartGold);
+            var exclusiveTo = isExclusive ? 
+                (isHeartGold ? "HeartGold" : "SoulSilver") : 
+                "Both";
+            
             return Ok(new {
                 Pokemon = pokemonName,
-                Generation = "generation-ii",
-                Games = new[] { "gold", "silver", "crystal" },
+                Game = isHeartGold ? "HeartGold" : "SoulSilver",
+                Generation = "IV",
+                IsExclusive = isExclusive,
+                Availability = availableIn,
                 Locations = locations
             });
         }
@@ -40,9 +52,24 @@ namespace PokeLens.Controller;
             return NotFound(new {
                 Error = ex.Message,
                 Pokemon = pokemonName,
-                Generation = "generation-ii"
+                Generation = "generation-iv"
             });
         }
+        
+    }
+    private string GetAvailabilityText(string pokemonName, bool isHeartGold)
+    {
+        var availability = GameGenerationMapper.GetHeartGoldSoulSilverAvailability(pokemonName);
+        return availability switch
+        {
+            "Exclusive HeartGold" => isHeartGold ? 
+                "Available (HeartGold Exclusive)" : "Unavailable (HeartGold Exclusive)",
+        
+            "Exclusive SoulSilver" => isHeartGold ? 
+                "Unavailable (SoulSilver Exclusive)" : "Available (SoulSilver Exclusive)",
+        
+            _ => "Available in both games"
+        };
     }
     
     [HttpGet("game/{gameName}")]

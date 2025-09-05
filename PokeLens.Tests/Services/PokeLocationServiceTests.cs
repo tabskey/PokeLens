@@ -55,7 +55,7 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		var result = await service.GetLocationsByGenerationAsync("pikachu", "generation-ii");
+		var result = await service.GetLocationsByGenerationAsync("mankey", "generation-iv");
 		result.Should().HaveCount(2);
 		result.Select(r => r.Name).Should().BeEquivalentTo(new[] { "route-1", "route-2" });
 	}
