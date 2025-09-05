@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PokeLens")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dbd38589104cf21bc97c61ad9effed13ef950d76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b1764ee3da42e32e9d0aaaa84ba6d8ba88e507d")]
 [assembly: System.Reflection.AssemblyProductAttribute("PokeLens")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PokeLens")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

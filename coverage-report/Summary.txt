@@ -1,0 +1,35 @@
+Summary
+  Generated on: 05/09/2025 - 11:19:28
+  Coverage date: 05/09/2025 - 11:09:08
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 15
+  Files: 8
+  Line coverage: 78.3%
+  Covered lines: 217
+  Uncovered lines: 60
+  Coverable lines: 277
+  Total lines: 483
+  Branch coverage: 68.1% (15 of 22)
+  Covered branches: 15
+  Total branches: 22
+  Method coverage: 97.2% (35 of 36)
+  Covered methods: 35
+  Total methods: 36
+
+PokeLens                                           78.3%
+  PokeLens.Controller.PokeController               95.0%
+  PokeLens.Controller.PokeLocationController       72.5%
+  PokeLens.Models.Ability                         100.0%
+  PokeLens.Models.EncounterDetail                 100.0%
+  PokeLens.Models.LocationArea                    100.0%
+  PokeLens.Models.Method                          100.0%
+  PokeLens.Models.PokeLocation                    100.0%
+  PokeLens.Models.PokemonAbility                  100.0%
+  PokeLens.Models.PokemonVersion                  100.0%
+  PokeLens.Models.PokeSpecies                     100.0%
+  PokeLens.Models.VersionDetail                   100.0%
+  PokeLens.Services.mappers.GameGenerationMapper  100.0%
+  PokeLens.Services.PokeApiService                 80.7%
+  PokeLens.Services.PokeLocationService            86.9%
+  Program                                           0.0%
