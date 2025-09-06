@@ -66,6 +66,19 @@ public class GameGenerationMapper
             ["the-indigo-disk"] = "generation-ix"
         };
     
+    private static readonly List<string> _IsExclusiveHeartGold = new()
+    {
+        "growlithe", "arcanine", "mankey", "primeape", 
+        "spinarak", "ariados", "gligar", "gliscor",
+        "phanpy", "donphan", "sableye", "mawile"
+    };
+
+    private static readonly List<string> _IsExclusiveSoulSilver = new()
+    {
+        "vulpix", "ninetales", "meowth", "persian",
+        "ledyba", "ledian", "misdreavus", "mismagius", 
+        "teddiursa", "ursaring", "bagon", "shelgon", "salamence"
+    };
     public static string GetGenerationByGame(string gameName)
     {
         if (GameToGeneration.TryGetValue(gameName.ToLower(), out var generation))
@@ -83,7 +96,33 @@ public class GameGenerationMapper
             .Select(x => x.Key)
             .ToList();
     }
+    public static bool IsHeartGoldSoulSilverExclusive(string pokemonName)
+    { 
+        return _IsExclusiveHeartGold.Contains(pokemonName.ToLower()) || 
+               _IsExclusiveSoulSilver.Contains(pokemonName.ToLower());
+    }
+    
+    public static bool IsHeartGold(string pokemonName)
+    {
+        return _IsExclusiveHeartGold.Contains(pokemonName.ToLower());
+    }
 
+    public static bool IsSoulSilver(string pokemonName)
+    {
+        return _IsExclusiveSoulSilver.Contains(pokemonName.ToLower());
+    }
+    public static string GetHeartGoldSoulSilverAvailability(string pokemonName)
+    {
+        var pokemonLower = pokemonName.ToLower();
+        
+        if (_IsExclusiveHeartGold.Contains(pokemonLower))
+            return "HeartGold Exclusive";
+        
+        if (_IsExclusiveSoulSilver.Contains(pokemonLower))
+            return "SoulSilver Exclusive";
+        
+        return "Available in both";
+    }
     public static bool IsGameValid(string gameName)
     {
         return GameToGeneration.ContainsKey(gameName.ToLower());

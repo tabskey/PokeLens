@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using PokeLens.Services;
+using PokeLens.Swagger.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PokeLens", Version = "v1" });
+    c.SchemaFilter<BooleanToGameVersionSchemaFilter>();
+    c.ParameterFilter<HeartGoldSoulSilverParameterFilter>();
+    c.OperationFilter<OperationTidyingFilter>();
+
 });
 builder.Services.AddHttpClient<IPokeApiService, PokeApiService>(client =>
 {
@@ -23,6 +28,12 @@ builder.Services.AddHttpClient<IPokeApiService, PokeApiService>(client =>
 });
 builder.Services.AddScoped<IPokeApiService, PokeApiService>();
 builder.Services.AddScoped<IPokeAPILocationService, PokeLocationService>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SchemaFilter<BooleanToGameVersionSchemaFilter>();
+    c.ParameterFilter<HeartGoldSoulSilverParameterFilter>();
+    c.OperationFilter<OperationTidyingFilter>();
+});
 builder.Services.AddHttpClient<PokeLocationService>();
 
 builder.Services.AddLogging();

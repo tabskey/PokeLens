@@ -11,7 +11,8 @@ public class GameGenerationMapperTests
 	[InlineData("Blue", "generation-i")]
 	[InlineData("gold", "generation-ii")]
 	[InlineData("ruby", "generation-iii")]
-	[InlineData("diamond", "generation-iv")]
+	[InlineData("heartgold", "generation-iv")]
+	[InlineData("soulsilver", "generation-iv")]
 	[InlineData("white-2", "generation-v")]
 	[InlineData("x", "generation-vi")]
 	[InlineData("sun", "generation-vii")]
@@ -51,7 +52,24 @@ public class GameGenerationMapperTests
 	public void GetAllAvailableGames_ContainsKnownTitles()
 	{
 		var all = GameGenerationMapper.GetAllAvailableGames();
-		all.Should().Contain(new[] { "red", "blue", "gold", "ruby", "diamond", "black", "x", "sun", "shield", "violet" });
+		all.Should().Contain(new[] { "red", "blue", "gold", "ruby", "heartgold", "soulsilver", "black", "x", "sun", "shield", "violet" });
+	}
+
+	[Fact]
+	public void GetGamesByGeneration_Gen4_IncludesHeartGoldAndSoulSilver()
+	{
+		var games = GameGenerationMapper.GetGamesByGeneration("generation-iv");
+		games.Should().Contain(new[] { "heartgold", "soulsilver" });
+	}
+
+	[Fact]
+	public void HeartGoldSoulSilver_Exclusivity_Checks()
+	{
+		GameGenerationMapper.IsHeartGold("growlithe").Should().BeTrue();
+		GameGenerationMapper.IsSoulSilver("vulpix").Should().BeTrue();
+		GameGenerationMapper.IsHeartGoldSoulSilverExclusive("mankey").Should().BeTrue();
+		GameGenerationMapper.GetHeartGoldSoulSilverAvailability("growlithe").Should().Be("HeartGold Exclusive");
+		GameGenerationMapper.GetHeartGoldSoulSilverAvailability("vulpix").Should().Be("SoulSilver Exclusive");
 	}
 }
 

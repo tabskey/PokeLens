@@ -12,4 +12,8 @@
         <PackageReference Include="System.Text.Json" Version="10.0.0-preview.7.25380.108" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Swagger\Converters\" />
+    </ItemGroup>
+
 </Project>
