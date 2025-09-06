@@ -30,7 +30,7 @@ namespace PokeLens.Controller;
         {
             var gameName = isHeartGold ? "heartgold" : "soulsilver";
             var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, 
-                                                                                            "generation-iV");
+                                                                                            "generation-iv");
             
             var isExclusive = GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName);
             var availableIn = GetAvailabilityText(pokemonName, isHeartGold);
@@ -62,10 +62,10 @@ namespace PokeLens.Controller;
         var availability = GameGenerationMapper.GetHeartGoldSoulSilverAvailability(pokemonName);
         return availability switch
         {
-            "Exclusive HeartGold" => isHeartGold ? 
+            "HeartGold Exclusive" => isHeartGold ? 
                 "Available (HeartGold Exclusive)" : "Unavailable (HeartGold Exclusive)",
         
-            "Exclusive SoulSilver" => isHeartGold ? 
+            "SoulSilver Exclusive" => isHeartGold ? 
                 "Unavailable (SoulSilver Exclusive)" : "Available (SoulSilver Exclusive)",
         
             _ => "Available in both games"

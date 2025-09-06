@@ -33,8 +33,8 @@ public class PokeLocationServiceTests
 	{
 		var encountersJson = CreateEncounterPayload(new[]
 		{
-			("gold", "route-1"),
-			("silver", "route-2"),
+			("heartgold", "route-1"),
+			("soulsilver", "route-2"),
 			("ruby", "route-3")
 		});
 
@@ -105,6 +105,40 @@ public class PokeLocationServiceTests
 		var result = await service.GetLocationsByGameAsync("pikachu", "gold");
 		result.Should().HaveCount(1);
 		result[0].Name.Should().Be("route-1");
+	}
+
+	[Fact]
+	public async Task GetLocationsByGameAsync_Gen4_HeartGold()
+	{
+		var encountersJson = CreateEncounterPayload(new[] { ("heartgold", "route-42") });
+		var client = HttpClientFactory.CreateJsonClient(req => new HttpResponseMessage(HttpStatusCode.OK)
+		{
+			Content = new StringContent(req.RequestUri!.AbsolutePath.EndsWith("/encounters") ? encountersJson : "{}")
+		}, "https://pokeapi.co/api/v2/");
+
+		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
+		var service = new PokeLocationService(client, logger);
+
+		var result = await service.GetLocationsByGameAsync("pikachu", "heartgold");
+		result.Should().HaveCount(1);
+		result[0].Name.Should().Be("route-42");
+	}
+
+	[Fact]
+	public async Task GetLocationsByGameAsync_Gen4_SoulSilver()
+	{
+		var encountersJson = CreateEncounterPayload(new[] { ("soulsilver", "route-28") });
+		var client = HttpClientFactory.CreateJsonClient(req => new HttpResponseMessage(HttpStatusCode.OK)
+		{
+			Content = new StringContent(req.RequestUri!.AbsolutePath.EndsWith("/encounters") ? encountersJson : "{}")
+		}, "https://pokeapi.co/api/v2/");
+
+		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
+		var service = new PokeLocationService(client, logger);
+
+		var result = await service.GetLocationsByGameAsync("pikachu", "soulsilver");
+		result.Should().HaveCount(1);
+		result[0].Name.Should().Be("route-28");
 	}
 }
 
