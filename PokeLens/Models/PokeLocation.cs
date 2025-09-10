@@ -14,9 +14,10 @@ public class LocationArea
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
-    
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
+    [JsonPropertyName("display_name")]
+    public string DisplayName { get; set; } = string.Empty;
 }
 
 public class VersionDetail
