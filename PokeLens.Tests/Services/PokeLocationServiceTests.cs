@@ -33,9 +33,9 @@ public class PokeLocationServiceTests
 	{
 		var encountersJson = CreateEncounterPayload(new[]
 		{
-			("heartgold", "route-1"),
-			("soulsilver", "route-2"),
-			("ruby", "route-3")
+			("heartgold", "kanto-route-1-area"),
+			("soulsilver", "kanto-route-2-area"),
+			("ruby", "kanto-route-1-area")
 		});
 
 		var client = HttpClientFactory.CreateJsonClient(req =>
@@ -55,9 +55,9 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		var result = await service.GetLocationsByGenerationAsync("mankey", "generation-iv");
-		result.Should().HaveCount(2);
-		result.Select(r => r.Name).Should().BeEquivalentTo(new[] { "route-1", "route-2" });
+		var result = await service.GetLocationsByGenerationAsync("mankey", "generation-iv", "heartgold", int.MaxValue);
+		result.Should().HaveCount(1);
+		result.Select(r => r.Name).Should().BeEquivalentTo(new[] { "kanto-route-1-area"});
 	}
 
 	[Fact]
@@ -65,7 +65,7 @@ public class PokeLocationServiceTests
 	{
 		var encountersJson = CreateEncounterPayload(new[]
 		{
-			("ruby", "route-3")
+			("ruby", "kanto-route-3-area")
 		});
 
 		var client = HttpClientFactory.CreateJsonClient(req =>
@@ -85,7 +85,7 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		Func<Task> act = async () => await service.GetLocationsByGenerationAsync("pikachu", "generation-ii");
+		Func<Task> act = async () => await service.GetLocationsByGenerationAsync("pikachu", "generation-ii", "gold", int.MaxValue);
 		await act.Should().ThrowAsync<Exception>()
 			.WithMessage("*não pode ser encontrado na geração*");
 	}
@@ -93,7 +93,7 @@ public class PokeLocationServiceTests
 	[Fact]
 	public async Task GetLocationsByGameAsync_DelegatesToGeneration()
 	{
-		var encountersJson = CreateEncounterPayload(new[] { ("gold", "route-1") });
+		var encountersJson = CreateEncounterPayload(new[] { ("gold", "kanto-route-1-area") });
 		var client = HttpClientFactory.CreateJsonClient(req => new HttpResponseMessage(HttpStatusCode.OK)
 		{
 			Content = new StringContent(req.RequestUri!.AbsolutePath.EndsWith("/encounters") ? encountersJson : "{}")
@@ -102,15 +102,15 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		var result = await service.GetLocationsByGameAsync("pikachu", "gold");
+		var result = await service.GetLocationsByGameAsync("pikachu", "gold", "gold", int.MaxValue);
 		result.Should().HaveCount(1);
-		result[0].Name.Should().Be("route-1");
+		result[0].Name.Should().Be("kanto-route-1-area");
 	}
 
 	[Fact]
 	public async Task GetLocationsByGameAsync_Gen4_HeartGold()
 	{
-		var encountersJson = CreateEncounterPayload(new[] { ("heartgold", "route-42") });
+		var encountersJson = CreateEncounterPayload(new[] { ("heartgold", "johto-route-42-area") });
 		var client = HttpClientFactory.CreateJsonClient(req => new HttpResponseMessage(HttpStatusCode.OK)
 		{
 			Content = new StringContent(req.RequestUri!.AbsolutePath.EndsWith("/encounters") ? encountersJson : "{}")
@@ -119,15 +119,15 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		var result = await service.GetLocationsByGameAsync("pikachu", "heartgold");
+		var result = await service.GetLocationsByGameAsync("pikachu", "heartgold", "heartgold", int.MaxValue);
 		result.Should().HaveCount(1);
-		result[0].Name.Should().Be("route-42");
+		result[0].Name.Should().Be("johto-route-42-area");
 	}
 
 	[Fact]
 	public async Task GetLocationsByGameAsync_Gen4_SoulSilver()
 	{
-		var encountersJson = CreateEncounterPayload(new[] { ("soulsilver", "route-28") });
+		var encountersJson = CreateEncounterPayload(new[] { ("soulsilver", "kanto-route-28-area") });
 		var client = HttpClientFactory.CreateJsonClient(req => new HttpResponseMessage(HttpStatusCode.OK)
 		{
 			Content = new StringContent(req.RequestUri!.AbsolutePath.EndsWith("/encounters") ? encountersJson : "{}")
@@ -136,9 +136,9 @@ public class PokeLocationServiceTests
 		ILogger<PokeLocationService> logger = NullLogger<PokeLocationService>.Instance;
 		var service = new PokeLocationService(client, logger);
 
-		var result = await service.GetLocationsByGameAsync("pikachu", "soulsilver");
+		var result = await service.GetLocationsByGameAsync("pikachu", "soulsilver", "soulsilver", int.MaxValue);
 		result.Should().HaveCount(1);
-		result[0].Name.Should().Be("route-28");
+		result[0].Name.Should().Be("kanto-route-28-area");
 	}
 }
 
