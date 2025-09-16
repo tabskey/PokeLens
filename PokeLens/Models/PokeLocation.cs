@@ -14,9 +14,9 @@ public class LocationArea
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
-    
     [JsonPropertyName("url")]
     public string Url { get; set; } = string.Empty;
+    public string DisplayName { get; set; } = string.Empty;
 }
 
 public class VersionDetail
@@ -53,4 +53,13 @@ public class Method
 {
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
+}
+public class PokemonLocationResponse
+{
+    public string Pokemon { get; set; } = string.Empty;
+    public string Game { get; set; } = string.Empty;
+    public string Generation { get; set; } = string.Empty;
+    public bool IsExclusive { get; set; }
+    public string Availability { get; set; } = string.Empty;
+    public List<LocationArea> Locations { get; set; } = new();
 }

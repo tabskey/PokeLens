@@ -16,6 +16,15 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<OperationTidyingFilter>();
 
 });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 builder.Services.AddHttpClient<IPokeApiService, PokeApiService>(client =>
 {
     client.BaseAddress = new Uri("https://pokelens.com/api/");
@@ -34,6 +43,7 @@ builder.Services.AddSwaggerGen(c =>
     c.ParameterFilter<HeartGoldSoulSilverParameterFilter>();
     c.OperationFilter<OperationTidyingFilter>();
 });
+
 builder.Services.AddHttpClient<PokeLocationService>();
 
 builder.Services.AddLogging();
@@ -47,9 +57,13 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "PokeLens V1");
     });
+    app.UseDeveloperExceptionPage();
 }
+app.UseCors();
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+//app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

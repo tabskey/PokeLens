@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using PokeLens.Models;
+using PokeLens.Models.Enums;
 using PokeLens.Services;
 using PokeLens.Services.mappers;
 
@@ -23,40 +24,78 @@ namespace PokeLens.Controller;
 
         
     [HttpGet("generation-iv")]
-    public async Task<ActionResult> GetPokemonLocationsGenerationIV(string pokemonName,
-                                                                  [FromQuery] bool isHeartGold = true)
+public async Task<ActionResult<PokemonLocationResponse>> GetPokemonLocationsGenerationIV(
+    [FromRoute] string pokemonName,
+    [FromQuery] string version = "HeartGold",
+    [FromQuery] string? progressDisplayName = null)
+{
+    try
     {
-        try
+        GameVersion gameVersion = Enum.Parse<GameVersion>(version, true);
+        bool isHeartGold = gameVersion == GameVersion.HeartGold;
+        var gameName = isHeartGold ? "heartgold" : "soulsilver";
+        var generation = "generation-iv";
+        var isExclusive = GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName);
+        var availableIn = GetAvailabilityText(pokemonName, isHeartGold);
+       
+        if (GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName) &&
+            ((GameGenerationMapper.IsHeartGold(pokemonName) && !isHeartGold) ||
+             (GameGenerationMapper.IsSoulSilver(pokemonName) && isHeartGold)))
         {
-            var gameName = isHeartGold ? "heartgold" : "soulsilver";
-            var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, 
-                                                                                            "generation-iv");
-            
-            var isExclusive = GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName);
-            var availableIn = GetAvailabilityText(pokemonName, isHeartGold);
-            var exclusiveTo = isExclusive ? 
-                (isHeartGold ? "HeartGold" : "SoulSilver") : 
-                "Both";
-            
-            return Ok(new {
+            return NotFound(new
+            {
+                Error = $"O Pokémon {pokemonName} é exclusivo de {(GameGenerationMapper.IsHeartGold(pokemonName) ? "HeartGold" : "SoulSilver")} e não possui locais neste jogo.",
                 Pokemon = pokemonName,
-                Game = isHeartGold ? "HeartGold" : "SoulSilver",
-                Generation = "IV",
-                IsExclusive = isExclusive,
-                Availability = availableIn,
-                Locations = locations
+                Generation = generation
             });
         }
-        catch (Exception ex)
+
+        // Converte o displayName da rota para o número do progresso
+        int progress = int.MaxValue; 
+        if (!string.IsNullOrEmpty(progressDisplayName))
         {
-            return NotFound(new {
-                Error = ex.Message,
-                Pokemon = pokemonName,
-                Generation = "generation-iv"
-            });
+            var progressId = HeartGoldSoulSilverMapper.Locations
+                .FirstOrDefault(l => l.Value.DisplayName == progressDisplayName).Key;
+            if (progressId != 0)
+            {
+                progress = progressId;
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    Error = $"Rota '{progressDisplayName}' inválida.",
+                    AvailableRoutes = HeartGoldSoulSilverMapper.Locations.Values
+                        .Select(l => l.DisplayName)
+                        .ToList()
+                });
+            }
         }
+
+        var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, generation, gameName, progress);
         
+
+        return Ok(new PokemonLocationResponse
+        {
+            Pokemon = pokemonName,
+            Game = gameName,
+            Generation = "IV",
+            IsExclusive = isExclusive,
+            Availability = availableIn,
+            Locations = locations
+        });
     }
+    catch (Exception ex)
+    {
+        return NotFound(new
+        {
+            Error = ex.Message,
+            Pokemon = pokemonName,
+            Generation = "generation-iv"
+        });
+    }
+}
+
     private string GetAvailabilityText(string pokemonName, bool isHeartGold)
     {
         var availability = GameGenerationMapper.GetHeartGoldSoulSilverAvailability(pokemonName);
@@ -78,7 +117,7 @@ namespace PokeLens.Controller;
         try
         {
             var generation = GameGenerationMapper.GetGenerationByGame(gameName);
-            var locations = await _pokeLocationService.GetLocationsByGameAsync(pokemonName, gameName);
+            var locations = await _pokeLocationService.GetLocationsByGameAsync(pokemonName, gameName, gameName, int.MaxValue);
             var allGamesInGeneration = GameGenerationMapper.GetGamesByGeneration(generation);
                 
             return Ok(new {
