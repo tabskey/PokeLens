@@ -1,8 +1,6 @@
-using System.Net;
-using System.Text.Json;
+
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PokeLens.Controller;
@@ -47,5 +45,3 @@ public class PokeControllerTests
 		result.Result.Should().BeOfType<NotFoundObjectResult>();
 	}
 }
-
-
