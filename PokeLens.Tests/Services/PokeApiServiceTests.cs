@@ -42,7 +42,7 @@ public class PokeApiServiceTests
 		var service = new PokeApiService(client);
 		Func<Task> act = async () => await service.GetPokemonSpeciesAsync("missingno");
 		await act.Should().ThrowAsync<Exception>()
-			.Where(e => e.Message.Contains("Erro ao buscar Pokémon") || e.Message.Contains("404"));
+			.Where(e => e.Message.Contains("Error fetching Pokemon") || e.Message.Contains("404"));
 	}
 }
 

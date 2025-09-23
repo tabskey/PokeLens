@@ -33,11 +33,11 @@ public class PokeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Erro ao buscar espécie do Pokémon {pokemonName}");
+            _logger.LogError(ex, $"Error fetching species for Pokemon {char.ToUpper(pokemonName[0]) + pokemonName.Substring(1)}");
                 
-            if (ex.Message.Contains("não encontrado") || ex.Message.Contains("404"))
+            if (ex.Message.Contains("Not Found") || ex.Message.Contains("404"))
             {
-                return NotFound(new { message = $"Pokémon '{pokemonName}' não encontrado" });
+                return NotFound(new { message = $"Pokemon '{char.ToUpper(pokemonName[0]) + pokemonName.Substring(1)}' not found" });
             }
                 
             return StatusCode(500, new { message = ex.Message });

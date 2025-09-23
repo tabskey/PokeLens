@@ -5,36 +5,39 @@ using PokeLens.Swagger.Filters;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+// Swagger configuration
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PokeLens", Version = "v1" });
     c.SchemaFilter<BooleanToGameVersionSchemaFilter>();
     c.ParameterFilter<HeartGoldSoulSilverParameterFilter>();
     c.OperationFilter<OperationTidyingFilter>();
-
 });
+
+// Base URL constant for reuse
+var pokeApiBaseUrl = new Uri("https://pokeapi.co/api/v2/");
+
+// HttpClient configuration
 builder.Services.AddHttpClient<IPokeApiService, PokeApiService>(client =>
 {
-    client.BaseAddress = new Uri("https://pokelens.com/api/");
-    builder.Services.AddHttpClient<IPokeAPILocationService, PokeLocationService>(client =>
-    {
-        client.BaseAddress = new Uri("https://pokeapi.co/api/v2/");
-    });
+    client.BaseAddress = pokeApiBaseUrl;
     client.DefaultRequestHeaders.Add("Accept", "application/json");
     client.DefaultRequestHeaders.Add("User-Agent", "PokeLens");
 });
-builder.Services.AddScoped<IPokeApiService, PokeApiService>();
-builder.Services.AddScoped<IPokeAPILocationService, PokeLocationService>();
-builder.Services.AddSwaggerGen(c =>
+
+builder.Services.AddHttpClient<IPokeAPILocationService, PokeLocationService>(client =>
 {
-    c.SchemaFilter<BooleanToGameVersionSchemaFilter>();
-    c.ParameterFilter<HeartGoldSoulSilverParameterFilter>();
-    c.OperationFilter<OperationTidyingFilter>();
+    client.BaseAddress = pokeApiBaseUrl;
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.DefaultRequestHeaders.Add("User-Agent", "PokeLens");
 });
-builder.Services.AddHttpClient<PokeLocationService>();
+
+// No need to register these services again, AddHttpClient already does this, just backup
+// builder.Services.AddScoped<IPokeApiService, PokeApiService>();
+// builder.Services.AddScoped<IPokeAPILocationService, PokeLocationService>();
 
 builder.Services.AddLogging();
 var app = builder.Build();
@@ -43,10 +46,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PokeLens V1");
-    });
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "PokeLens V1"); });
 }
 
 app.UseHttpsRedirection();

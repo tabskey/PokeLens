@@ -37,7 +37,7 @@ public class PokeControllerTests
 	{
 		var mockService = new Mock<IPokeApiService>();
 		mockService.Setup(s => s.GetPokemonSpeciesAsync("missing"))
-			.ThrowsAsync(new Exception("não encontrado"));
+			.ThrowsAsync(new Exception("Not Found"));
 
 		var logger = NullLogger<PokeController>.Instance;
 		var dummyLocationService = new PokeLocationService(new HttpClient(), NullLogger<PokeLocationService>.Instance);

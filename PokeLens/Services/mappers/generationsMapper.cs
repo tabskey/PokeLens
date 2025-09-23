@@ -1,74 +1,86 @@
-﻿
-namespace PokeLens.Services.mappers;
+﻿namespace PokeLens.Services.mappers;
 
 public class GameGenerationMapper
 {
-    public static readonly Dictionary<string, string> GameToGeneration = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            // Geração I
-            ["red"] = "generation-i",
-            ["blue"] = "generation-i",
-            ["yellow"] = "generation-i",
-            ["green"] = "generation-i",
-            
-            // Geração II
-            ["gold"] = "generation-ii",
-            ["silver"] = "generation-ii",
-            ["crystal"] = "generation-ii",
-            
-            // Geração III
-            ["ruby"] = "generation-iii",
-            ["sapphire"] = "generation-iii",
-            ["emerald"] = "generation-iii",
-            ["firered"] = "generation-iii",
-            ["leafgreen"] = "generation-iii",
-            ["colosseum"] = "generation-iii",
-            ["xd"] = "generation-iii",
-            
-            // Geração IV
-            ["diamond"] = "generation-iv",
-            ["pearl"] = "generation-iv",
-            ["platinum"] = "generation-iv",
-            ["heartgold"] = "generation-iv",
-            ["soulsilver"] = "generation-iv",
-            
-            // Geração V
-            ["black"] = "generation-v",
-            ["white"] = "generation-v",
-            ["black-2"] = "generation-v",
-            ["white-2"] = "generation-v",
-            
-            // Geração VI
-            ["x"] = "generation-vi",
-            ["y"] = "generation-vi",
-            ["omega-ruby"] = "generation-vi",
-            ["alpha-sapphire"] = "generation-vi",
-            
-            // Geração VII
-            ["sun"] = "generation-vii",
-            ["moon"] = "generation-vii",
-            ["ultra-sun"] = "generation-vii",
-            ["ultra-moon"] = "generation-vii",
-            ["lets-go-pikachu"] = "generation-vii",
-            ["lets-go-eevee"] = "generation-vii",
-            
-            // Geração VIII
-            ["sword"] = "generation-viii",
-            ["shield"] = "generation-viii",
-            ["brilliant-diamond"] = "generation-viii",
-            ["shining-pearl"] = "generation-viii",
-            ["legends-arceus"] = "generation-viii",
-            
-            // Geração IX
-            ["scarlet"] = "generation-ix",
-            ["violet"] = "generation-ix",
-            ["the-teal-mask"] = "generation-ix",
-            ["the-indigo-disk"] = "generation-ix"
-        };
+    public static readonly Dictionary<string, string> GameToGeneration = new(StringComparer.OrdinalIgnoreCase)
+    {
+        // Geração I
+        ["red"] = "generation-i",
+        ["blue"] = "generation-i",
+        ["yellow"] = "generation-i",
+        ["green"] = "generation-i",
+
+        // Geração II
+        ["gold"] = "generation-ii",
+        ["silver"] = "generation-ii",
+        ["crystal"] = "generation-ii",
+
+        // Geração III
+        ["ruby"] = "generation-iii",
+        ["sapphire"] = "generation-iii",
+        ["emerald"] = "generation-iii",
+        ["firered"] = "generation-iii",
+        ["leafgreen"] = "generation-iii",
+        ["colosseum"] = "generation-iii",
+        ["xd"] = "generation-iii",
+
+        // Geração IV
+        ["diamond"] = "generation-iv",
+        ["pearl"] = "generation-iv",
+        ["platinum"] = "generation-iv",
+        ["heartgold"] = "generation-iv",
+        ["soulsilver"] = "generation-iv",
+
+        // Geração V
+        ["black"] = "generation-v",
+        ["white"] = "generation-v",
+        ["black-2"] = "generation-v",
+        ["white-2"] = "generation-v",
+
+        // Geração VI
+        ["x"] = "generation-vi",
+        ["y"] = "generation-vi",
+        ["omega-ruby"] = "generation-vi",
+        ["alpha-sapphire"] = "generation-vi",
+
+        // Geração VII
+        ["sun"] = "generation-vii",
+        ["moon"] = "generation-vii",
+        ["ultra-sun"] = "generation-vii",
+        ["ultra-moon"] = "generation-vii",
+        ["lets-go-pikachu"] = "generation-vii",
+        ["lets-go-eevee"] = "generation-vii",
+
+        // Geração VIII
+        ["sword"] = "generation-viii",
+        ["shield"] = "generation-viii",
+        ["brilliant-diamond"] = "generation-viii",
+        ["shining-pearl"] = "generation-viii",
+        ["legends-arceus"] = "generation-viii",
+
+        // Geração IX
+        ["scarlet"] = "generation-ix",
+        ["violet"] = "generation-ix",
+        ["the-teal-mask"] = "generation-ix",
+        ["the-indigo-disk"] = "generation-ix"
+    };
     
+    private static readonly Dictionary<string, string> GenerationNumberMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["generation-i"] = "1",
+        ["generation-ii"] = "2",
+        ["generation-iii"] = "3",
+        ["generation-iv"] = "4",
+        ["generation-v"] = "5",
+        ["generation-vi"] = "6",
+        ["generation-vii"] = "7",
+        ["generation-viii"] = "8",
+        ["generation-ix"] = "9"
+    };
+
     private static readonly List<string> _IsExclusiveHeartGold = new()
     {
-        "growlithe", "arcanine", "mankey", "primeape", 
+        "growlithe", "arcanine", "mankey", "primeape",
         "spinarak", "ariados", "gligar", "gliscor",
         "phanpy", "donphan", "sableye", "mawile"
     };
@@ -76,19 +88,17 @@ public class GameGenerationMapper
     private static readonly List<string> _IsExclusiveSoulSilver = new()
     {
         "vulpix", "ninetales", "meowth", "persian",
-        "ledyba", "ledian", "misdreavus", "mismagius", 
+        "ledyba", "ledian", "misdreavus", "mismagius",
         "teddiursa", "ursaring", "bagon", "shelgon", "salamence"
     };
+
     public static string GetGenerationByGame(string gameName)
     {
-        if (GameToGeneration.TryGetValue(gameName.ToLower(), out var generation))
-        {
-            return generation;
-        }
-            
-        throw new KeyNotFoundException($"Jogo '{gameName}' não reconhecido");
-    }
+        if (GameToGeneration.TryGetValue(gameName.ToLower(), out var generation)) return generation;
 
+        throw new KeyNotFoundException($"Game '{gameName}' not recognized");
+    }
+    
     public static List<string> GetGamesByGeneration(string generation)
     {
         return GameToGeneration
@@ -96,12 +106,13 @@ public class GameGenerationMapper
             .Select(x => x.Key)
             .ToList();
     }
+
     public static bool IsHeartGoldSoulSilverExclusive(string pokemonName)
-    { 
-        return _IsExclusiveHeartGold.Contains(pokemonName.ToLower()) || 
+    {
+        return _IsExclusiveHeartGold.Contains(pokemonName.ToLower()) ||
                _IsExclusiveSoulSilver.Contains(pokemonName.ToLower());
     }
-    
+
     public static bool IsHeartGold(string pokemonName)
     {
         return _IsExclusiveHeartGold.Contains(pokemonName.ToLower());
@@ -111,18 +122,20 @@ public class GameGenerationMapper
     {
         return _IsExclusiveSoulSilver.Contains(pokemonName.ToLower());
     }
+
     public static string GetHeartGoldSoulSilverAvailability(string pokemonName)
     {
         var pokemonLower = pokemonName.ToLower();
-        
+
         if (_IsExclusiveHeartGold.Contains(pokemonLower))
             return "HeartGold Exclusive";
-        
+
         if (_IsExclusiveSoulSilver.Contains(pokemonLower))
             return "SoulSilver Exclusive";
-        
+
         return "Available in both";
     }
+
     public static bool IsGameValid(string gameName)
     {
         return GameToGeneration.ContainsKey(gameName.ToLower());
