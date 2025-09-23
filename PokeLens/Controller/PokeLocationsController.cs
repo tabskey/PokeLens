@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using PokeLens.Services;
 using PokeLens.Services.mappers;
 
