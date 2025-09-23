@@ -17,25 +17,24 @@ public class PokeLocationControllerTests
 	public async Task GenerationIv_ReturnsOk_WithLocations()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-iv", "heartgold", int.MaxValue))
+		mockService.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-iv"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-1" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
 		var result = await controller.GetPokemonLocationsGenerationIV("pikachu");
 
-		result.Result.Should().BeOfType<OkObjectResult>();
+		result.Should().BeOfType<OkObjectResult>();
 	}
 
 	[Fact]
 	public async Task GenerationIv_HeartGold_AvailabilityText_ForHeartGoldExclusive()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService.Setup(s => s.GetLocationsByGenerationAsync("growlithe", "generation-iv", "heartgold", int.MaxValue))
+		mockService.Setup(s => s.GetLocationsByGenerationAsync("growlithe", "generation-iv"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-36" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var actionResult = await controller.GetPokemonLocationsGenerationIV("growlithe", version: "HeartGold");
-		var result = actionResult.Result as OkObjectResult;
+		var result = await controller.GetPokemonLocationsGenerationIV("growlithe", isHeartGold: true) as OkObjectResult;
 
 		result.Should().NotBeNull();
 		var jsonString = JsonSerializer.Serialize(result!.Value);
@@ -47,12 +46,11 @@ public class PokeLocationControllerTests
 	public async Task GenerationIv_SoulSilver_AvailabilityText_ForSoulSilverExclusive()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService.Setup(s => s.GetLocationsByGenerationAsync("vulpix", "generation-iv", "soulsilver", int.MaxValue))
+		mockService.Setup(s => s.GetLocationsByGenerationAsync("vulpix", "generation-iv"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-8" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var actionResult = await controller.GetPokemonLocationsGenerationIV("vulpix", version: "SoulSilver");
-		var result = actionResult.Result as OkObjectResult;
+		var result = await controller.GetPokemonLocationsGenerationIV("vulpix", isHeartGold: false) as OkObjectResult;
 
 		result.Should().NotBeNull();
 		var jsonString = JsonSerializer.Serialize(result!.Value);
@@ -74,7 +72,7 @@ public class PokeLocationControllerTests
 	public async Task ByGame_Valid_ReturnsOk()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService.Setup(s => s.GetLocationsByGameAsync("pikachu", "heartgold", "heartgold", int.MaxValue))
+		mockService.Setup(s => s.GetLocationsByGameAsync("pikachu", "gold"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-1" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
@@ -86,15 +84,12 @@ public class PokeLocationControllerTests
 	public async Task GenerationIv_NonExclusive_AvailableInBothGames()
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
-		mockService
-			.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-iv", It.IsAny<string>(), It.IsAny<int>()))
+		mockService.Setup(s => s.GetLocationsByGenerationAsync("pikachu", "generation-iv"))
 			.ReturnsAsync(new List<LocationArea> { new LocationArea { Name = "route-29" } });
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var actionResultHg = await controller.GetPokemonLocationsGenerationIV("pikachu", version: "HeartGold");
-		var actionResultSs = await controller.GetPokemonLocationsGenerationIV("pikachu", version: "SoulSilver");
-		var resultHg = actionResultHg.Result as OkObjectResult;
-		var resultSs = actionResultSs.Result as OkObjectResult;
+		var resultHg = await controller.GetPokemonLocationsGenerationIV("pikachu", isHeartGold: true) as OkObjectResult;
+		var resultSs = await controller.GetPokemonLocationsGenerationIV("pikachu", isHeartGold: false) as OkObjectResult;
 
 		resultHg.Should().NotBeNull();
 		resultSs.Should().NotBeNull();
@@ -115,12 +110,11 @@ public class PokeLocationControllerTests
 	{
 		var mockService = new Mock<IPokeAPILocationService>();
 		mockService
-			.Setup(s => s.GetLocationsByGenerationAsync("missingmon", "generation-iv", It.IsAny<string>(), It.IsAny<int>()))
+			.Setup(s => s.GetLocationsByGenerationAsync("missingmon", "generation-iv"))
 			.ThrowsAsync(new Exception("Pokémon missingmon não encontrado na geração"));
 
 		var controller = new PokeLocationController(mockService.Object, NullLogger<PokeLocationController>.Instance);
-		var actionResult = await controller.GetPokemonLocationsGenerationIV("missingmon");
-		var result = actionResult.Result as NotFoundObjectResult;
+		var result = await controller.GetPokemonLocationsGenerationIV("missingmon") as NotFoundObjectResult;
 
 		result.Should().NotBeNull();
 		var jsonString = JsonSerializer.Serialize(result!.Value);
