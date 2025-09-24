@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using PokeLens.Models;
 using PokeLens.Services;
+using PokeLens.Models.Enums;
 using PokeLens.Services.mappers;
 
 namespace PokeLens.Controller;
@@ -21,23 +23,61 @@ public class PokeLocationController : ControllerBase
 
 
     [HttpGet("generation-iv")]
-    public async Task<ActionResult> GetPokemonLocationsGenerationIV(string pokemonName,
-        [FromQuery] bool isHeartGold = true)
+    public async Task<ActionResult<PokemonLocationResponse>> GetPokemonLocationsGenerationIV(
+        [FromRoute] string pokemonName,
+        [FromQuery] string version = "HeartGold",
+        [FromQuery] string? progressDisplayName = null)
     {
         try
         {
+            GameVersion gameVersion = Enum.Parse<GameVersion>(version, true);
+            bool isHeartGold = gameVersion == GameVersion.HeartGold;
             var gameName = isHeartGold ? "heartgold" : "soulsilver";
-            var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName,
-                "generation-iv");
-
+            var generation = "generation-iv";
             var isExclusive = GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName);
             var availableIn = GetAvailabilityText(pokemonName, isHeartGold);
-            var exclusiveTo = isExclusive ? isHeartGold ? "HeartGold" : "SoulSilver" : "Both";
+           
+            if (GameGenerationMapper.IsHeartGoldSoulSilverExclusive(pokemonName) &&
+                ((GameGenerationMapper.IsHeartGold(pokemonName) && !isHeartGold) ||
+                 (GameGenerationMapper.IsSoulSilver(pokemonName) && isHeartGold)))
+            {
+                return NotFound(new
+                {
+                    Error = $"Pokemon {pokemonName} is exclusive to {(GameGenerationMapper.IsHeartGold(pokemonName) ? "HeartGold" : "SoulSilver")} and has no locations in this game.",
+                    Pokemon = pokemonName,
+                    Generation = generation
+                });
+            }
 
-            return Ok(new
+            // Converte o displayName da rota para o número do progresso
+            int progress = int.MaxValue; 
+            if (!string.IsNullOrEmpty(progressDisplayName))
+            {
+                var progressId = HeartGoldSoulSilverMapper.Locations
+                    .FirstOrDefault(l => l.Value.DisplayName == progressDisplayName).Key;
+                if (progressId != 0)
+                {
+                    progress = progressId;
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        Error = $"Invalid '{progressDisplayName}' route.",
+                        AvailableRoutes = HeartGoldSoulSilverMapper.Locations.Values
+                            .Select(l => l.DisplayName)
+                            .ToList()
+                    });
+                }
+            }
+
+            var locations = await _pokeLocationService.GetLocationsByGenerationAsync(pokemonName, generation, gameName, progress);
+            
+
+            return Ok(new PokemonLocationResponse
             {
                 Pokemon = pokemonName,
-                Game = isHeartGold ? "HeartGold" : "SoulSilver",
+                Game = gameName,
                 Generation = "IV",
                 IsExclusive = isExclusive,
                 Availability = availableIn,
@@ -54,7 +94,6 @@ public class PokeLocationController : ControllerBase
             });
         }
     }
-
     private string GetAvailabilityText(string pokemonName, bool isHeartGold)
     {
         var availability = GameGenerationMapper.GetHeartGoldSoulSilverAvailability(pokemonName);
@@ -78,7 +117,7 @@ public class PokeLocationController : ControllerBase
         try
         {
             var generation = GameGenerationMapper.GetGenerationByGame(gameName);
-            var locations = await _pokeLocationService.GetLocationsByGameAsync(pokemonName, gameName);
+            var locations = await _pokeLocationService.GetLocationsByGameAsync(pokemonName, gameName, gameName, int.MaxValue);
             var allGamesInGeneration = GameGenerationMapper.GetGamesByGeneration(generation);
 
             return Ok(new
