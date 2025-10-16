@@ -1,12 +1,18 @@
 using Microsoft.OpenApi.Models;
 using PokeLens.Services;
 using PokeLens.Swagger.Filters;
+using Microsoft.EntityFrameworkCore;
+using PokeLens.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.  <3
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // Swagger configuration
 builder.Services.AddSwaggerGen(c =>
