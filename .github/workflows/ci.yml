@@ -32,6 +32,17 @@ jobs:
       - name: Test with coverage
         run: dotnet test PokeBattle.slnx --no-build -c Release --collect:"XPlat Code Coverage"
 
+      - name: Core coverage gate (90% line)
+        run: |
+          rm -rf coverage-core
+          dotnet test tests/PokeBattle.Core.Tests --no-build -c Release \
+            --collect:"XPlat Code Coverage" --results-directory coverage-core
+          report=$(find coverage-core -name coverage.cobertura.xml | head -n1)
+          rate=$(python3 -c "import xml.etree.ElementTree as ET; print(ET.parse('$report').getroot().get('line-rate'))")
+          echo "PokeBattle.Core line coverage: $rate"
+          python3 -c "import sys; sys.exit(0 if float('$rate') >= 0.90 else 1)" \
+            || { echo "::error::Core line coverage $rate is below the 90% gate"; exit 1; }
+
   docker:
     runs-on: ubuntu-latest
     permissions:
