@@ -1,57 +1,26 @@
-# PokeLens
+# PokeBattle Predictor
 
-Personal project to help new pathfinders on Pokemon!
+Recomenda até 5 Pokémon para **derrotar** ou **capturar** um Pokémon-alvo em **Pokémon FireRed / LeafGreen (Geração III)**, considerando apenas o que o jogador consegue obter naquele ponto da progressão.
 
-Still needing a lot of tests and features 🎉️
+Leia `AGENTS.md` antes de contribuir. Arquitetura em `docs/arquitetura.md`, fases em `docs/fases.md`, roteiro de execução em `docs/PLANO.md`.
 
-## Tests
+## Estrutura
 
-## Generation IV (HeartGold/SoulSilver) test criteria
-
-- Endpoints
-
-  - `GET /api/pokemon/{pokemonName}/pokelocation/generation-iv?isHeartGold=true|false`
-    - Uses `generation-iv` and toggles between `heartgold` and `soulsilver` context.
-  - `GET /api/pokemon/{pokemonName}/pokelocation/game/{gameName}`
-    - Accepts `heartgold` or `soulsilver` and resolves generation via mapper.
-- Behavior validated in tests
-
-  - Filtering by generation includes only encounters from `heartgold`/`soulsilver`.
-  - Availability text for exclusives:
-    - HeartGold-exclusive (e.g., `growlithe`): "Available (HeartGold Exclusive)" when `isHeartGold=true`; otherwise "Unavailable (HeartGold Exclusive)".
-    - SoulSilver-exclusive (e.g., `vulpix`): "Available (SoulSilver Exclusive)" when `isHeartGold=false`; otherwise "Unavailable (SoulSilver Exclusive)".
-  - Non-exclusives show: "Available in both games" for both HG and SS.
-  - NotFound payload for missing Pokémon contains: `Error`, `Pokemon`, `Generation = "generation-iv"`.
-- Mapper expectations
-
-  - `heartgold` and `soulsilver` map to `generation-iv`.
-  - `GetGamesByGeneration("generation-iv")` includes both `heartgold` and `soulsilver`.
-  - Exclusivity helpers cover HG/SS lists and availability string mapping.
-
-### cURL examples
-
-Replace <BASE_URL> with your server base URL (e.g., `http://localhost:5134`).
-
-- Generation IV endpoint (HeartGold)
-
-```bash
-curl -s "<BASE_URL>/api/pokemon/pikachu/pokelocation/generation-iv?isHeartGold=true"
+```
+src/PokeBattle.Core            Regras de domínio (batalha, dano, stats, tipos, captura)
+src/PokeBattle.Application     Orquestração dos casos de uso
+src/PokeBattle.Infrastructure   Dados do jogo, persistência, auditoria
+src/PokeBattle.Api              Endpoints HTTP
+tests/                          Core.Tests, Application.Tests, IntegrationTests
 ```
 
-- Generation IV endpoint (SoulSilver)
+## Comandos
 
 ```bash
-curl -s "<BASE_URL>/api/pokemon/pikachu/pokelocation/generation-iv?isHeartGold=false"
+dotnet build PokeBattle.slnx
+dotnet test PokeBattle.slnx
+dotnet run --project src/PokeBattle.Api
+docker compose up --build
 ```
 
-- By game: HeartGold
-
-```bash
-curl -s "<BASE_URL>/api/pokemon/pikachu/pokelocation/game/heartgold"
-```
-
-- By game: SoulSilver
-
-```bash
-curl -s "<BASE_URL>/api/pokemon/pikachu/pokelocation/game/soulsilver"
-```
+`GET /api/v1/ping`, `GET /health/live` e `GET /health/ready` validam o pipeline da Api.

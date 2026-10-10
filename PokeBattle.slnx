@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PokeBattle.Api/PokeBattle.Api.csproj" />
+    <Project Path="src/PokeBattle.Application/PokeBattle.Application.csproj" />
+    <Project Path="src/PokeBattle.Core/PokeBattle.Core.csproj" />
+    <Project Path="src/PokeBattle.Infrastructure/PokeBattle.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PokeBattle.Application.Tests/PokeBattle.Application.Tests.csproj" />
+    <Project Path="tests/PokeBattle.Core.Tests/PokeBattle.Core.Tests.csproj" />
+    <Project Path="tests/PokeBattle.IntegrationTests/PokeBattle.IntegrationTests.csproj" />
+  </Folder>
+</Solution>
