@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore PokeBattle.slnx
+
+      - name: Format check
+        run: dotnet format PokeBattle.slnx --verify-no-changes
+
+      - name: Build
+        run: dotnet build PokeBattle.slnx --no-restore -c Release
+
+      - name: Test with coverage
+        run: dotnet test PokeBattle.slnx --no-build -c Release --collect:"XPlat Code Coverage"
+
+      - name: Core coverage gate (90% line)
+        run: |
+          rm -rf coverage-core
+          dotnet test tests/PokeBattle.Core.Tests --no-build -c Release \
+            --collect:"XPlat Code Coverage" --results-directory coverage-core
+          report=$(find coverage-core -name coverage.cobertura.xml | head -n1)
+          rate=$(python3 -c "import xml.etree.ElementTree as ET; print(ET.parse('$report').getroot().get('line-rate'))")
+          echo "PokeBattle.Core line coverage: $rate"
+          python3 -c "import sys; sys.exit(0 if float('$rate') >= 0.90 else 1)" \
+            || { echo "::error::Core line coverage $rate is below the 90% gate"; exit 1; }
+
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: pokebattle-api:ci
+          load: true
+
+      - name: Scan image for vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: pokebattle-api:ci
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+
+  security:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dependency review
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: CodeQL analysis
+        uses: github/codeql-action/analyze@v3

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PokeBattle.Core\PokeBattle.Core.csproj" />
+    <ProjectReference Include="..\PokeBattle.Application\PokeBattle.Application.csproj" />
+  </ItemGroup>
+
+</Project>
