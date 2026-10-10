@@ -54,6 +54,10 @@ artifacts/
 **/Properties/launchSettings.json
 wwwroot/dist/
 
+# Test results / coverage
+TestResults/
+coverage-report/
+
 # Entity Framework
 *.edmx.diagram
 *.edmx.sql

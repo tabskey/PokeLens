@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/.vs/
+.git/
+.github/
+.claude/
+docs/
+tests/
+tools/
+data/
+frontend/
+*.md
+*.sln
+*.slnx
