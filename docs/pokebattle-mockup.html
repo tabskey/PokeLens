@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PokeBattle Predictor</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --panel: #ffffff;
+    --ink: #1f2328;
+    --muted: #6b6f76;
+    --line: #e2ddd2;
+    --accent: #c0392b;
+    --bad: #d9534f;
+    --neutral: #e0a526;
+    --good: #2e9e5b;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Inter, system-ui, sans-serif; font-size: 14px;
+  }
+  .pixel { font-family: "Press Start 2P", monospace; letter-spacing: .5px; }
+
+  header {
+    background: var(--ink); color: #fff; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  header h1 { font-size: 13px; margin: 0; }
+  header h1 span { color: #f5c542; }
+  .version-toggle { display: flex; border: 2px solid #fff; border-radius: 6px; overflow: hidden; }
+  .version-toggle button {
+    background: transparent; color: #fff; border: 0; padding: 8px 14px; cursor: pointer;
+    font-family: "Press Start 2P", monospace; font-size: 9px;
+  }
+  .version-toggle button.active[data-v="fr"] { background: #e8613c; }
+  .version-toggle button.active[data-v="lg"] { background: #4caf50; }
+
+  main {
+    max-width: 1180px; margin: 24px auto; padding: 0 16px;
+    display: grid; grid-template-columns: 320px 1fr; gap: 20px;
+  }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .panel h2 { font-size: 10px; margin: 0 0 16px; color: var(--accent); }
+
+  label { display: block; font-weight: 600; margin: 14px 0 6px; }
+  label small { font-weight: 400; color: var(--muted); }
+  select, input {
+    width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; background: #fff;
+  }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .seg button {
+    padding: 10px; border: 1px solid var(--line); background: #fff; border-radius: 8px;
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .seg button.active { border-color: var(--ink); background: var(--ink); color: #fff; }
+  .primary {
+    margin-top: 20px; width: 100%; padding: 12px; border: 0; border-radius: 8px;
+    background: var(--accent); color: #fff; cursor: pointer; font-size: 10px;
+  }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+  /* Oponente */
+  .opponent { display: flex; gap: 16px; align-items: center; }
+  .avatar {
+    width: 64px; height: 64px; border-radius: 8px; flex-shrink: 0;
+    display: grid; place-items: center; font-family: "Press Start 2P", monospace; font-size: 16px; color: #fff;
+  }
+  .avatar.sprite { background: #f1ede4 !important; border: 1px solid var(--line); }
+  .avatar img { width: 100%; height: 100%; image-rendering: pixelated; object-fit: contain; }
+  .opponent .avatar { width: 96px; height: 96px; }
+  .opponent h3 { margin: 0 0 4px; font-size: 18px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .types { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+  .type {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; color: #fff;
+  }
+  .t-rock { background: #b8a038; } .t-ground { background: #e0c068; color: #333; }
+  .t-fighting { background: #c03028; } .t-poison { background: #a040a0; }
+  .t-bug { background: #a8b820; } .t-psychic { background: #f85888; }
+  .t-flying { background: #a890f0; } .t-normal { background: #a8a878; }
+  .t-water { background: #6890f0; } .t-electric { background: #f8d030; color: #333; } .t-grass { background: #78c850; }
+  .t-fire { background: #f08030; } .t-ice { background: #98d8d8; color: #333; } .t-ghost { background: #705898; }
+  .t-dragon { background: #7038f8; } .t-steel { background: #b8b8d0; color: #333; } .t-dark { background: #705848; }
+  .avatar.sprite { color: var(--muted); }
+
+  .section-title { display: flex; justify-content: space-between; align-items: baseline; margin: 24px 0 10px; }
+  .section-title h2 { margin: 0; font-size: 10px; color: var(--accent); }
+
+  /* Sugestões */
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+  .card-head { display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .card-head .who { display: flex; gap: 12px; align-items: center; }
+  .card-head .avatar { width: 48px; height: 48px; font-size: 12px; }
+  .card-head h4 { margin: 0; font-size: 16px; }
+  .where { font-size: 12px; color: var(--muted); }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 999px; background: #f1ede4; color: var(--muted); }
+  .tag.excl { background: #fde7df; color: #b2431f; }
+
+  .scenarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+  @media (max-width: 600px) { .scenarios { grid-template-columns: 1fr; } }
+  .sc { border: 1px solid var(--line); border-radius: 8px; padding: 12px; border-top: 4px solid; }
+  .sc.bad { border-top-color: var(--bad); } .sc.neu { border-top-color: var(--neutral); } .sc.good { border-top-color: var(--good); }
+  .sc .label { font-size: 9px; }
+  .sc.bad .label { color: var(--bad); } .sc.neu .label { color: #b5841a; } .sc.good .label { color: var(--good); }
+  .sc .big { font-size: 22px; font-weight: 700; margin: 8px 0 2px; }
+  .sc .sub { font-size: 12px; color: var(--muted); }
+  .bar { height: 6px; background: #eee; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; }
+  .sc.bad .bar > i { background: var(--bad); } .sc.neu .bar > i { background: var(--neutral); } .sc.good .bar > i { background: var(--good); }
+
+  details { margin-top: 12px; }
+  summary { cursor: pointer; font-weight: 600; color: var(--muted); font-size: 13px; }
+  details ul { margin: 8px 0 0; padding-left: 18px; color: var(--ink); font-size: 13px; line-height: 1.6; }
+
+  .disclaimer { font-size: 12px; color: var(--muted); text-align: center; margin: 20px 0 40px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="pixel">POKEBATTLE <span>PREDICTOR</span></h1>
+  <div class="version-toggle" role="group" aria-label="Versão do jogo">
+    <button class="active" data-v="fr">FIRERED</button>
+    <button data-v="lg">LEAFGREEN</button>
+  </div>
+</header>
+
+<main>
+  <!-- Formulário -->
+  <aside class="panel">
+    <h2 class="pixel">SUA BATALHA</h2>
+
+    <label>Contra quem você vai lutar?</label>
+    <div class="seg" id="opp-kind">
+      <button class="active" data-k="npc">Treinador</button>
+      <button data-k="wild">Selvagem</button>
+    </div>
+
+    <div id="npc-fields">
+      <label>Treinador / Pokémon</label>
+      <select id="npc-select">
+        <option value="onix">Brock — Onix (Nv. 14)</option>
+        <option value="geodude">Brock — Geodude (Nv. 12)</option>
+        <option value="starmie">Misty — Starmie (Nv. 21)</option>
+      </select>
+    </div>
+
+    <div id="wild-fields" hidden>
+      <label>Pokémon selvagem</label>
+      <input id="wild-name" list="wild-list" placeholder="Digite ou escolha…" value="Geodude">
+      <datalist id="wild-list">
+        <option value="Geodude"><option value="Zubat"><option value="Paras">
+        <option value="Clefairy"><option value="Pikachu"><option value="Spearow">
+      </datalist>
+      <label>Nível</label>
+      <input id="wild-level" type="number" value="9" min="1" max="100">
+      <p class="hint">Natureza desconhecida: os cenários consideram a pior e a melhor possível.</p>
+    </div>
+
+    <label>Objetivo</label>
+    <div class="seg" id="objective">
+      <button class="active" data-o="defeat">Derrotar</button>
+      <button data-o="catch">Capturar</button>
+    </div>
+
+    <label>Até onde você chegou? <small>(rotas liberadas)</small></label>
+    <select>
+      <option>Route 1</option>
+      <option>Route 22</option>
+      <option>Route 2</option>
+      <option selected>Viridian Forest</option>
+      <option>Pewter City</option>
+    </select>
+    <p class="hint">Só sugerimos Pokémon que você consegue capturar até aqui.</p>
+
+    <label>Nível médio do seu time</label>
+    <input type="number" value="12" min="1" max="100">
+
+    <button class="primary pixel">PREVER BATALHA</button>
+  </aside>
+
+  <!-- Resultados -->
+  <section>
+    <div class="panel opponent">
+      <div class="avatar sprite" id="opp-avatar"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEWs3s3/////AP//AP//AP//AP//AP//AP//AP//AP/u5ube1dW9tLR7g2pSSkoQEBA5dTBIAAAAAXRSTlMAQObYZgAAAx9JREFUSIm1lc12ozgQhf0CgZMH6DPvr9jd+y4g+1DA3lDCa0By1jagvpJjG5Mer2a08DHUp6v6FZvNf74ia58DhtLPZ3a9o7R6Yhe1pZSP/6rxogJQv8fu70yk1BtRQbZT7V+IyHZ7pXLKrFKqfv9uN9RtcwAd7Cofvknsd2mntqL9frgyrIN5UdvmpFTDZQBS5pUEjucF0KwBRKiK9v00cPeBf03DxeMZiFBJexqt6SCPZPDwKAFgR3KqRDpVE2VccrEEIus9/wL6ADSyAMSQQQbSE0+iVUZkrZV26eGOzk3iASfzW2bt770yC4EI8ueEanNKDm7TI1/q42e58ABvqE0pk2ZbXQJi9XMRZfSh8lxGMtJega1aRhklW+xuJ5H2DcKxTyUyVR1uAAkAaZ1zb9h3RirVjjnPbkDKkoog7ghARL+vwO2QkdmaABBXjpJLschcMxEBMNo4/Mu5YucozVGM7Jaq/S8u5PLUJwOq5M5EDcsdUFPwAAp90gCoWqK04CuAuN8RQMh5n3JpuJKeGB3xBRiGz5e8dX2aD6y16ARC11T1VKDRwsO+zzKGxyJuXALwKNTuRdUZ3qMpWq6mm49RTakNPu5VZjgA2v9eUx0VJBIUoEWU8GQk6FwTGXN5zUIACmO017l31GguWbgALEYjD7S4BGIIlKGq4QSr9dkD94bpnRsZHsXBXqL4KWb83lGYSjJhmOeEmnJ4xUlJfa+1n7ra6FCKibL+n1cDpWx4AHalzB74AcPrD8oz2ywHr9s2pZwPF6CwNSUIazm6Ud5wW6MDB9ySDH3Yl3PlG43HIj1sRqECQCbazQ+jfXQzs29JJD0ngt0sBbwXuFkAxDn5CIxz9huACgD4UMY3m3Pm+AhECmOnPTiwaSrnZKWwmQwm79MDltD3s6xvydhNHABNBIFJb9YrpgZNfFKoIjr88RYNn5gjJbrdxD0dJ5zga3t3MPFJTs+pPzeeN+NxpmTpQsz2YPvkOH05vmoWrJlKOrO5fiHikd3Kv2bIx1LfIo9XdrTkWLbmW+SL5TAIbr1tpfFsf9B4uv9/Xn8A9o4oQKYXI4UAAAAASUVORK5CYII=" alt="Onix"></div>
+      <div>
+        <div class="meta" id="opp-origin">Líder de ginásio · Pewter City</div>
+        <h3><span id="opp-name">Onix</span> <span class="meta" id="opp-level">Nv. 14</span></h3>
+        <div class="types" id="opp-types"><span class="type t-rock">Rock</span><span class="type t-ground">Ground</span></div>
+        <div class="meta" style="margin-top:6px" id="opp-extra">Natureza conhecida (NPC) · Golpes: Tackle, Bind, Rock Tomb</div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h2 class="pixel" id="results-title">MELHORES OPÇÕES</h2>
+      <span class="meta">3 sugestões · ordenadas pelo cenário neutro</span>
+    </div>
+
+    <!-- Card 1 (exclusivo FireRed) -->
+    <article class="card" data-only="fr">
+      <div class="card-head">
+        <div class="who">
+          <div class="avatar sprite"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXe3t7////e3t7/5r3utIvuc2K9SjEQEBD/xYPepHPFe0pzQQD/9s323rTVvZxqSil7K+ctAAAAAXRSTlMAQObYZgAAAgRJREFUSIntkr9uE0EQxrdbCYot3QCPQMMrhAegiKhT0W6qVS45X5s8gVkXCZ3JGghdpOQBkNCdUkZCzFmprvGNDYlkYV28zN4Z0I2t0CEh5ZNs3e732/m3K8S9/q0euDft5ZABb/eP2suDjy1fvT7o6z/Lh3bf9tqAm7sGmIY/eWztoAVIF0U1oDr1cujO2oAwZp54IXQN+OmuO2vXIEQ0UKlXnW+PtfCplmZXM2A+kO/AP9qGiRq/1yJyDJBOSwdVNs5G1edDLeQHDiCdytJaLgBYcGAm9qraz77Qab8KQKKaAJCj98ABEQP4SZqO008LGAEA8i4kEVcxVBffn5INIyO4JAGv8mq29YT8S36+SXK17X3nBQET8pXnkAKcPNvwiIChgB/9AQdu4fr65iUlyKkDZWd8mFTlzcbzAAB6Ia2O+DABis3NbvDDEIzYYcCihNyYMqRohsCBMIlGSHOnKo4Ek1n6ZV4EIr7kXcQQ4mOJk4JiJMAyqL00x7zMkQYxnWEJfNi3aYZ0Ej2W6VTMTMIriOmGdbcoRHfx9YKbdRNINyA1/brjbLqOWOByW5blusv0CZ7oZayV1xKacC5xJ83nynOrd83cueaCI/7km7hkG738Ol9HGLPclcd9Nzxf18Yv7dhTZ9fF+J3N2tM7AWFsb/XVt5P07vZp4n8B7vWf6icF50X8OGGruQAAAABJRU5ErkJggg==" alt="Mankey"></div>
+          <div>
+            <h4>Mankey</h4>
+            <div class="where">Route 22 · Nv. 3–5 · Low Kick no Nv. 9</div>
+          </div>
+        </div>
+        <div class="types">
+          <span class="type t-fighting">Fighting</span>
+          <span class="tag excl">Exclusivo FireRed</span>
+        </div>
+      </div>
+      <div class="scenarios">
+        <div class="sc bad"><div class="label pixel">RUIM</div><div class="big">48%</div><div class="sub">vence em 3 turnos · sobra 0–10% HP</div><div class="bar"><i style="width:48%"></i></div></div>
+        <div class="sc neu"><div class="label pixel">NEUTRO</div><div class="big">76%</div><div class="sub">vence em 2 turnos · sobra ~35% HP</div><div class="bar"><i style="width:76%"></i></div></div>
+        <div class="sc good"><div class="label pixel">BOM</div><div class="big">94%</div><div class="sub">vence em 2 turnos · sobra ~60% HP</div><div class="bar"><i style="width:94%"></i></div></div>
+      </div>
+      <details>
+        <summary>Por que esses números?</summary>
+        <ul>
+          <li>Fighting causa 2× em Rock (Ground é neutro) → 2× no total.</li>
+          <li>Low Kick tem STAB; na Gen III Fighting é golpe <b>físico</b> e Onix tem Defesa alta — por isso não é vitória garantida.</li>
+          <li>Ruim: sua natureza reduz Ataque, roll de dano mínimo e Onix acerta um crítico.</li>
+          <li>Bom: natureza favorável, roll máximo e um crítico seu (2×).</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="card">
+      <div class="card-head">
+        <div class="who">
+          <div class="avatar sprite"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXV1bT///8QEBD/alLeQSm0GAAYzZwApHMAYkH/AP/uve7mnNW9Yr1iQWrNzc2Dg4MuvyYhAAAAAXRSTlMAQObYZgAAAXdJREFUSIntk7FOwzAQhqPMiSqYQQpmbPI4PEt4g0ZqnsQRSxcqnSNVmVD8W0Id6/gRANEn4FwECxcGJoaeIlvKfbn7/Z+TJOc4x9/CndasyJ7lfPZw2sZqLOaAXVy1pxlg7PoIdEQzLewJsNSQkyUSf4qctk07yAoiMHpqfgPc6LfNagZgccYduEDdFkEAciILxAJ1O0klcjLGgCXWdavEHp4rOHpiAIMILLkCA6v6HmWQrMrJqYqaCFSi2WnvqadmXbeDNaLZB6037DMXgGyE1trY9WM70CQNIwtad+RpiyURBJVjF9hrT1C8Tfipko2ynDJ7MoF6qceECADUBxJVVhEIgDUTCR3YataweUHEDCQfWDzdXsNZZwBJA897c3cFhwAnzjuNZwBKAEG+EDaeQSECstdlb/YVPkO8+OmFwlfIv44y2LMEx08hAt4M0fGhCkrMJ2U0kKn0VdSYLN4ukziSIjnKHRYqvr95l7PfcZzpf45/EB/C5wc+hhEiFQAAAABJRU5ErkJggg==" alt="Nidoran♂"></div>
+          <div>
+            <h4>Nidoran♂</h4>
+            <div class="where">Route 22 · Nv. 3–4 · Double Kick no Nv. 12</div>
+          </div>
+        </div>
+        <div class="types"><span class="type t-poison">Poison</span><span class="tag">Ambas as versões</span></div>
+      </div>
+      <div class="scenarios">
+        <div class="sc bad"><div class="label pixel">RUIM</div><div class="big">35%</div><div class="sub">vence em 4 turnos · arriscado</div><div class="bar"><i style="width:35%"></i></div></div>
+        <div class="sc neu"><div class="label pixel">NEUTRO</div><div class="big">61%</div><div class="sub">vence em 3 turnos · sobra ~20% HP</div><div class="bar"><i style="width:61%"></i></div></div>
+        <div class="sc good"><div class="label pixel">BOM</div><div class="big">85%</div><div class="sub">vence em 2 turnos · sobra ~45% HP</div><div class="bar"><i style="width:85%"></i></div></div>
+      </div>
+      <details>
+        <summary>Por que esses números?</summary>
+        <ul>
+          <li>Double Kick (Fighting) acerta 2 vezes, 2× contra Rock — mas <b>sem STAB</b>.</li>
+          <li>Precisa chegar ao Nv. 12: considere o tempo de treino.</li>
+        </ul>
+      </details>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="card">
+      <div class="card-head">
+        <div class="who">
+          <div class="avatar sprite"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXNzaz///8QEBD/AP+0tMV7e5xSUnNBQVr/vbT/e1LNYmqUIBDm5ubFxcWczcVatIsX8prtAAAAAXRSTlMAQObYZgAAAmpJREFUSIntkjFr20AYho+DSEMndagXFcSBZWgx+Q9B6Q8IVTtkCaK5pZBIhvYWKV2V/IPEWygdlM1D42STadByHuqhWnxrRhv8A+x+J8myFcdOxw55MZi799H3vffdIfSs/1AHT/jKTnWtMlLd+LSXYbRYMk9L3QpwaGTYrpH7mqa9blWArKBDSOlrNZbDW7Yt/+QCF0ELvwDqnsYKIN9AHzMftgsAVgwp8DGu+tqigqa5uCyg/tbizJ9naMCJ4jtIrOQJfK7XmLeUAXs1T9d78w4qjxPGGNQoj9kQtYD3XESLAonPa0z2mAM4EMzvpXkEld/5PI5ljxJALAiSHqXZkHz+hXNdl35qzAGcBkNi79k2QVvDhHNIES8ySjX/sEtrx745d9W+D0Di6/KyFgAW3R/Wu/3wvB2kwyFPvEQOe/m634bfLWs/PG0HQb8Pp/RimIOxBLwILcvqhqcX10KkvkxZzjFX9ywHouvMz0ZVeQ03Z++t3W54EXVSJuXreqUAum3bNhwiijqBEH0YVKwlVeAKgM9RdOXA10OZQWfLPnrz03TqAFw6EJJBCsGqLxZ3RqMJvY1MpwkdZMRqAaQ60/GEOoSajoBJ8V/EqALIfEleUdBXhzQ57xHxEMA0U8OmzQEhTbECIGKCT2ybNkQAwxo89OHKCWnQww/UCNKgn7RWANQcnNwf3VNqqFBg6aZL1Qcz04EfPDCRklUfYXt7cjwx5fnIYz5s4xbE/PZI8VIK5JxNNgDHM1fdBCjTsaFOZ+t7KKOZoY7G64Gj0QRtBE7GTwDb0B4yuGsBDPPBG48ptfJSnvVv+gsQUxFb4ehOAgAAAABJRU5ErkJggg==" alt="Butterfree"></div>
+          <div>
+            <h4>Butterfree</h4>
+            <div class="where">Caterpie em Viridian Forest · evolui no Nv. 10 · Confusion</div>
+          </div>
+        </div>
+        <div class="types"><span class="type t-bug">Bug</span><span class="type t-flying">Flying</span><span class="tag">Ambas as versões</span></div>
+      </div>
+      <div class="scenarios">
+        <div class="sc bad"><div class="label pixel">RUIM</div><div class="big">22%</div><div class="sub">Rock Tomb causa 4×</div><div class="bar"><i style="width:22%"></i></div></div>
+        <div class="sc neu"><div class="label pixel">NEUTRO</div><div class="big">54%</div><div class="sub">vence em 3 turnos</div><div class="bar"><i style="width:54%"></i></div></div>
+        <div class="sc good"><div class="label pixel">BOM</div><div class="big">80%</div><div class="sub">vence em 2 turnos</div><div class="bar"><i style="width:80%"></i></div></div>
+      </div>
+      <details>
+        <summary>Por que esses números?</summary>
+        <ul>
+          <li>Confusion é Psychic → <b>especial</b> na Gen III, e a Defesa Especial do Onix é baixa.</li>
+          <li>Risco alto: Rock é 4× contra Bug/Flying. Grande diferença entre os cenários.</li>
+        </ul>
+      </details>
+    </article>
+
+    <p class="disclaimer">Dados ilustrativos para o mockup — os números reais virão do PokeBattle.Core.</p>
+  </section>
+</main>
+
+<script>
+  // Toggle de versão: esconde cards exclusivos da outra versão
+  document.querySelectorAll('.version-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.version-toggle button').forEach(b => b.classList.toggle('active', b === btn));
+      const v = btn.dataset.v;
+      document.querySelectorAll('[data-only]').forEach(el => el.hidden = el.dataset.only !== v);
+    });
+  });
+
+  // Oponente: treinador ou selvagem
+  const typeClass = { Rock:'t-rock', Ground:'t-ground', Poison:'t-poison', Bug:'t-bug', Psychic:'t-psychic',
+                      Flying:'t-flying', Normal:'t-normal', Fighting:'t-fighting', Water:'t-water', Electric:'t-electric', Grass:'t-grass' };
+  const npcData = {
+    onix:    { id:95, name:'Onix', lvl:14, types:['Rock','Ground'], origin:'Líder de ginásio · Pewter City', moves:'Tackle, Bind, Rock Tomb', color:'#8a7a4a' },
+    geodude: { id:74, name:'Geodude', lvl:12, types:['Rock','Ground'], origin:'Líder de ginásio · Pewter City', moves:'Tackle, Defense Curl', color:'#8a7a4a' },
+    starmie: { id:121, name:'Starmie', lvl:21, types:['Water','Psychic'], origin:'Líder de ginásio · Cerulean City', moves:'Swift, Recover, Water Pulse', color:'#6890f0' }
+  };
+  const SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/';
+  // Sprites embutidos (o preview bloqueia imagens externas); fora dele, cai pro remoto
+  const SPRITES = {"95": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEWs3s3/////AP//AP//AP//AP//AP//AP//AP//AP/u5ube1dW9tLR7g2pSSkoQEBA5dTBIAAAAAXRSTlMAQObYZgAAAx9JREFUSIm1lc12ozgQhf0CgZMH6DPvr9jd+y4g+1DA3lDCa0By1jagvpJjG5Mer2a08DHUp6v6FZvNf74ia58DhtLPZ3a9o7R6Yhe1pZSP/6rxogJQv8fu70yk1BtRQbZT7V+IyHZ7pXLKrFKqfv9uN9RtcwAd7Cofvknsd2mntqL9frgyrIN5UdvmpFTDZQBS5pUEjucF0KwBRKiK9v00cPeBf03DxeMZiFBJexqt6SCPZPDwKAFgR3KqRDpVE2VccrEEIus9/wL6ADSyAMSQQQbSE0+iVUZkrZV26eGOzk3iASfzW2bt770yC4EI8ueEanNKDm7TI1/q42e58ABvqE0pk2ZbXQJi9XMRZfSh8lxGMtJega1aRhklW+xuJ5H2DcKxTyUyVR1uAAkAaZ1zb9h3RirVjjnPbkDKkoog7ghARL+vwO2QkdmaABBXjpJLschcMxEBMNo4/Mu5YucozVGM7Jaq/S8u5PLUJwOq5M5EDcsdUFPwAAp90gCoWqK04CuAuN8RQMh5n3JpuJKeGB3xBRiGz5e8dX2aD6y16ARC11T1VKDRwsO+zzKGxyJuXALwKNTuRdUZ3qMpWq6mm49RTakNPu5VZjgA2v9eUx0VJBIUoEWU8GQk6FwTGXN5zUIACmO017l31GguWbgALEYjD7S4BGIIlKGq4QSr9dkD94bpnRsZHsXBXqL4KWb83lGYSjJhmOeEmnJ4xUlJfa+1n7ra6FCKibL+n1cDpWx4AHalzB74AcPrD8oz2ywHr9s2pZwPF6CwNSUIazm6Ud5wW6MDB9ySDH3Yl3PlG43HIj1sRqECQCbazQ+jfXQzs29JJD0ngt0sBbwXuFkAxDn5CIxz9huACgD4UMY3m3Pm+AhECmOnPTiwaSrnZKWwmQwm79MDltD3s6xvydhNHABNBIFJb9YrpgZNfFKoIjr88RYNn5gjJbrdxD0dJ5zga3t3MPFJTs+pPzeeN+NxpmTpQsz2YPvkOH05vmoWrJlKOrO5fiHikd3Kv2bIx1LfIo9XdrTkWLbmW+SL5TAIbr1tpfFsf9B4uv9/Xn8A9o4oQKYXI4UAAAAASUVORK5CYII=", "74": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXe3t7////Nzc3/AP//AP//AP//AP//AP//AP//AP//AP/N1YOstGJ7g1pBShAQEBCbsdclAAAAAXRSTlMAQObYZgAAAWRJREFUSIntksGSmzAQRPkBQ/mc//+KwWw5V7ek/QDauHK1QGyullEGXGuL2qwvOaXKfRHSPPU0A0Xx0kv/icjn9UnkfX1hva0OIk1+VEqzAjwakd1jvzmLnHIgwh/yO2fZ1WMOJAeb3SllZ+FuWYb5tIKHF7nfOe8a0y7ARmDTDMTZ4gE08HHShxClNlSP6CIi7oD6xYRTURK25exVXTuHB6B0om79te2NWdJcmdDfQ1Y2dQxFCTe0bWvacbZgOj7mBjKNugiM9WQ3t70tnz0M1bf0An2/pVICfQaUaDXjpfZADcN0UjfLbLaVAmN5EcuzuP7IY/DRcswBj8E773h5+0USQDRZBw3Rq4cLE+zvbb8A5Orj6FsRbh/x82OrLcJkeCxWqsiQ9j9gtltSp57YrYFCkxf+UKs1l78rjMVXRenUO/R/q936DIIw6dC/1RU6pu5bA9WgWZ/VNdv0tPzSS/+qP4+VKNoPvv9xAAAAAElFTkSuQmCC", "121": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXV1b29lM2UYqSDQYNSIGL/9pT21VLFpBBqUgD/AP//vaT2QVLNMVp7EAAQEBD////c04rjAAAAAXRSTlMAQObYZgAAAopJREFUSIntlDFP20AUx61ycyQXBiYkHieVySp5ni3Hl5kt4hPkzNKxOU8egnAsUNVv0QHUtUNTZjoY8QEAKSSRgjrcB2Ch7xwqYp8llm7tG5Kc75f//97ze+c4/2SsTV4B9oJXBNx2+Bqw9GCWVfd96fAMrEV1K9beKYG3wM13xC3AB2Ec1sGjFS38uoWIIHTYEmDA0TqD8IGHBoCQRSAaAIyAdzZzgAn9QLSyZegDdLJ4CHMkAbteDDHi7vHBFDz0sQEgD993P5aAQLSSICA/6mz2YgI0on1GKuUgcQlIIYtnDYDf3e8f5BQqkbGeiyrwBnHbdY97ydPTl1EmE3A3umIV2HNNLHqfz+7GhwNyMUvsvpSCPCmCw8en85tvI3WEpaL7kkkLTOz+un4cXxSJmtJiByu10PQoz0+uz8dfi1Tl+bD8x+pBNez2eyc347OLIh3IODH7upKI9vq905vv50sgtfaJUOrTxdn49jZVSqXA6/sO04vTH3d3xVWqEj3ldqkjrrOrori9XFAW3tx+WZG3lXwoip8p6VNLWAADbzPOiuJyQZWGmbDmJ4L7TNL5TA5DmPnL7l8V4A8yVlovlJQEUHdVgTZ0CXjIpEozeUhN60PFYw1EMBpQr8hk6kk19LAmwTgGW5TeSFIKi3RKQFUiEqhdemPvCNjeMn1LEqvAHHU5VLvSNAsNjp6hv+rRmpvBB/BUSp2yYcZP4341j44BuJ53XCM1cZz9SQ2gx5S/CKjX2lDb/AN4gobq3kjYAF1OwCdm7oNmgJW65cVAEvVCG+D5ahEYMjqv1wSEJRAYtQ0baJVTwJaX1/26DTg6NJ9RObWtnYbrYRlChC90U7Ssbv8ffyt+AzEE+T2Tv+LaAAAAAElFTkSuQmCC", "56": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXe3t7////e3t7/5r3utIvuc2K9SjEQEBD/xYPepHPFe0pzQQD/9s323rTVvZxqSil7K+ctAAAAAXRSTlMAQObYZgAAAgRJREFUSIntkr9uE0EQxrdbCYot3QCPQMMrhAegiKhT0W6qVS45X5s8gVkXCZ3JGghdpOQBkNCdUkZCzFmprvGNDYlkYV28zN4Z0I2t0CEh5ZNs3e732/m3K8S9/q0euDft5ZABb/eP2suDjy1fvT7o6z/Lh3bf9tqAm7sGmIY/eWztoAVIF0U1oDr1cujO2oAwZp54IXQN+OmuO2vXIEQ0UKlXnW+PtfCplmZXM2A+kO/AP9qGiRq/1yJyDJBOSwdVNs5G1edDLeQHDiCdytJaLgBYcGAm9qraz77Qab8KQKKaAJCj98ABEQP4SZqO008LGAEA8i4kEVcxVBffn5INIyO4JAGv8mq29YT8S36+SXK17X3nBQET8pXnkAKcPNvwiIChgB/9AQdu4fr65iUlyKkDZWd8mFTlzcbzAAB6Ia2O+DABis3NbvDDEIzYYcCihNyYMqRohsCBMIlGSHOnKo4Ek1n6ZV4EIr7kXcQQ4mOJk4JiJMAyqL00x7zMkQYxnWEJfNi3aYZ0Ej2W6VTMTMIriOmGdbcoRHfx9YKbdRNINyA1/brjbLqOWOByW5blusv0CZ7oZayV1xKacC5xJ83nynOrd83cueaCI/7km7hkG738Ol9HGLPclcd9Nzxf18Yv7dhTZ9fF+J3N2tM7AWFsb/XVt5P07vZp4n8B7vWf6icF50X8OGGruQAAAABJRU5ErkJggg==", "32": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXV1bT///8QEBD/alLeQSm0GAAYzZwApHMAYkH/AP/uve7mnNW9Yr1iQWrNzc2Dg4MuvyYhAAAAAXRSTlMAQObYZgAAAXdJREFUSIntk7FOwzAQhqPMiSqYQQpmbPI4PEt4g0ZqnsQRSxcqnSNVmVD8W0Id6/gRANEn4FwECxcGJoaeIlvKfbn7/Z+TJOc4x9/CndasyJ7lfPZw2sZqLOaAXVy1pxlg7PoIdEQzLewJsNSQkyUSf4qctk07yAoiMHpqfgPc6LfNagZgccYduEDdFkEAciILxAJ1O0klcjLGgCXWdavEHp4rOHpiAIMILLkCA6v6HmWQrMrJqYqaCFSi2WnvqadmXbeDNaLZB6037DMXgGyE1trY9WM70CQNIwtad+RpiyURBJVjF9hrT1C8Tfipko2ynDJ7MoF6qceECADUBxJVVhEIgDUTCR3YataweUHEDCQfWDzdXsNZZwBJA897c3cFhwAnzjuNZwBKAEG+EDaeQSECstdlb/YVPkO8+OmFwlfIv44y2LMEx08hAt4M0fGhCkrMJ2U0kKn0VdSYLN4ukziSIjnKHRYqvr95l7PfcZzpf45/EB/C5wc+hhEiFQAAAABJRU5ErkJggg==", "12": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXNzaz///8QEBD/AP+0tMV7e5xSUnNBQVr/vbT/e1LNYmqUIBDm5ubFxcWczcVatIsX8prtAAAAAXRSTlMAQObYZgAAAmpJREFUSIntkjFr20AYho+DSEMndagXFcSBZWgx+Q9B6Q8IVTtkCaK5pZBIhvYWKV2V/IPEWygdlM1D42STadByHuqhWnxrRhv8A+x+J8myFcdOxw55MZi799H3vffdIfSs/1AHT/jKTnWtMlLd+LSXYbRYMk9L3QpwaGTYrpH7mqa9blWArKBDSOlrNZbDW7Yt/+QCF0ELvwDqnsYKIN9AHzMftgsAVgwp8DGu+tqigqa5uCyg/tbizJ9naMCJ4jtIrOQJfK7XmLeUAXs1T9d78w4qjxPGGNQoj9kQtYD3XESLAonPa0z2mAM4EMzvpXkEld/5PI5ljxJALAiSHqXZkHz+hXNdl35qzAGcBkNi79k2QVvDhHNIES8ySjX/sEtrx745d9W+D0Di6/KyFgAW3R/Wu/3wvB2kwyFPvEQOe/m634bfLWs/PG0HQb8Pp/RimIOxBLwILcvqhqcX10KkvkxZzjFX9ywHouvMz0ZVeQ03Z++t3W54EXVSJuXreqUAum3bNhwiijqBEH0YVKwlVeAKgM9RdOXA10OZQWfLPnrz03TqAFw6EJJBCsGqLxZ3RqMJvY1MpwkdZMRqAaQ60/GEOoSajoBJ8V/EqALIfEleUdBXhzQ57xHxEMA0U8OmzQEhTbECIGKCT2ybNkQAwxo89OHKCWnQww/UCNKgn7RWANQcnNwf3VNqqFBg6aZL1Qcz04EfPDCRklUfYXt7cjwx5fnIYz5s4xbE/PZI8VIK5JxNNgDHM1fdBCjTsaFOZ+t7KKOZoY7G64Gj0QRtBE7GTwDb0B4yuGsBDPPBG48ptfJSnvVv+gsQUxFb4ehOAgAAAABJRU5ErkJggg==", "41": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXm5ub////V1dViYmIQEBD/AP+9zf+LtO5qi71KQXv2g97Vc720UpxzIFr/AP//AP8H35QfAAAAAXRSTlMAQObYZgAAAbhJREFUSIntlL9OwlAUxs/AQBPdeAI3R/48AIk3EQK8RsHNwXAvW4cGThOHDkR6Ir4HpLKxGNrESVHsu3hu0WjaXlYdOAtNvl++7/Q7AMBx/mzKiB4FB+SJlArRiIxtqYgoQMSstPcd9ynS80QZD0QpJTlgedF+kky03WdgBN9A/Jzxt2zWpcMPyHIYZnWAmQZ8fgjmDKzy21u/gI0JmKSAN9+EjwUFzKRS1xrgkgoBtph4Gkje0LvPL8kWSik/fc0kwIeMWHa0N9FXD3ESOBn/AXfIVwSgfdNxpkjrZaQBH8iW3MO6l9swVk3O8C17gN1o3cwteLLaugw4dwOx7WzyOkCyxKlouVKEi25BjQDvOxrao8ubXbjoFHUAp8uhzRfvxqEXFQLwqo+lPqKdGxfqcEU0kYjRtltsADUhzvlOt64hAapCVAR32TMkQEnwtBCDxACkBAP6Hgbgoi7ah4BqvVHRAPrFulW7aJzpCGwaEjzegXdEbBsiWvpHTewQkCGD/fUOLn+rDYSO4B1LLRMBMEWcNuEgIcjXXtJIQDuVhMz9v/wQ/p5wTEBpmn4IQ6FaMirH+e/zCYoC4b8bJGPIAAAAAElFTkSuQmCC", "46": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXV1bT/9v/m5uakpKT/9lre1Tn/e3vmOTm0CAj/AP//rGLuizG9gzGDUiD/AP8QEBB6goE1AAAAAXRSTlMAQObYZgAAAXdJREFUSIntkkFKw0AYhbPsoiEUDyDUpYtgL9BNr1BcukuPkO50YbEb6T1m7AXyT4jrZkJSxU0nJVdoK1IwE34ngsLENILgrg9CJnkf738ziWEcddS/aXrX7LecwawRuHUG7qYMmh4CRtMSuB+Mbg5MGA9n67TlOJ85NYA7uXonJHNGw3H9iP1E+WT+4g6va31uISgA3i7dWsCEZa9IQwB/X9thLfzOq03mAmWMxvrxRz4Joj7ahPgnNo/Qe6j4bUIBz1QCWZ5eSEEESXRgQWiY7ro5wDNu5YoEeVQJIIxlAQLAU79XeCSwYh3waBgqOysg6NqRR1imJwgA5pthICBnKEtgo+9UcMZjQ27PIeacC6CschIFpHxjpFvEnSwBYHoFY0WlemPZiB3J4xSAV4AFlSrT6iFiP06kAqq7hKK8o4VdTAwZZVzv0KbB1xLVlaqJ+kGaemlrRVGvYBb6Yw71/9y3JEuaATNq9o3Kl6rRLxWOOurv+gDA793cPaWSIQAAAABJRU5ErkJggg==", "35": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXV1b3////FxcWDg4PuWkq0OSnNg1KsYjGcUiBzKQj/AP//xaT/nIPmg3ucWlIQEBAN/QJwAAAAAXRSTlMAQObYZgAAAZpJREFUSIntk7FOwlAUhrsyQOPs5mxcnN1wctWJ3cQXsHFi5QnEG014BhOJMaeUB/C0BNf2tIS1twVHQko9bcWh98ILyFn/L//973/vMYzD/NsJ09lenQCc5R69CQD2xGg89Xp6wGcAcZE93nY1Pr1e6o9CRE+CZa1UoHF/50CAEiW8W12hAaxnByR6CPBhrbTAi7cFukKoERqWdGMvKIGVGGiu0MfYQZSfAGMhlprC+h5AmrIBPAixQTVEiwGAY3YQYiAn6hHN2H4FWHNZCQ3QW6hEPBpXgEsRocbCLwAXCiCkQM3ALxWw+naVEtEmVQ1CaMPwpgOODSPKQsWhCXz68LoDo9gmSihSACfhz9DuwPSU9ShQioinZ5zgEmDOQBZJnNWBrwLgcb5pQVGIXg2Qrl8BEOVJAdSLMKfxL8AZC0BJmf8BbgEECmBsASwdKFSAll3pbECLhOq3YAD8rU4Zkebjx47ESmdAjWAYa9tLqKiZwizSbaDJ8dI85xrmuX5Ds/PS2dyc7Nhg8+iiVMxcr3NZO5XDHKaaH8gnV7QB533JAAAAAElFTkSuQmCC", "25": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXNzbT//////3v/7gDuvQDFiwCDUgD/AP//AP//AP//SkrmAAC0AABqamoQEBD/AP9rriIfAAAAAXRSTlMAQObYZgAAAdZJREFUSIntlDFPg0AUx2+QG/kIDhC/gO/qYtOFB5sMAh2NKcjYD2Yc3XTTyXR0xTQpdtCUz+C7QmnhXtvBzfgSkub+P/7vf8frCfG3yj4GVPPfAqvqSIRiF2Ds7OKjXbSrggPeN4v2agfeAaBZtLyi4PIsIKx/RFB8cEDUADHAFbvlBpAAMGJ3fKLCBP1xSkDIGQgLE8dxFenI6kJkDpXW6waJ0QJqQE3rrO5tD0jh3HFU5am1YLnQB+JK5z9dqPVmrkH1AGt0qoFVDcSuwqALyNGKAN2CBMtR2AeyQQkZIZePOD/xAA3gC8ADiODpGZcpvW8A3x4MZjOPgGAyRhOQ9gvA7B7gaTaJnEwDYQeY5AS8PQAMX1MYaCCYdwxcRV9pSBAE9JR9nT620oKuFFRo6iJDP2oIQAJ6x0gjif5GV7jsBVxXiVsD8ut3IIu0NQiF5Cw2EZR/K2mbhoVsI8TTBeLUMLC2GVNOF9sIASIz9jLf7IFOgUkoJmdpC5Tc3CeDi6YDhnbCWGT1SepJCZd5bFpYiJkH9STlU+6/meF6Sqhy/jorsWyAPZeZrBrdZ9/XVVV35ih2y14yo9QlPm8OX6cySQ4aCDk+BviHIuo6euX/1776AQcQxQAcCes7AAAAAElFTkSuQmCC", "21": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEXNzaz////u3sXVxZysnHNqYlL/g3P2UlrFQVJ7GAD2tFrVnDmscxB7QQD/1awYGBjNreiyAAAAAXRSTlMAQObYZgAAAeVJREFUSIntkrFP20AUxt8SCUtGkRj6B3SiE4PTPwDlUNUBpYh46NTtKFM27AwVG1ym0CVOpErZDVXV+Yjo2vAsZwCkNkb5F4yU0lBiHS9UVaXeOR07lG+zvt+97/O7A3jQf6pPf/HtgY1zgX4SDuz8KafQ//He7h8Ncs/3wvDD1/Cwl8y+FhoaMDwKD2UYSnlMKWKPH2iAJEW3MgJoWNucp38Ci7Ijjx8PT2g8b7V4TS+R8XffNoYjgL3aa8MAsC948+NVgpHFrznf0iqAtcO9LEOUX+g8r+sJxe+7kwbiSLXI32rrERjfdBsoe2lAfl0YAOx0pngqR57n+W2hdVi8PKkHU0T8TIAQTb2D3buukT+6uQf0TYON8fQn4Pu+nkAZMdkRKhXs75sSoAjThIaMKx3hi+zSQMBuhPH6GXveFl2UpmcRKIwYK5dedhXty0AEb5IxY85TVlEZSn1TYInkjIByqaKorqnE5NxlzHWcqsI4MwGFV8x1y46zqTLj0y1cPaIOzCk5hvyZNtRyrcrY2mbphRlQy5PmmutWWcXsU0khxopSchJo20IoKI5ZTsI9kM7WkedTBt3iQtt0lb9GrNDC/TkApGA980yv5bdWnwRLuX8x09u0sDLPBwUFNRd40L/THYti7WGuYtfJAAAAAElFTkSuQmCC"};
+  const spriteUrl = id => SPRITES[id] || `${SPRITE_BASE}${id}.png`;
+  // Fallback offline para a lista sugerida
+  const OFFLINE = { geodude:{id:74,types:['Rock','Ground']}, zubat:{id:41,types:['Poison','Flying']}, paras:{id:46,types:['Bug','Grass']},
+                    clefairy:{id:35,types:['Normal']}, pikachu:{id:25,types:['Electric']}, spearow:{id:21,types:['Normal','Flying']} };
+  const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+
+  function renderOpponent(o, extra) {
+    const av = document.getElementById('opp-avatar');
+    av.innerHTML = o.id ? `<img src="${spriteUrl(o.id)}" alt="${o.name}">` : '?';
+    document.getElementById('opp-name').textContent = o.name;
+    document.getElementById('opp-level').textContent = 'Nv. ' + o.lvl;
+    document.getElementById('opp-origin').textContent = o.origin;
+    document.getElementById('opp-types').innerHTML =
+      o.types.map(t => `<span class="type t-${t.toLowerCase()}">${t}</span>`).join('');
+    document.getElementById('opp-extra').textContent = extra;
+  }
+
+  // Busca tipos + id na PokeAPI (cache simples em memória, debounce na digitação)
+  const cache = {};
+  let debounce;
+  async function fetchPokemon(name) {
+    const key = name.toLowerCase();
+    if (cache[key]) return cache[key];
+    if (OFFLINE[key]) return cache[key] = OFFLINE[key];
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${key}`);
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    if (data.id > 151) throw new Error('fora de Kanto');
+    return cache[key] = { id: data.id, types: data.types.map(t => cap(t.type.name)) };
+  }
+
+  function updateOpponent() {
+    const wild = document.querySelector('#opp-kind .active').dataset.k === 'wild';
+    document.getElementById('npc-fields').hidden = wild;
+    document.getElementById('wild-fields').hidden = !wild;
+
+    if (!wild) {
+      const o = npcData[document.getElementById('npc-select').value];
+      renderOpponent(o, 'Natureza conhecida (NPC) · Golpes: ' + o.moves);
+    } else {
+      const name = document.getElementById('wild-name').value.trim();
+      const lvl = document.getElementById('wild-level').value;
+      const extra = 'Selvagem · natureza desconhecida (varia entre os cenários)';
+      clearTimeout(debounce);
+      if (!name) return renderOpponent({ name:'???', lvl, types:[], origin:'Pokémon selvagem' }, extra);
+      debounce = setTimeout(async () => {
+        try {
+          const p = await fetchPokemon(name);
+          renderOpponent({ name: cap(name), lvl, origin:'Pokémon selvagem', ...p }, extra);
+        } catch {
+          renderOpponent({ name: cap(name), lvl, types:[], origin:'Não encontrado em FireRed/LeafGreen' }, extra);
+        }
+      }, 350);
+    }
+  }
+
+  document.querySelectorAll('#opp-kind button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#opp-kind button').forEach(b => b.classList.toggle('active', b === btn));
+      updateOpponent();
+    });
+  });
+  ['npc-select','wild-name','wild-level'].forEach(id =>
+    document.getElementById(id).addEventListener('input', updateOpponent));
+
+  // Toggle de objetivo: só troca o título por enquanto
+  document.querySelectorAll('#objective button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#objective button').forEach(b => b.classList.toggle('active', b === btn));
+      document.getElementById('results-title').textContent =
+        btn.dataset.o === 'catch' ? 'MELHORES PARA ENFRAQUECER' : 'MELHORES OPÇÕES';
+    });
+  });
+</script>
+</body>
+</html>
