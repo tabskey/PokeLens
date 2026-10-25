@@ -251,9 +251,9 @@ Onde `A` = Attack/Sp. Attack e `D` = Defense/Sp. Defense, escolhidos pela catego
 
 ## 14. Simulação, avaliação e ranking
 
-`BattleSimulationService` combina Stats + Move + Type + Scenario + DamageRollPolicy + CriticalHitPolicy e produz `Damage`, `DamageRange`, `RemainingHP`, `TurnsToKO`, `Outcome`.
+`BattleSimulationService` combina Stats + Move + Type + Scenario + DamageRollPolicy + CriticalHitPolicy e produz, por cenário (`ScenarioSimulation`): o melhor golpe de cada lado, a faixa de dano, o HP restante depois de um golpe (`HpRange`), os turnos para KO em faixa (`TurnsToKo`: mínimo com o dano máximo, máximo com o dano mínimo) e o `Outcome`. Os dois lados usam o melhor golpe, inclusive o oponente (conservador), e todo golpe acerta.
 
-`BattleOutcomeEvaluator` classifica: Guaranteed KO, Possible KO, 2HKO, 3HKO, Unfavorable, Balanced, Favorable. A classificação **não substitui** os valores numéricos.
+`BattleOutcomeEvaluator` classifica o KO (`KoClassification`: Sem dano, KO garantido, KO possível, 2, 3 ou 4+ golpes) e o resultado (`BattleOutcome`: Favorable, Balanced, Unfavorable). O critério de vitória é **provisório** (faixas de turnos sem sobreposição, sem Speed; empate = Balanced) e está em revisão em `decisoes-simulacao.md`. A classificação **não substitui** os valores numéricos.
 
 `BattleRankingService`:
 
@@ -444,5 +444,6 @@ Itens que o desenho original não detalha, ou que merecem conferência contra fo
 - **Ball Bonus em ponto fixo.** O jogo trabalha com inteiros; a ordem de truncamento na fórmula de `X` deve seguir a implementação original.
 - **Habilidade fora do `BattleScenario` (decidido na Etapa 4).** É atributo da espécie e não varia entre cenários na V1 (`decisoes-cenarios.md` §6). **Pendente para a Etapa 5/7:** habilidades de imunidade (Levitate, Volt Absorb, Water Absorb, Flash Fire, Wonder Guard) precisam entrar no filtro de golpes; espécie com duas habilidades possíveis usa a pior para o candidato quando isso importar.
 - **Bônus de insígnia (FRLG).** Fora de link, os Pokémon do jogador ganham ×110/100 em Attack com a Boulder Badge (1ª), em Defense com a Soul Badge (5ª) e em Sp. Attack e Sp. Defense com a Volcano Badge (7ª), aplicado no início de `CalculateBaseDamage`. Não entra na Etapa 3; decidir na Etapa 6/7, quando a progressão existir, porque depende das insígnias do jogador.
+- **Speed e precisão fora da simulação da V1.** Sem Speed, empates de turnos ficam Balanced (provisório; `decisoes-simulacao.md` §2). Todo golpe acerta (decidido, mas registrado para discussão: `decisoes-simulacao.md` §4). Ambos entram naturalmente na simulação turno a turno da V4.
 - **Golpes fora do `DamageCalculator`.** Dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) e poder variável ou multi-hit (Low Kick, Return, Frustration, Magnitude, Double Kick, Fury Attack...) não passam pela fórmula comum. Na V1 ficam de fora; o importador/caso de uso precisa filtrá-los ou tratá-los à parte.
 - **Exemplos numéricos são ilustrativos.** Com p = 19,752% por bola, 99% exige 21 bolas (não 22). Além disso, Pikachu a 7/35 HP com Ultra Ball e Sleep dá `X ≥ 255` (captura garantida), então esses números não vêm do mesmo cenário. Servem como ilustração de UI, **não** como fixtures de teste.

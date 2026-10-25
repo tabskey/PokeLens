@@ -427,7 +427,7 @@ Não implemente Pokédex pessoal (é V2).
 - [x] Prefixo: **`PokeBattle.*`** (decidido na Etapa 1)
 - [ ] Valores dos perfis de IV (Etapa 4): em revisão com jogadores, provisório 8 / 15 / 23 (`docs/decisoes-cenarios.md` §2). Nível decidido: média truncada
 - [x] Onde entra a habilidade: **fora do cenário** (`docs/decisoes-cenarios.md` §6)
-- [ ] Critério de "vencer" (Etapa 5)
+- [ ] Critério de "vencer" (Etapa 5): em revisão com jogadores, provisório = faixas de turnos sem sobreposição, sem Speed (`docs/decisoes-simulacao.md` §2). Golpe do oponente (sempre o melhor) e precisão (fora da V1) decididos
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
 - [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
 - [ ] Destino de deploy: nenhum por ora, VPS com compose, ou um serviço gerenciado de containers (define o job `deploy`)
