@@ -1,0 +1,102 @@
+{
+  "milestones": [
+    "start",
+    "pokedex",
+    "boulder-badge",
+    "cascade-badge"
+  ],
+  "encounterMethods": [
+    {
+      "name": "gift",
+      "milestone": "start"
+    },
+    {
+      "name": "walk",
+      "milestone": "pokedex"
+    }
+  ],
+  "areas": [
+    {
+      "name": "pallet-town-area",
+      "milestone": "start"
+    },
+    {
+      "name": "kanto-route-1-area",
+      "milestone": "pokedex"
+    },
+    {
+      "name": "kanto-route-22-area",
+      "milestone": "pokedex"
+    },
+    {
+      "name": "kanto-route-2-south-towards-viridian-city",
+      "milestone": "pokedex"
+    },
+    {
+      "name": "viridian-forest-area",
+      "milestone": "pokedex"
+    },
+    {
+      "name": "kanto-route-2-north-towards-pewter-city",
+      "milestone": "pokedex"
+    },
+    {
+      "name": "kanto-route-3-area",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "kanto-route-4-pokemon-center",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "mt-moon-1f",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "mt-moon-b1f",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "mt-moon-b2f",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "kanto-route-4-area",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "kanto-route-24-area",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "kanto-route-25-area",
+      "milestone": "boulder-badge"
+    }
+  ],
+  "machines": [
+    {
+      "name": "tm39",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "tm09",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "tm46",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "tm28",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "tm43",
+      "milestone": "boulder-badge"
+    },
+    {
+      "name": "tm03",
+      "milestone": "cascade-badge"
+    }
+  ]
+}

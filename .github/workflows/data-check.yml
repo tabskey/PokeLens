@@ -1,0 +1,37 @@
+name: Data check
+
+# Re-runs the importer against PokeAPI and fails if the committed package differs:
+# game data only changes through a PR, and the weekly run flags upstream PokeAPI changes.
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - "tools/**"
+      - "src/PokeBattle.Application/GameData/**"
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  data-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Run importer
+        run: dotnet run --project tools/PokeBattle.DataImporter -c Release
+
+      - name: Fail on diff
+        run: |
+          git add -N data/
+          git diff --exit-code --stat data/ \
+            || { echo "::error::data/gen3-frlg differs from a fresh import. Run the importer and commit the result."; exit 1; }

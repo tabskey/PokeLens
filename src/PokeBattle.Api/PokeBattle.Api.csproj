@@ -5,4 +5,8 @@
     <ProjectReference Include="..\PokeBattle.Infrastructure\PokeBattle.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\data\gen3-frlg\*.json" Link="data\gen3-frlg\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

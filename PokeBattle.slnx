@@ -8,6 +8,10 @@
   <Folder Name="/tests/">
     <Project Path="tests/PokeBattle.Application.Tests/PokeBattle.Application.Tests.csproj" />
     <Project Path="tests/PokeBattle.Core.Tests/PokeBattle.Core.Tests.csproj" />
+    <Project Path="tests/PokeBattle.DataImporter.Tests/PokeBattle.DataImporter.Tests.csproj" />
     <Project Path="tests/PokeBattle.IntegrationTests/PokeBattle.IntegrationTests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/PokeBattle.DataImporter/PokeBattle.DataImporter.csproj" />
   </Folder>
 </Solution>

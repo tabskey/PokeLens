@@ -159,7 +159,15 @@ A PokeAPI devolve dados modernos. Antes de chegar ao `Core`, todo dado passa pel
 - `damage_class` é ignorado (ex.: `bite` vem Physical; na Gen III Dark é especial); categoria vem da tabela tipo → categoria
 - `past_values` (golpes), `past_types` e `past_abilities` aplicados pelo version group/geração
 - hidden abilities descartadas
-- base stats alterados na Gen VI corrigidos (por `past_stats`, se a API expuser, ou tabela de overrides)
+- base stats alterados na Gen VI corrigidos por `past_stats` (a PokeAPI expõe; não há tabela de overrides)
+- cada entrada `past_*` vale **até** a geração/version group indicada; vale a primeira entrada a partir da Gen III (ou de `firered-leafgreen`), senão o valor atual
+- o pacote só traz golpes de dano com poder fixo; golpes de status e de poder variável (Return, Seismic Toss, Hidden Power...) ficam fora, assim como as entradas de learnset que apontam para eles
+
+### Pacote gerado e progressão curada
+
+`data/gen3-frlg/` tem quatro arquivos: `species.json` (tipos, base stats, habilidades, taxa de captura e learnset FRLG), `moves.json`, `encounters.json` (slots por área e versão, com o método da PokeAPI: `walk`, `surf`, `gift`, `npc-trade`...) e `progression.json` (cópia validada do curado). Presentes e trocas já vêm da PokeAPI como encontros (`gift`, `npc-trade`).
+
+`data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
 
 ## 9. BattleObjective
 
