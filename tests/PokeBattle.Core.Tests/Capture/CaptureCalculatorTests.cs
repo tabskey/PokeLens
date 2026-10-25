@@ -141,7 +141,7 @@ public class CaptureCalculatorTests
     }
 
     [Theory]
-    [InlineData(0, 30, 30)]
+    [InlineData(2, 30, 30)]
     [InlineData(256, 30, 30)]
     [InlineData(45, 0, 0)]
     [InlineData(45, 30, 0)]
