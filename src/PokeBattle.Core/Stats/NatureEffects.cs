@@ -36,20 +36,31 @@ public static class NatureEffects
         [Nature.Quirky] = (null, null),
     };
 
-    /// <summary>Returns the Nature modifier as an exact integer fraction (110/100, 90/100 or 100/100).</summary>
-    public static (int Numerator, int Denominator) GetMultiplier(Nature nature, StatType statType)
+    public static NatureEffect GetEffect(Nature nature, StatType statType)
     {
         var (increased, decreased) = Effects[nature];
         if (increased == statType)
         {
-            return (110, 100);
+            return NatureEffect.Raised;
         }
 
         if (decreased == statType)
         {
-            return (90, 100);
+            return NatureEffect.Lowered;
         }
 
-        return (100, 100);
+        return NatureEffect.Neutral;
     }
+
+    /// <summary>Returns the Nature modifier as an exact integer fraction (110/100, 90/100 or 100/100).</summary>
+    public static (int Numerator, int Denominator) GetMultiplier(Nature nature, StatType statType)
+        => GetMultiplier(GetEffect(nature, statType));
+
+    public static (int Numerator, int Denominator) GetMultiplier(NatureEffect effect) => effect switch
+    {
+        NatureEffect.Raised => (110, 100),
+        NatureEffect.Lowered => (90, 100),
+        NatureEffect.Neutral => (100, 100),
+        _ => throw new ArgumentOutOfRangeException(nameof(effect), effect, null),
+    };
 }

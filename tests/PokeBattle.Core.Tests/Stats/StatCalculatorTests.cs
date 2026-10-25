@@ -91,4 +91,24 @@ public class StatCalculatorTests
 
         Assert.Equal(expected, attack);
     }
+
+    // Same Case 3, with the Nature effect given directly (used when the exact Nature is unknown):
+    // Raised floor(217*110/100) = 238; Lowered floor(217*90/100) = 195; Neutral 217.
+    [Theory]
+    [InlineData(NatureEffect.Raised, 238)]
+    [InlineData(NatureEffect.Lowered, 195)]
+    [InlineData(NatureEffect.Neutral, 217)]
+    public void CalculateStat_WithNatureEffect_MatchesManualCalculation(NatureEffect effect, int expected)
+    {
+        var attack = StatCalculator.CalculateStat(
+            baseStat: 120, individualValue: 15, effortValue: 85, level: 77, natureEffect: effect);
+
+        Assert.Equal(expected, attack);
+    }
+
+    [Fact]
+    public void GetMultiplier_UnknownNatureEffect_Throws()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => NatureEffects.GetMultiplier((NatureEffect)99));
+    }
 }

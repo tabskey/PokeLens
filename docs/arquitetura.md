@@ -173,20 +173,11 @@ public enum BattleObjective { Defeat, Catch }
 ## 10. BattleScenario e RNG são conceitos separados
 
 ```csharp
-public sealed record BattleScenario(
-    StatProfile AttackerStats,
-    StatProfile DefenderStats,
-    NatureProfile AttackerNature,
-    NatureProfile DefenderNature,
-    IvProfile AttackerIv,
-    IvProfile DefenderIv,
-    EvProfile AttackerEv,
-    EvProfile DefenderEv,
-    LevelProfile AttackerLevel,
-    LevelProfile DefenderLevel,
-    CriticalHitPolicy CriticalHitPolicy
-);
+public sealed record SideProfile(NatureProfile Nature, IvProfile Iv, EvProfile Ev, LevelProfile Level);
+public sealed record BattleScenario(ScenarioKind Kind, SideProfile Candidate, SideProfile Opponent);
 ```
+
+O `ScenarioResolver` aplica o cenário a um `BattlerSpec` (base stats, tipos e cada atributo incerto com seu `DataSource`) e devolve um `ResolvedBattler` (nível, HP máximo e o `Combatant` usado pelo cálculo de dano). Só atributos `Estimated` recebem o valor do cenário. Os valores concretos ficam num único lugar, o `ScenarioCatalog`, e as decisões estão em `decisoes-cenarios.md`.
 
 Cenários da V1: **Pessimista, Neutro, Otimista**. O cenário descreve *quais condições estamos assumindo*; o RNG é avaliado por `DamageRollPolicy` (*como estamos avaliando a variância*). O cenário **não** carrega um valor arbitrário de RNG.
 
@@ -221,7 +212,7 @@ Crítico é tratado separadamente do RNG de dano, seguindo as regras da Gen III.
 ## 11. Stats
 
 - **Nature**: `+10%` (1.1), `0%` (1.0) ou `-10%` (0.9) em um stat. **HP não é afetado.**
-- **IVs**: `[0, 31]`, com perfis Low / Average / High / Maximum (valores concretos documentados para garantir determinismo).
+- **IVs**: `[0, 31]`, com perfis Low / Average / High / Maximum. Valores concretos em `decisoes-cenarios.md` §2 (em revisão; provisório 8 / 15 / 23 / 31).
 - **EVs**: perfis na V1; EVs reais do usuário no futuro. Contribuição: `floor(EV / 4)`.
 
 ```
@@ -451,7 +442,7 @@ Itens que o desenho original não detalha, ou que merecem conferência contra fo
 
 - **Física/especial por tipo do golpe.** Na Gen III a categoria é definida pelo tipo (tabela fixa), não por metadado do golpe na PokeAPI. Isso decide `A` e `D` no `DamageCalculator`.
 - **Ball Bonus em ponto fixo.** O jogo trabalha com inteiros; a ordem de truncamento na fórmula de `X` deve seguir a implementação original.
-- **Habilidade fora do `BattleScenario`.** O record atual não inclui habilidade, embora ela conste como fator considerado. Decidir se entra no cenário ou numa política própria.
+- **Habilidade fora do `BattleScenario` (decidido na Etapa 4).** É atributo da espécie e não varia entre cenários na V1 (`decisoes-cenarios.md` §6). **Pendente para a Etapa 5/7:** habilidades de imunidade (Levitate, Volt Absorb, Water Absorb, Flash Fire, Wonder Guard) precisam entrar no filtro de golpes; espécie com duas habilidades possíveis usa a pior para o candidato quando isso importar.
 - **Bônus de insígnia (FRLG).** Fora de link, os Pokémon do jogador ganham ×110/100 em Attack com a Boulder Badge (1ª), em Defense com a Soul Badge (5ª) e em Sp. Attack e Sp. Defense com a Volcano Badge (7ª), aplicado no início de `CalculateBaseDamage`. Não entra na Etapa 3; decidir na Etapa 6/7, quando a progressão existir, porque depende das insígnias do jogador.
 - **Golpes fora do `DamageCalculator`.** Dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) e poder variável ou multi-hit (Low Kick, Return, Frustration, Magnitude, Double Kick, Fury Attack...) não passam pela fórmula comum. Na V1 ficam de fora; o importador/caso de uso precisa filtrá-los ou tratá-los à parte.
 - **Exemplos numéricos são ilustrativos.** Com p = 19,752% por bola, 99% exige 21 bolas (não 22). Além disso, Pikachu a 7/35 HP com Ultra Ball e Sleep dá `X ≥ 255` (captura garantida), então esses números não vêm do mesmo cenário. Servem como ilustração de UI, **não** como fixtures de teste.

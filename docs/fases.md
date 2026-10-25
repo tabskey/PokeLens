@@ -40,9 +40,9 @@ Modificadores ativos nesta fase: Critical, STAB, Type, Random. Os demais da fór
 
 - `BattleScenario` com perfis de Nature, IV, EV e nível
 - Valores concretos de cada perfil por cenário (pessimista / neutro / otimista), documentados
-- Decisão sobre onde entra a habilidade (ver `arquitetura.md`, seção 23)
+- Habilidade: **fora do cenário** (decidido; ver `decisoes-cenarios.md` §6)
 
-Proposta inicial para os perfis, a confirmar:
+Perfis (decisões e opções em `decisoes-cenarios.md`):
 
 | Fator | Pessimista | Neutro | Otimista |
 |---|---|---|---|
@@ -51,7 +51,9 @@ Proposta inicial para os perfis, a confirmar:
 | IV do candidato | Low | Average | High |
 | IV do oponente | High | Average | Low |
 | EV | 0 (selvagens) | 0 | 0 |
-| Nível | extremo desfavorável da faixa da rota | média da faixa | extremo favorável da faixa |
+| Nível | extremo desfavorável da faixa da rota | média truncada `floor((min+max)/2)` | extremo favorável da faixa |
+
+IV: **em revisão**, provisório Low 8 / Average 15 / High 23 (alternativa 0 / 15 / 31). Nível, Nature (só no stat ofensivo), EV e habilidade decididos.
 
 Os dois lados variam em direções opostas dentro de cada cenário: o que é ruim para o candidato é bom para o oponente. Crítico e roll **não** fazem parte do cenário; vêm das políticas.
 
