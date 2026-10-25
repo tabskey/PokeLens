@@ -73,9 +73,10 @@ Os dois lados variam em direções opostas dentro de cada cenário: o que é rui
 
 ## Fase 4 — Captura (`Core`)
 
-- `CaptureCalculator` (X, Y, aritmética inteira com truncamento por etapa)
+- `CaptureCalculator` (X, Y, aritmética inteira com truncamento por etapa, na ordem do jogo: bola → HP → status)
 - `CaptureProbabilityCalculator` (`P_ball`, probabilidade acumulada, bolas para 50 / 90 / 95 / 99%)
-- Risco de KO para o objetivo Catch
+- `KoRiskCalculator`: chance de um golpe derrubar o alvo (rolls que derrubam / 16, ponderada pelo crítico)
+- Bolas da V1: Poké, Great, Ultra e Master. Net, Nest, Repeat, Timer, Luxury/Premier e Safari ficam pendentes até a Etapa 6 confirmar onde se obtêm
 
 **Pronto quando:** `FinalCaptureRate`, `ShakeThreshold` e `ChancePerBall` batem com valores derivados da implementação Gen III.
 
