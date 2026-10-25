@@ -65,7 +65,7 @@ Os dois lados variam em direções opostas dentro de cada cenário: o que é rui
 
 - `BattleSimulationService` (dano, faixa, HP restante, turnos para KO)
 - `BattleOutcomeEvaluator`
-- Decisão em aberto: critério de "vencer" (KO em quantos turnos vs. dano acumulado em turno único)
+- Critério de "vencer": **provisório** (turnos para KO de cada lado com o melhor golpe, faixas sem sobreposição, sem Speed; empate = Balanced), em revisão em `decisoes-simulacao.md` §2. Oponente usa sempre o melhor golpe; todo golpe acerta (decidido)
 
 **Pronto quando:** um par de Pokémon produz resultado coerente nos três cenários.
 
