@@ -285,30 +285,34 @@ flowchart TD
 
 Captura **não** é resultado secundário de batalha: dano e probabilidade de captura são problemas matemáticos diferentes.
 
+Ordem real, conferida em `Cmd_handleballthrow` (`pret/pokefirered`, `src/battle_script_commands.c`). Inteiros, truncando a cada passo:
+
 ```
-X = ((3M − 2H) × (C × B) / (3M)) × S        M = HP máx, H = HP atual, C = Capture Rate, B = Ball Bonus, S = Status
-Se X < 1 → X = 1.   Se X ≥ 255 → captura garantida.
+X = C × B / 10                              C = catch rate, B = bônus da bola em décimos (Poké 10, Great 15, Ultra 20)
+X = X × (3M − 2H) / (3M)                    M = HP máx, H = HP atual
+Sleep/Freeze: X = X × 2                     Paralysis/Poison/Burn (Toxic incluso): X = X × 15 / 10
+Se X > 254 → captura garantida (sem verificações)
+Master Ball → sempre captura (o jogo ignora a fórmula)
 
-Y = 1048560 / sqrt(sqrt(16711680 / X))      (aproximação: 65535 / sqrt(sqrt(255 / X)))
-
-P_ball = (Y / 65536)^4                      (4 verificações de breakout)
+Y = 1048560 / Sqrt(Sqrt(16711680 / X))      Sqrt = raiz inteira truncada (BIOS do GBA)
+P_ball = (Y / 65536)^4                      4 verificações: Random() de 16 bits < Y
 ```
 
-- Implementar com **inteiros e truncamento em cada etapa**, não como equação contínua
+- Implementar com **inteiros e truncamento em cada etapa**, na ordem acima (bola → HP → status). Uma fórmula de expressão única dá outro X em alguns casos (ver `validacao-captura.md`)
+- Não existe piso "X < 1 → 1" no jogo, e ele não faz falta: com catch rate ≥ 3 e bola ≥ ×1, X ≥ 1
 - Usar o algoritmo real, não a aproximação `X/255`
-- Ball Bonus: Poké Ball 1, Great Ball 1.5, Ultra Ball 2, Net Ball 3 (condicional)
-- Status (S): Sleep/Freeze 2; Paralysis/Poison/Burn 1.5; nenhum 1
+- Bolas da V1: Poké, Great, Ultra e Master. As condicionais ficam pendentes (§23)
 
 ### Probabilidade acumulada
 
 ```
 P(n bolas) = 1 − (1 − p)^n
-n(q) = ceil( ln(1 − q) / ln(1 − p) )     para q = 50%, 90%, 95%, 99%
+n(q) = menor n com P(n bolas) ≥ q        (parte de ceil(ln(1 − q) / ln(1 − p)) e corrige erro de ponto flutuante)
 ```
 
 ```csharp
 public sealed record CaptureResult(
-    int FinalCaptureRate, int ShakeThreshold, double ChancePerBall,
+    int FinalCaptureRate, int? ShakeThreshold, double ChancePerBall,   // ShakeThreshold nulo quando garantida
     int BallsFor50Percent, int BallsFor90Percent,
     int BallsFor95Percent, int BallsFor99Percent
 );
@@ -319,6 +323,8 @@ Pode futuramente incluir `CurrentHp`, `MaxHp`, `Status`, `Ball`, `CatchRate` par
 ### Risco de KO
 
 Para Catch, causar o máximo de dano não é desejável. Um candidato que deixa o alvo com 19–21 HP e arrisca KO no próximo golpe pode ser pior para captura do que outro que causa 35–40 de dano, mesmo sendo pior para derrotar.
+
+`KoRiskCalculator.ChanceToKo(hpAtual, dano)` dá a chance de um golpe derrubar o alvo: rolls que derrubam / 16, ponderada pela chance de crítico conforme a `CriticalHitPolicy`. Os 16 rolls são equiprováveis, então é **probabilidade calculada** e pode ser mostrada como número. Qual golpe usar e quantas vezes (estratégia de captura) fica para o ranking da Etapa 7.
 
 ## 16. Auditoria e persistência
 
@@ -444,6 +450,7 @@ Itens que o desenho original não detalha, ou que merecem conferência contra fo
 - **Ball Bonus em ponto fixo.** O jogo trabalha com inteiros; a ordem de truncamento na fórmula de `X` deve seguir a implementação original.
 - **Habilidade fora do `BattleScenario` (decidido na Etapa 4).** É atributo da espécie e não varia entre cenários na V1 (`decisoes-cenarios.md` §6). **Pendente para a Etapa 5/7:** habilidades de imunidade (Levitate, Volt Absorb, Water Absorb, Flash Fire, Wonder Guard) precisam entrar no filtro de golpes; espécie com duas habilidades possíveis usa a pior para o candidato quando isso importar.
 - **Bônus de insígnia (FRLG).** Fora de link, os Pokémon do jogador ganham ×110/100 em Attack com a Boulder Badge (1ª), em Defense com a Soul Badge (5ª) e em Sp. Attack e Sp. Defense com a Volcano Badge (7ª), aplicado no início de `CalculateBaseDamage`. Não entra na Etapa 3; decidir na Etapa 6/7, quando a progressão existir, porque depende das insígnias do jogador.
+- **Bolas fora da V1.** Existem no código do FRLG, mas falta confirmar onde se obtêm (Etapa 6, `progression.json`). Multiplicadores da fonte: Net ×3 se o alvo é Water ou Bug (senão ×1); Nest ×(40 − nível)/10 para nível < 40, mínimo ×1; Repeat ×3 se a espécie já foi capturada; Timer ×(turno + 10)/10, máximo ×4; Luxury e Premier ×1; Dive ×3.5 só debaixo d'água. Safari Ball usa catch rate próprio, ajustado por isca e pedra.
 - **Speed e precisão fora da simulação da V1.** Sem Speed, empates de turnos ficam Balanced (provisório; `decisoes-simulacao.md` §2). Todo golpe acerta (decidido, mas registrado para discussão: `decisoes-simulacao.md` §4). Ambos entram naturalmente na simulação turno a turno da V4.
 - **Golpes fora do `DamageCalculator`.** Dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) e poder variável ou multi-hit (Low Kick, Return, Frustration, Magnitude, Double Kick, Fury Attack...) não passam pela fórmula comum. Na V1 ficam de fora; o importador/caso de uso precisa filtrá-los ou tratá-los à parte.
 - **Exemplos numéricos são ilustrativos.** Com p = 19,752% por bola, 99% exige 21 bolas (não 22). Além disso, Pikachu a 7/35 HP com Ultra Ball e Sleep dá `X ≥ 255` (captura garantida), então esses números não vêm do mesmo cenário. Servem como ilustração de UI, **não** como fixtures de teste.
