@@ -238,14 +238,25 @@ Respeitar a ordem das operações e os truncamentos da Gen III.
 
 ## 13. DamageCalculator e fórmula de dano
 
-Entrada: Attacker, Defender, Move, BattleScenario, DamageRollPolicy, CriticalHitPolicy.
+Entrada: Attacker, Defender (stats já calculados, ver `Combatant`), Move, DamageRollPolicy, CriticalHitPolicy. O cenário monta os stats antes; o `DamageCalculator` não conhece o cenário.
+
+Ordem real das operações, conferida na decompilação do FireRed (`pret/pokefirered`: `CalculateBaseDamage` em `src/pokemon.c`; `Cmd_damagecalc`, `Cmd_typecalc` e `ApplyRandomDmgMultiplier` em `src/battle_script_commands.c`). Tudo em inteiros, truncando a cada passo:
 
 ```
-Damage = ((((2×L/5 + 2) × Power × A / D) / 50) + 2) × Modifiers
-Modifiers = Critical × STAB × Type × Weather × Burn × Random × ...
+1. Base     d = A × Power
+            d = d × (2×L/5 + 2)            (2×L/5 já truncado)
+            d = d / D
+            d = d / 50
+            se físico e d = 0 → d = 1       (só o ramo físico tem esse piso)
+            d = d + 2
+2. Crítico  d = d × 2                       (chance 1/16; golpe de crítico alto 1/8)
+3. STAB     d = d × 15 / 10
+4. Tipo     para cada entrada da tabela gTypeEffectiveness, NA ORDEM DA TABELA, que casa com um tipo do defensor:
+            d = d × mult / 10   (mult 20, 5 ou 0); se d = 0 e mult ≠ 0 → d = 1
+5. Random   se d ≠ 0: d = d × (85..100) / 100; se d = 0 → d = 1
 ```
 
-Onde `A` = Attack/Sp. Attack e `D` = Defense/Sp. Defense. Preservar a ordem real das operações e os truncamentos da Gen III. Quais modificadores estão ativos em cada fase está em `fases.md`.
+Onde `A` = Attack/Sp. Attack e `D` = Defense/Sp. Defense, escolhidos pela categoria do **tipo** do golpe. A ordem da tabela importa no passo 4: contra tipo duplo com 2x e 0.5x, o truncamento depende de qual entrada vem primeiro (ex.: Ice contra Fire/Flying aplica Flying antes de Fire). Quais modificadores estão ativos em cada fase está em `fases.md`.
 
 ## 14. Simulação, avaliação e ranking
 
@@ -441,4 +452,6 @@ Itens que o desenho original não detalha, ou que merecem conferência contra fo
 - **Física/especial por tipo do golpe.** Na Gen III a categoria é definida pelo tipo (tabela fixa), não por metadado do golpe na PokeAPI. Isso decide `A` e `D` no `DamageCalculator`.
 - **Ball Bonus em ponto fixo.** O jogo trabalha com inteiros; a ordem de truncamento na fórmula de `X` deve seguir a implementação original.
 - **Habilidade fora do `BattleScenario`.** O record atual não inclui habilidade, embora ela conste como fator considerado. Decidir se entra no cenário ou numa política própria.
+- **Bônus de insígnia (FRLG).** Fora de link, os Pokémon do jogador ganham ×110/100 em Attack com a Boulder Badge (1ª), em Defense com a Soul Badge (5ª) e em Sp. Attack e Sp. Defense com a Volcano Badge (7ª), aplicado no início de `CalculateBaseDamage`. Não entra na Etapa 3; decidir na Etapa 6/7, quando a progressão existir, porque depende das insígnias do jogador.
+- **Golpes fora do `DamageCalculator`.** Dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) e poder variável ou multi-hit (Low Kick, Return, Frustration, Magnitude, Double Kick, Fury Attack...) não passam pela fórmula comum. Na V1 ficam de fora; o importador/caso de uso precisa filtrá-los ou tratá-los à parte.
 - **Exemplos numéricos são ilustrativos.** Com p = 19,752% por bola, 99% exige 21 bolas (não 22). Além disso, Pikachu a 7/35 HP com Ultra Ball e Sleep dá `X ≥ 255` (captura garantida), então esses números não vêm do mesmo cenário. Servem como ilustração de UI, **não** como fixtures de teste.
