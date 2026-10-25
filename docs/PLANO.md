@@ -422,7 +422,7 @@ Não implemente Pokédex pessoal (é V2).
 
 ## 8. Pendências
 
-- [ ] Prefixo `PokeBattle.*` ou `PokeLens.*` (Etapa 1)
+- [x] Prefixo: **`PokeBattle.*`** (decidido na Etapa 1)
 - [ ] Valores dos perfis de IV e nível por cenário (Etapa 4)
 - [ ] Onde entra a habilidade (Etapa 4)
 - [ ] Critério de "vencer" (Etapa 5)

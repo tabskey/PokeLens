@@ -52,4 +52,51 @@ public class TypeEffectivenessServiceTests
         Assert.Equal(0.5, TypeEffectivenessService.GetMultiplier(PokemonType.Ghost, PokemonType.Steel));
         Assert.Equal(0.5, TypeEffectivenessService.GetMultiplier(PokemonType.Dark, PokemonType.Steel));
     }
+
+    // Both entries were missing from the first version of the chart (checked against gTypeEffectiveness).
+    [Theory]
+    [InlineData(PokemonType.Ghost, PokemonType.Psychic)]
+    [InlineData(PokemonType.Ice, PokemonType.Grass)]
+    public void GetMultiplier_EntriesPresentInGameChart_AreSuperEffective(PokemonType attacker, PokemonType defender)
+    {
+        Assert.Equal(2, TypeEffectivenessService.GetMultiplier(attacker, defender));
+    }
+
+    // Fire vs Bug/Rock with damage 15. The game chart lists Fire->Bug (2x) before Fire->Rock (0.5x):
+    // 15*20/10 = 30; 30*5/10 = 15. The opposite order would give 15*5/10 = 7; 7*20/10 = 14.
+    // The defender's type order (Bug/Rock or Rock/Bug) does not change the chart order.
+    [Theory]
+    [InlineData(PokemonType.Bug, PokemonType.Rock)]
+    [InlineData(PokemonType.Rock, PokemonType.Bug)]
+    public void ApplyTo_MixedEffectiveness_FollowsGameChartOrder(PokemonType type1, PokemonType type2)
+    {
+        Assert.Equal(15, TypeEffectivenessService.ApplyTo(15, PokemonType.Fire, type1, type2));
+    }
+
+    // Ice vs Fire/Flying with damage 19: Ice->Flying (2x) comes before Ice->Fire (0.5x) in the chart,
+    // so 19*20/10 = 38; 38*5/10 = 19 (not 19*5/10 = 9; 9*20/10 = 18).
+    [Fact]
+    public void ApplyTo_IceAgainstFireFlying_AppliesFlyingFirst()
+    {
+        Assert.Equal(19, TypeEffectivenessService.ApplyTo(19, PokemonType.Ice, PokemonType.Fire, PokemonType.Flying));
+    }
+
+    // A monotype stored as type1 == type2 must only be applied once (the game skips type2 in that case).
+    [Fact]
+    public void ApplyTo_SameTypeTwice_AppliesOnce()
+    {
+        Assert.Equal(20, TypeEffectivenessService.ApplyTo(10, PokemonType.Water, PokemonType.Fire, PokemonType.Fire));
+    }
+
+    [Fact]
+    public void ApplyTo_Resisted_NeverDropsBelowOne()
+    {
+        Assert.Equal(1, TypeEffectivenessService.ApplyTo(1, PokemonType.Fire, PokemonType.Water, null));
+    }
+
+    [Fact]
+    public void ApplyTo_Immune_ReturnsZero()
+    {
+        Assert.Equal(0, TypeEffectivenessService.ApplyTo(50, PokemonType.Normal, PokemonType.Ghost, null));
+    }
 }

@@ -24,6 +24,12 @@ Ordem pensada para validar o núcleo de cálculo primeiro: se os números do `Co
 - Tabela tipo → categoria física/especial da Gen III
 - `DamageCalculator` com `DamageRollPolicy` e `CriticalHitPolicy`
 
+`CriticalHitPolicy`:
+- `Never`: ignora crítico.
+- `Guaranteed`: todo golpe é crítico.
+- `Normal`: o crítico é possível; a faixa vai do menor roll sem crítico ao maior roll com crítico.
+- `EvaluateProbability`: faixas sem e com crítico separadas, com a chance de crítico (1/16, ou 1/8 em golpes de crítico alto); a média é ponderada por essa chance.
+
 Modificadores ativos nesta fase: Critical, STAB, Type, Random. Os demais da fórmula (Burn, Screen, Weather, Flash Fire, Stockpile, DoubleDmg, Charge, Helping Hand, Targets) ficam **desligados** e entram só se houver necessidade real.
 
 **Pronto quando:** dano mínimo, máximo e faixa completa batem com valores calculados à mão para pares conhecidos.
