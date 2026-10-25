@@ -348,6 +348,8 @@ Route 1 em firered traz níveis 2 a 5.
 
 > O `progression.json` é o maior trabalho manual. Comece até Cerulean, valide o fluxo de ponta a ponta na Etapa 7, depois complete.
 
+> Com o pacote de dados pronto, entra o **teste de confronto em massa** do dano contra o `@smogon/calc` (`docs/validacao-dano.md` §7). Pode ser um PR próprio logo depois desta etapa.
+
 ---
 
 ### Etapa 7 — Caso de uso, ranking e API (`X012Predict`) · M
@@ -427,6 +429,7 @@ Não implemente Pokédex pessoal (é V2).
 - [ ] Onde entra a habilidade (Etapa 4)
 - [ ] Critério de "vencer" (Etapa 5)
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
+- [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
 - [ ] Destino de deploy: nenhum por ora, VPS com compose, ou um serviço gerenciado de containers (define o job `deploy`)
 
 ## 9. Uso no Claude Code
