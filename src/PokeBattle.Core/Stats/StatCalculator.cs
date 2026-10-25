@@ -14,10 +14,17 @@ public static class StatCalculator
     }
 
     public static int CalculateStat(int baseStat, int individualValue, int effortValue, int level, StatType statType, Nature nature)
+        => CalculateStat(baseStat, individualValue, effortValue, level, NatureEffects.GetEffect(nature, statType));
+
+    /// <summary>
+    /// Same formula with the Nature effect given directly, for when the exact Nature is unknown but
+    /// its effect on this stat is assumed (e.g. a battle scenario for a wild Pokémon).
+    /// </summary>
+    public static int CalculateStat(int baseStat, int individualValue, int effortValue, int level, NatureEffect natureEffect)
     {
         var levelScaled = ScaleByLevel(baseStat, individualValue, effortValue, level);
         var preNature = levelScaled + 5;
-        var (numerator, denominator) = NatureEffects.GetMultiplier(nature, statType);
+        var (numerator, denominator) = NatureEffects.GetMultiplier(natureEffect);
         return preNature * numerator / denominator;
     }
 

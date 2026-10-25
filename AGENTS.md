@@ -35,7 +35,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
   /PokeBattle.Application.Tests
   /PokeBattle.IntegrationTests
 /frontend                     React + Vite
-/docs                         arquitetura.md, fases.md, roadmap.md, PLANO.md, validacao-dano.md
+/docs                         arquitetura.md, fases.md, roadmap.md, PLANO.md, validacao-dano.md, decisoes-cenarios.md
 ```
 
 ## Regras de domínio (não alterar sem confirmação explícita do usuário)

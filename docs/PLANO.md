@@ -425,8 +425,8 @@ Não implemente Pokédex pessoal (é V2).
 ## 8. Pendências
 
 - [x] Prefixo: **`PokeBattle.*`** (decidido na Etapa 1)
-- [ ] Valores dos perfis de IV e nível por cenário (Etapa 4)
-- [ ] Onde entra a habilidade (Etapa 4)
+- [ ] Valores dos perfis de IV (Etapa 4): em revisão com jogadores, provisório 8 / 15 / 23 (`docs/decisoes-cenarios.md` §2). Nível decidido: média truncada
+- [x] Onde entra a habilidade: **fora do cenário** (`docs/decisoes-cenarios.md` §6)
 - [ ] Critério de "vencer" (Etapa 5)
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
 - [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
