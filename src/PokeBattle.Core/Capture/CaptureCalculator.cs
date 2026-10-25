@@ -14,7 +14,8 @@ public static class CaptureCalculator
 
     public static int FinalCaptureRate(int catchRate, int maxHp, int currentHp, PokeBall ball, CaptureStatus status)
     {
-        ArgumentOutOfRangeException.ThrowIfLessThan(catchRate, 1);
+        // 3 is the lowest Gen III catch rate; below it X can truncate to 0 and Y is undefined.
+        ArgumentOutOfRangeException.ThrowIfLessThan(catchRate, 3);
         ArgumentOutOfRangeException.ThrowIfGreaterThan(catchRate, 255);
         ArgumentOutOfRangeException.ThrowIfLessThan(maxHp, 1);
         ArgumentOutOfRangeException.ThrowIfLessThan(currentHp, 1);

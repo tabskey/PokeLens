@@ -385,7 +385,7 @@ Textos em português.
 
 Docker: Dockerfile multi-stage (node -> nginx) servindo a SPA com proxy /api para a Api; serviço web no
 docker-compose. Esteira: job frontend (lint, typecheck, testes, build) e build da imagem web; push no GHCR
-no release.yml. Dependabot para npm.
+no job publish-image do ci.yml. Dependabot para npm.
 ```
 
 **Aceite:** `docker compose up` sobe API + web e o fluxo funciona pelo navegador; job frontend verde.
