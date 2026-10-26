@@ -120,6 +120,7 @@ public sealed class PredictBattleOutcomeUseCase
 
         return new PredictBattleOutcomeResponse(
             request.Target,
+            targetData.Types,
             targetLevels.Min,
             targetLevels.Max,
             request.Objective,
@@ -159,6 +160,7 @@ public sealed class PredictBattleOutcomeUseCase
     private CandidateResult ToResult(CandidateEvaluation evaluation, EncounterData encounter)
         => new(
             encounter.Pokemon,
+            species[encounter.Pokemon].Types,
             encounter.Area,
             encounter.Method,
             encounter.MinLevel,

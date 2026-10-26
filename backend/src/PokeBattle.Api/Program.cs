@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 
 using PokeBattle.Api.Endpoints;
 using PokeBattle.Application.Battles.PredictBattleOutcome;
+using PokeBattle.Application.GameData;
 using PokeBattle.Infrastructure.GameData;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.Services.AddSingleton(GamePackageLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "gen3-frlg")));
 builder.Services.AddSingleton<PredictBattleOutcomeUseCase>();
+builder.Services.AddSingleton<GameOptionsQuery>();
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();

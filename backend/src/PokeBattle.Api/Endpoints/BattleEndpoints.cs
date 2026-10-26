@@ -1,4 +1,5 @@
 using PokeBattle.Application.Battles.PredictBattleOutcome;
+using PokeBattle.Application.GameData;
 
 namespace PokeBattle.Api.Endpoints;
 
@@ -13,6 +14,11 @@ public static class BattleEndpoints
                 ? Results.ValidationProblem(errors)
                 : Results.Ok(useCase.Execute(request));
         });
+
+        app.MapGet("/api/v1/game-data/options", (string version, GameOptionsQuery query) =>
+            PredictBattleOutcomeUseCase.Versions.Contains(version)
+                ? Results.Ok(query.Execute(version))
+                : Results.ValidationProblem(new Dictionary<string, string[]> { ["version"] = ["Versão deve ser 'firered' ou 'leafgreen'."] }));
         return app;
     }
 }

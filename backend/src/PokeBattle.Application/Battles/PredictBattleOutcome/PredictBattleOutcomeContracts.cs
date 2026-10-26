@@ -1,5 +1,6 @@
 using PokeBattle.Core.Battles;
 using PokeBattle.Core.Capture;
+using PokeBattle.Core.Types;
 
 namespace PokeBattle.Application.Battles.PredictBattleOutcome;
 
@@ -18,6 +19,7 @@ public sealed record PredictBattleOutcomeRequest(
 
 public sealed record PredictBattleOutcomeResponse(
     string Target,
+    IReadOnlyList<PokemonType> TargetTypes,
     int TargetMinLevel,
     int TargetMaxLevel,
     BattleObjective Objective,
@@ -27,6 +29,7 @@ public sealed record PredictBattleOutcomeResponse(
 /// <summary>A recommended Pokémon and where the player gets it.</summary>
 public sealed record CandidateResult(
     string Pokemon,
+    IReadOnlyList<PokemonType> Types,
     string Area,
     string Method,
     int MinLevel,

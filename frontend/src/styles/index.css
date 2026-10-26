@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Tokens from docs/pokebattle-mockup.html */
+@theme {
+  --color-bg: #f4f1ea;
+  --color-panel: #ffffff;
+  --color-ink: #1f2328;
+  --color-muted: #6b6f76;
+  --color-line: #e2ddd2;
+  --color-accent: #c0392b;
+  --color-bad: #d9534f;
+  --color-neutral: #e0a526;
+  --color-good: #2e9e5b;
+  --color-firered: #e8613c;
+  --color-leafgreen: #4caf50;
+  --color-gold: #f5c542;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-pixel: "Press Start 2P", monospace;
+}
+
+body {
+  @apply bg-bg text-ink font-sans text-sm;
+}

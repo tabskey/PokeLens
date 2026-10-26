@@ -55,11 +55,23 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 9. **Ordem das operações e truncamentos** das fórmulas de stat e dano seguem a Gen III; não "simplificar" arredondamentos.
 10. Natureza, IV e habilidade só são eixo de incerteza para Pokémon selvagens/estimados. Dados `Known` ou `UserProvided` não variam entre cenários.
 
+## Frontend (`frontend/`)
+
+- React + Vite + TypeScript estrito, Tailwind v4 (tokens em `src/styles/index.css`), Vitest + Testing Library.
+- **MVVM:**
+  - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e rótulos em português (`labels.ts`);
+  - `src/viewmodels/`: hooks `useXViewModel`, com estado, validação e formatação para exibição, sem JSX;
+  - `src/components/`: as Views.
+- **Atomic Design** em `src/components/`: `atoms/`, `molecules/`, `organisms/`, `templates/`, `pages/`.
+- **Fronteiras:** as Views não importam `models/api` nem lógica de ViewModel, só os tipos dele. `pages/` é o único lugar que liga um ViewModel a uma View. O ESLint garante isso.
+- **Exibição** (regra 6): o rótulo (Favorável, Equilibrado, Desfavorável) é o destaque, e os números vêm como detalhe. Nenhum percentual pode parecer chance de vitória. Na captura, a chance por bola e as bolas para 50/90/95/99% ficam separadas.
+
 ## Testes
 
 - `Core` exige testes unitários (xUnit) com RNG controlado pela política: dano `Minimum` e `FullRange`, cada fator de cenário isolado, captura (`FinalCaptureRate`, `ShakeThreshold`, `ChancePerBall`), bolas para 50/90/95/99%.
 - Testes de progressão (Pokémon só disponível em rota futura não entra) e de disponibilidade de golpes.
 - Valores esperados devem vir de cálculo manual ou de fonte da Gen III, **não** dos exemplos ilustrativos da documentação.
+- Frontend: ViewModels testados sem tela (fetch mockado) e componentes com Testing Library, verificando as regras de exibição acima.
 
 ## Docker e esteira
 

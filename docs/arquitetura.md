@@ -401,6 +401,19 @@ tests/
 └── PokeBattle.IntegrationTests/
 ```
 
+### Frontend (`frontend/`)
+
+```
+src/
+├── models/        battle.ts (contrato da API), api.ts (fetch), labels.ts (pt-BR)
+├── viewmodels/    usePredictionFormViewModel, usePredictionResultViewModel
+└── components/    atoms/ → molecules/ → organisms/ → templates/ → pages/
+```
+
+- **Organização:** MVVM com Atomic Design. As Views só recebem dados prontos do ViewModel; `pages/` liga os dois.
+- **Opções do formulário:** vêm de `GET /api/v1/game-data/options?version=`, que traz os marcos e as áreas com os Pokémon de cada uma. O formulário só oferece as áreas liberadas no marco escolhido, o mesmo filtro que o backend aplica aos candidatos.
+- **Containers:** em produção, o nginx (imagem não-root) serve a SPA e faz proxy de `/api` para o serviço `api`. Em dev, o Vite faz o proxy para `localhost:5000`.
+
 ## 20. Fluxo completo
 
 ```mermaid

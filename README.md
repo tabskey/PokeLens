@@ -14,7 +14,7 @@ backend/src/PokeBattle.Api             Endpoints HTTP
 backend/tests/                         Core, Application, DataImporter e Integration tests
 backend/tools/PokeBattle.DataImporter  Gera o pacote de dados a partir da PokeAPI
 backend/data/                          Progressão curada e pacote Gen III gerado
-frontend/                              React + Vite (Etapa 8)
+frontend/                              React + Vite + Tailwind (MVVM, Atomic Design)
 ```
 
 ## Comandos
@@ -25,7 +25,12 @@ dotnet build PokeBattle.slnx
 dotnet test PokeBattle.slnx
 dotnet run --project src/PokeBattle.Api
 
-# na raiz
+cd frontend
+npm install
+npm run dev        # http://localhost:5173, com proxy de /api para o backend em :5000
+npm test
+
+# na raiz: API em :8080 e web em :8081
 docker compose up --build
 ```
 

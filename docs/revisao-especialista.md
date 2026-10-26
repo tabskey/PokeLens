@@ -410,6 +410,18 @@ Exemplo (Charmander L10 Ember → Bulbasaur L10): sem crítico **17–20**, com 
 
 "79–81 de 100 HP" significa que o golpe tira 79, 80 ou 81. Mostramos também como **79%–81% do HP**. Isso **não** é "80% de chance de vencer". A chance de vencer depende da batalha inteira (quem ataca primeiro, erros, críticos, troca de golpes). Na V1, o app não mostra chance de vitória.
 
+### 7.3.1 Como a tela mostra cada número (Etapa 8)
+
+Cada candidato aparece num card com os **três cenários lado a lado**. Em cada cenário:
+- **em destaque:** o resultado (**Favorável**, **Equilibrado** ou **Desfavorável**) e o rótulo de KO (ex.: "2 golpes", "KO possível");
+- **como detalhe:** o golpe usado, os golpes para KO ("3–4 golpes para KO"), o dano ("8–10 de 25 HP") e o HP que sobra, para você e para o oponente;
+- **nenhum percentual** no objetivo derrotar. Rodapé fixo: "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed".
+- **Capturar:** o golpe de preparo, o risco de KO (%), o HP do alvo e uma tabela com a **chance por bola** numa coluna e **quantas bolas para 50/90/95/99%** em outras.
+
+O jogador escolhe a ordem com três botões: **Mais seguro** (cenário pessimista), **Equilibrado** (neutro) e **Maior potencial** (otimista).
+
+✅ / ❌ / 💬 — Ver perguntas 14 e 15 na seção 10.
+
 ### 7.4 Projeção para o futuro (V4): chance de vitória por simulação
 
 Quando a simulação passar a ser **turno a turno** (com Speed, precisão, crítico e roll sorteados a cada golpe), listar todas as sequências possíveis fica inviável. O plano é o **método de Monte Carlo**: simular a mesma luta milhares de vezes, sorteando tudo, e contar quantas o candidato vence.
@@ -550,8 +562,12 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 12. O candidato deveria contar com golpes que aprende **subindo de nível** depois de capturado, ou só os que já sabe ao ser pego (como hoje)?
 13. Os três iniciais deveriam aparecer juntos como candidatos, ou o jogador informa qual escolheu?
 
+**Tela (7.3.1)**
+14. Os nomes **Mais seguro / Equilibrado / Maior potencial** deixam claro o que cada ordem faz? E **Pessimista / Neutro / Otimista** nos cards?
+15. O rótulo "Equilibrado" aparece em dois lugares com sentidos diferentes: como **resultado** de um cenário (faixas de turnos que se cruzam) e como **ordem** das sugestões (cenário neutro). Isso confunde? Sugestão nossa: renomear a ordem para "Cenário médio".
+
 **Geral**
-14. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
+16. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
 
 ---
 
@@ -573,7 +589,8 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 - se o cenário de azar deve ser "azar comum" ou "o pior azar possível";
 - se a Speed deve desempatar lutas;
 - para captura, se vale mais gastar menos bolas ou arriscar menos derrubar o alvo (hoje: arriscar menos vem primeiro);
-- se o candidato conta só com os golpes que já sabe ao ser pego, e se os três iniciais aparecem juntos.
+- se o candidato conta só com os golpes que já sabe ao ser pego, e se os três iniciais aparecem juntos;
+- se os nomes na tela ("Mais seguro", "Equilibrado", "Maior potencial") estão claros.
 
 **Já decidido:** você escolhe qual dos três cenários (azar, normal, sorte) ordena a lista.
 

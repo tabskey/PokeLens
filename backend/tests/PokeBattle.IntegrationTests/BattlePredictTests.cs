@@ -58,6 +58,28 @@ public class BattlePredictTests(WebApplicationFactory<Program> factory) : IClass
     }
 
     [Fact]
+    public async Task Options_FireRed_ListsCuratedAreasWithTheirPokemon()
+    {
+        var response = await factory.CreateClient().GetAsync("/api/v1/game-data/options?version=firered");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+        Assert.Equal("start", body.RootElement.GetProperty("milestones")[0].GetString());
+        var route1 = body.RootElement.GetProperty("areas").EnumerateArray().Single(a => a.GetProperty("area").GetString() == "kanto-route-1-area");
+        Assert.Equal("pokedex", route1.GetProperty("milestone").GetString());
+        Assert.Equal(["pidgey", "rattata"], route1.GetProperty("pokemon").EnumerateArray().Select(p => p.GetString()));
+    }
+
+    [Fact]
+    public async Task Options_UnknownVersion_ReturnsValidationProblemDetails()
+    {
+        var response = await factory.CreateClient().GetAsync("/api/v1/game-data/options?version=ruby");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal("application/problem+json", response.Content.Headers.ContentType?.MediaType);
+    }
+
+    [Fact]
     public async Task Predict_UnknownEnumValue_ReturnsBadRequest()
     {
         var response = await factory.CreateClient().PostAsJsonAsync(Path, new
