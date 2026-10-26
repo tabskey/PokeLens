@@ -1,14 +1,9 @@
 **/bin/
 **/obj/
 **/.vs/
-.git/
-.github/
-.claude/
-docs/
 tests/
 tools/
 data/curated/
-frontend/
 *.md
 *.sln
 *.slnx

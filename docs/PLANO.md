@@ -372,7 +372,9 @@ exclusivo de leafgreen não aparece em firered.
 
 ---
 
-### Etapa 8 — Frontend (`X013Frontend`) · G
+> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 8 = `X015Frontend`.
+
+### Etapa 8 — Frontend (`X015Frontend`) · G
 
 **Prompt:**
 
