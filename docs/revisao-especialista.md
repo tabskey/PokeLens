@@ -363,6 +363,19 @@ Na V1, o critério "tem golpe de status disponível" fica de fora: o pacote de d
 
 💬 Ver perguntas 7 e 8 na seção 10.
 
+### 6.8 Quem entra como candidato e com quais golpes (Etapa 7)
+
+Escolhas nossas ao montar a lista de candidatos:
+
+- **Só entra quem o jogador já consegue pegar:** áreas e métodos de encontro liberados no ponto de progressão informado, e só da versão escolhida (um exclusivo de LeafGreen nunca aparece em FireRed).
+- **Um encontro por espécie:** se a espécie aparece em várias áreas liberadas, usamos a de **nível mais alto** (o exemplar mais forte que dá para pegar).
+- **Golpes do candidato:** os que ele aprende por nível até o **menor nível** do encontro, mais as **TMs/HMs que o jogador já obteve**. Golpes de ovo e de tutor ficam de fora.
+- **Golpes do alvo selvagem:** todos os que ele aprende por nível até o **maior nível** do encontro (conservador). No jogo, um selvagem só tem os **4 últimos** golpes aprendidos; ainda não aplicamos essa regra porque o pacote não traz golpes de status, que ocupam esses espaços.
+- **Condições de encontro ignoradas:** os três iniciais aparecem como candidatos (no jogo você escolhe só um), assim como Pokémon de troca ou que dependem de evento da história. A progressão curada é que decide.
+- **Golpes de vários acertos removidos** (Double Kick, Fury Attack, Bullet Seed, Pin Missile, Beat Up…): a fórmula da V1 só calcula um acerto, e tratá-los como um acerto escondia o risco de KO na captura. Eles simplesmente não aparecem como opção.
+
+✅ / ❌ / 💬 — Ver perguntas 11 a 13 na seção 10.
+
 ---
 
 ## 7. Projeções de dano: o que a tela mostra
@@ -487,7 +500,8 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 
 - Bolas: **só Poké, Great, Ultra e Master.** Net, Nest, Repeat, Timer, Luxury, Premier e Dive ficam pendentes até confirmarmos onde se obtêm no FRLG (os multiplicadores já foram tirados do código do jogo).
 - **Safari Zone fora:** lá o catch rate muda com isca e pedra, é outra mecânica.
-- Golpes como False Swipe ainda não são tratados de forma especial.
+- Golpes como False Swipe ainda não são tratados de forma especial: entram como golpe comum, com risco de KO calculado pela fórmula normal.
+- **Estratégia de captura da V1** (8.4): um golpe, o mais forte entre os que nunca derrubam o alvo com HP cheio; captura no HP do pior roll, sem status. Sem golpes de status, porque o pacote de dados ainda não os traz.
 
 ---
 
@@ -501,8 +515,9 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 | Itens segurados | V1 é sobre selvagens recém-capturados |
 | Burn reduzindo Attack, Reflect/Light Screen, clima, Flash Fire | Fora do escopo da V1 |
 | Mudança de stat no meio da luta (Growl, Swords Dance, Leer…) | Não há simulação turno a turno na V1 |
-| Golpes de dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) | Não usam a fórmula comum; serão filtrados ou tratados à parte |
-| Golpes de poder variável ou múltiplos acertos (Low Kick, Return, Double Kick, Fury Attack…) | Idem |
+| Golpes de dano fixo (Seismic Toss, Night Shade, Dragon Rage, Sonic Boom, Super Fang) | Não usam a fórmula comum; removidos do pacote de dados |
+| Golpes de poder variável ou múltiplos acertos (Low Kick, Return, Double Kick, Fury Attack…) | Idem; removidos do pacote de dados (6.8) |
+| Golpes de status (Sleep Powder, Thunder Wave, Growl…) | Ainda não importados; por isso a captura não considera status |
 | Bônus de insígnia do FRLG (+10% em Attack com a Boulder, Defense com a Soul, Sp. Atk/Sp. Def com a Volcano) | Depende das insígnias do jogador; decidir quando a progressão estiver pronta |
 | Synchronize (50% de chance de o selvagem vir com a mesma Nature) | V2 ou depois |
 | Treinadores e líderes de ginásio | V3 |
@@ -523,15 +538,20 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 4. Num empate de turnos, você prefere ver **"Equilibrado"** (honesto sobre a incerteza) ou o app **decidir pela Speed**?
 5. Se a Speed entrar, a Speed do selvagem também deve variar por cenário (IV e Nature), mesmo que isso inverta o desempate entre cenários?
 6. Vale incluir prioridade (Quick Attack, Extreme Speed) já na V1?
-7. Qual cenário deveria ordenar o Top 5: pessimista, neutro, ou o jogador escolhe?
+7. ~~Qual cenário deveria ordenar o Top 5?~~ **Decidido:** o jogador escolhe (6.7).
 8. Na escolha do melhor golpe, a precisão deveria desempatar antes do dano máximo? Algum outro critério (PP, efeito secundário, recuo) faz falta?
 
 **Captura**
-9. Para o objetivo capturar, o que é mais importante no ranking: **menos bolas** ou **menos risco de derrubar o alvo**? Um Pokémon com golpe de Sleep (Sleep Powder, Hypnosis, Sing) deveria passar na frente de um que só bate?
+9. Para o objetivo capturar, o que é mais importante no ranking: **menos bolas** ou **menos risco de derrubar o alvo**? Hoje o app põe na frente quem **nunca derruba** o alvo e só depois olha a chance por bola. Um Pokémon com golpe de Sleep (Sleep Powder, Hypnosis, Sing) deveria passar na frente de um que só bate?
 10. Faz falta tratar False Swipe já na V1 (golpe que nunca derruba, sempre deixa 1 HP)?
 
+**Candidatos e golpes (6.8)**
+11. Faz sentido usar, para cada espécie, o encontro de **nível mais alto** já liberado? Ou o jogador costuma usar o que pegou primeiro?
+12. O candidato deveria contar com golpes que aprende **subindo de nível** depois de capturado, ou só os que já sabe ao ser pego (como hoje)?
+13. Os três iniciais deveriam aparecer juntos como candidatos, ou o jogador informa qual escolheu?
+
 **Geral**
-11. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
+14. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
 
 ---
 
@@ -552,7 +572,9 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 **O que ainda falta decidir com você:**
 - se o cenário de azar deve ser "azar comum" ou "o pior azar possível";
 - se a Speed deve desempatar lutas;
-- qual dos três cenários ordena a lista de recomendações;
-- para captura, se vale mais gastar menos bolas ou arriscar menos derrubar o alvo.
+- para captura, se vale mais gastar menos bolas ou arriscar menos derrubar o alvo (hoje: arriscar menos vem primeiro);
+- se o candidato conta só com os golpes que já sabe ao ser pego, e se os três iniciais aparecem juntos.
+
+**Já decidido:** você escolhe qual dos três cenários (azar, normal, sorte) ordena a lista.
 
 **O que fica para depois:** habilidades, itens, golpes que erram, Speed, troca de Pokémon, treinadores e ginásios. A ideia é começar com o que dá para calcular com certeza e ir adicionando.

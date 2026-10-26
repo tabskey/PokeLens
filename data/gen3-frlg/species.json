@@ -40,11 +40,6 @@
         "level": 46
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -152,11 +147,6 @@
         "level": 56
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -252,11 +242,6 @@
         "move": "solar-beam",
         "method": "LevelUp",
         "level": 65
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -446,11 +431,6 @@
       },
       {
         "move": "ancient-power",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "beat-up",
         "method": "Egg",
         "level": 0
       },
@@ -1519,21 +1499,6 @@
     "captureRate": 45,
     "learnset": [
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 10
-      },
-      {
-        "move": "twineedle",
-        "method": "LevelUp",
-        "level": 20
-      },
-      {
         "move": "rage",
         "method": "LevelUp",
         "level": 25
@@ -1542,11 +1507,6 @@
         "move": "pursuit",
         "method": "LevelUp",
         "level": 30
-      },
-      {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 35
       },
       {
         "move": "aerial-ace",
@@ -1997,11 +1957,6 @@
         "level": 0
       },
       {
-        "move": "fury-swipes",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "uproar",
         "method": "Egg",
         "level": 0
@@ -2176,11 +2131,6 @@
         "level": 1
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 13
-      },
-      {
         "move": "pursuit",
         "method": "LevelUp",
         "level": 19
@@ -2283,19 +2233,9 @@
     "captureRate": 90,
     "learnset": [
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "peck",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 13
       },
       {
         "move": "pursuit",
@@ -2432,11 +2372,6 @@
       {
         "move": "thief",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "beat-up",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -2870,11 +2805,6 @@
         "level": 30
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 37
-      },
-      {
         "move": "sand-tomb",
         "method": "LevelUp",
         "level": 45
@@ -3021,11 +2951,6 @@
         "level": 33
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 42
-      },
-      {
         "move": "sand-tomb",
         "method": "LevelUp",
         "level": 52
@@ -3142,11 +3067,6 @@
         "level": 1
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 12
-      },
-      {
         "move": "poison-sting",
         "method": "LevelUp",
         "level": 17
@@ -3155,11 +3075,6 @@
         "move": "bite",
         "method": "LevelUp",
         "level": 20
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 30
       },
       {
         "move": "crunch",
@@ -3247,11 +3162,6 @@
         "level": 0
       },
       {
-        "move": "beat-up",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "take-down",
         "method": "Egg",
         "level": 0
@@ -3293,11 +3203,6 @@
         "level": 1
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 12
-      },
-      {
         "move": "poison-sting",
         "method": "LevelUp",
         "level": 18
@@ -3306,11 +3211,6 @@
         "move": "bite",
         "method": "LevelUp",
         "level": 22
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 34
       },
       {
         "move": "crunch",
@@ -3429,11 +3329,6 @@
     ],
     "captureRate": 45,
     "learnset": [
-      {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "poison-sting",
         "method": "LevelUp",
@@ -3631,11 +3526,6 @@
         "level": 1
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 12
-      },
-      {
         "move": "poison-sting",
         "method": "LevelUp",
         "level": 17
@@ -3644,11 +3534,6 @@
         "move": "horn-attack",
         "method": "LevelUp",
         "level": 20
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 30
       },
       {
         "move": "blizzard",
@@ -3726,11 +3611,6 @@
         "level": 0
       },
       {
-        "move": "beat-up",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "confusion",
         "method": "Egg",
         "level": 0
@@ -3777,11 +3657,6 @@
         "level": 1
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 12
-      },
-      {
         "move": "poison-sting",
         "method": "LevelUp",
         "level": 18
@@ -3790,11 +3665,6 @@
         "move": "horn-attack",
         "method": "LevelUp",
         "level": 22
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 34
       },
       {
         "move": "blizzard",
@@ -3903,11 +3773,6 @@
     ],
     "captureRate": 45,
     "learnset": [
-      {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "peck",
         "method": "LevelUp",
@@ -4100,11 +3965,6 @@
         "level": 1
       },
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 13
-      },
-      {
         "move": "meteor-mash",
         "method": "LevelUp",
         "level": 45
@@ -4245,11 +4105,6 @@
     ],
     "captureRate": 25,
     "learnset": [
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "blizzard",
         "method": "Machine",
@@ -4584,11 +4439,6 @@
         "level": 19
       },
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 24
-      },
-      {
         "move": "body-slam",
         "method": "LevelUp",
         "level": 34
@@ -4734,11 +4584,6 @@
     ],
     "captureRate": 50,
     "learnset": [
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "blizzard",
         "method": "Machine",
@@ -5116,11 +4961,6 @@
         "level": 39
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -5198,11 +5038,6 @@
         "level": 44
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -5273,11 +5108,6 @@
         "move": "petal-dance",
         "method": "LevelUp",
         "level": 44
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -5368,11 +5198,6 @@
       },
       {
         "move": "aerial-ace",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -5490,11 +5315,6 @@
       },
       {
         "move": "aerial-ace",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -5795,11 +5615,6 @@
         "level": 17
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 21
-      },
-      {
         "move": "mud-slap",
         "method": "LevelUp",
         "level": 25
@@ -5866,11 +5681,6 @@
       },
       {
         "move": "ancient-power",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "beat-up",
         "method": "Egg",
         "level": 0
       },
@@ -5945,11 +5755,6 @@
         "move": "dig",
         "method": "LevelUp",
         "level": 17
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 21
       },
       {
         "move": "mud-slap",
@@ -6083,11 +5888,6 @@
         "level": 25
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 36
-      },
-      {
         "move": "slash",
         "method": "LevelUp",
         "level": 40
@@ -6219,11 +6019,6 @@
         "level": 25
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 42
-      },
-      {
         "move": "slash",
         "method": "LevelUp",
         "level": 49
@@ -6344,11 +6139,6 @@
         "move": "confusion",
         "method": "LevelUp",
         "level": 16
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 40
       },
       {
         "move": "hydro-pump",
@@ -6503,11 +6293,6 @@
         "level": 16
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 44
-      },
-      {
         "move": "hydro-pump",
         "method": "LevelUp",
         "level": 58
@@ -6644,11 +6429,6 @@
         "level": 11
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 16
-      },
-      {
         "move": "cross-chop",
         "method": "LevelUp",
         "level": 31
@@ -6734,11 +6514,6 @@
         "level": 0
       },
       {
-        "move": "beat-up",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "revenge",
         "method": "Egg",
         "level": 0
@@ -6813,11 +6588,6 @@
         "move": "karate-chop",
         "method": "LevelUp",
         "level": 11
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 16
       },
       {
         "move": "rage",
@@ -7216,11 +6986,6 @@
         "level": 13
       },
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 19
-      },
-      {
         "move": "body-slam",
         "method": "LevelUp",
         "level": 31
@@ -7341,11 +7106,6 @@
         "move": "water-gun",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 19
       },
       {
         "move": "body-slam",
@@ -7480,11 +7240,6 @@
     ],
     "captureRate": 45,
     "learnset": [
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "submission",
         "method": "LevelUp",
@@ -8422,11 +8177,6 @@
         "level": 45
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -8529,11 +8279,6 @@
         "level": 54
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -8604,11 +8349,6 @@
         "move": "vine-whip",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -8960,11 +8700,6 @@
         "level": 26
       },
       {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 31
-      },
-      {
         "move": "earthquake",
         "method": "LevelUp",
         "level": 36
@@ -9118,11 +8853,6 @@
         "level": 29
       },
       {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 37
-      },
-      {
         "move": "earthquake",
         "method": "LevelUp",
         "level": 45
@@ -9264,11 +8994,6 @@
         "move": "rollout",
         "method": "LevelUp",
         "level": 29
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 37
       },
       {
         "move": "earthquake",
@@ -9478,11 +9203,6 @@
         "level": 0
       },
       {
-        "move": "double-kick",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "flame-wheel",
         "method": "Egg",
         "level": 0
@@ -9553,11 +9273,6 @@
         "move": "take-down",
         "method": "LevelUp",
         "level": 31
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 40
       },
       {
         "move": "bounce",
@@ -10140,11 +9855,6 @@
         "level": 1
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 16
-      },
-      {
         "move": "knock-off",
         "method": "LevelUp",
         "level": 21
@@ -10263,11 +9973,6 @@
         "level": 9
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 13
-      },
-      {
         "move": "tri-attack",
         "method": "LevelUp",
         "level": 21
@@ -10361,11 +10066,6 @@
     "captureRate": 45,
     "learnset": [
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "peck",
         "method": "LevelUp",
         "level": 1
@@ -10379,11 +10079,6 @@
         "move": "pursuit",
         "method": "LevelUp",
         "level": 9
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 13
       },
       {
         "move": "tri-attack",
@@ -10543,11 +10238,6 @@
       },
       {
         "move": "fake-out",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "icicle-spear",
         "method": "Egg",
         "level": 0
       },
@@ -10974,11 +10664,6 @@
         "level": 1
       },
       {
-        "move": "icicle-spear",
-        "method": "LevelUp",
-        "level": 8
-      },
-      {
         "move": "aurora-beam",
         "method": "LevelUp",
         "level": 22
@@ -11034,11 +10719,6 @@
         "level": 0
       },
       {
-        "move": "icicle-spear",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "rapid-spin",
         "method": "Egg",
         "level": 0
@@ -11084,11 +10764,6 @@
         "move": "aurora-beam",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "spike-cannon",
-        "method": "LevelUp",
-        "level": 43
       },
       {
         "move": "blizzard",
@@ -12322,11 +11997,6 @@
     "captureRate": 90,
     "learnset": [
       {
-        "move": "barrage",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "uproar",
         "method": "LevelUp",
         "level": 1
@@ -12340,11 +12010,6 @@
         "move": "solar-beam",
         "method": "LevelUp",
         "level": 43
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "facade",
@@ -12429,11 +12094,6 @@
     "captureRate": 45,
     "learnset": [
       {
-        "move": "barrage",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "confusion",
         "method": "LevelUp",
         "level": 1
@@ -12447,11 +12107,6 @@
         "move": "egg-bomb",
         "method": "LevelUp",
         "level": 31
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "facade",
@@ -12546,11 +12201,6 @@
         "level": 13
       },
       {
-        "move": "bonemerang",
-        "method": "LevelUp",
-        "level": 25
-      },
-      {
         "move": "rage",
         "method": "LevelUp",
         "level": 29
@@ -12564,11 +12214,6 @@
         "move": "thrash",
         "method": "LevelUp",
         "level": 37
-      },
-      {
-        "move": "bone-rush",
-        "method": "LevelUp",
-        "level": 41
       },
       {
         "move": "double-edge",
@@ -12738,11 +12383,6 @@
         "level": 13
       },
       {
-        "move": "bonemerang",
-        "method": "LevelUp",
-        "level": 25
-      },
-      {
         "move": "rage",
         "method": "LevelUp",
         "level": 32
@@ -12756,11 +12396,6 @@
         "move": "thrash",
         "method": "LevelUp",
         "level": 46
-      },
-      {
-        "move": "bone-rush",
-        "method": "LevelUp",
-        "level": 53
       },
       {
         "move": "double-edge",
@@ -12899,11 +12534,6 @@
     "captureRate": 45,
     "learnset": [
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "revenge",
         "method": "LevelUp",
         "level": 1
@@ -13024,11 +12654,6 @@
     ],
     "captureRate": 45,
     "learnset": [
-      {
-        "move": "comet-punch",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "revenge",
         "method": "LevelUp",
@@ -13607,16 +13232,6 @@
         "level": 10
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 15
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 29
-      },
-      {
         "move": "take-down",
         "method": "LevelUp",
         "level": 43
@@ -13765,11 +13380,6 @@
     "captureRate": 60,
     "learnset": [
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "horn-attack",
         "method": "LevelUp",
         "level": 1
@@ -13783,16 +13393,6 @@
         "move": "stomp",
         "method": "LevelUp",
         "level": 10
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 15
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 29
       },
       {
         "move": "take-down",
@@ -13965,11 +13565,6 @@
         "move": "pound",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 17
       },
       {
         "move": "egg-bomb",
@@ -14163,11 +13758,6 @@
         "level": 40
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -14253,11 +13843,6 @@
     ],
     "captureRate": 45,
     "learnset": [
-      {
-        "move": "comet-punch",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "bite",
         "method": "LevelUp",
@@ -14673,11 +14258,6 @@
         "level": 15
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 29
-      },
-      {
         "move": "waterfall",
         "method": "LevelUp",
         "level": 38
@@ -14773,11 +14353,6 @@
         "move": "horn-attack",
         "method": "LevelUp",
         "level": 15
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 29
       },
       {
         "move": "waterfall",
@@ -15086,11 +14661,6 @@
         "level": 5
       },
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 15
-      },
-      {
         "move": "magical-leaf",
         "method": "LevelUp",
         "level": 22
@@ -15348,11 +14918,6 @@
         "move": "powder-snow",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 21
       },
       {
         "move": "ice-punch",
@@ -15834,11 +15399,6 @@
       },
       {
         "move": "feint-attack",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "fury-attack",
         "method": "Egg",
         "level": 0
       },
@@ -16563,16 +16123,6 @@
         "level": 23
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 30
-      },
-      {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 36
-      },
-      {
         "move": "thunder",
         "method": "LevelUp",
         "level": 52
@@ -17059,11 +16609,6 @@
         "move": "mud-shot",
         "method": "LevelUp",
         "level": 25
-      },
-      {
-        "move": "spike-cannon",
-        "method": "LevelUp",
-        "level": 40
       },
       {
         "move": "ancient-power",
@@ -18804,11 +18349,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -19040,11 +18580,6 @@
         "level": 50
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -19141,11 +18676,6 @@
         "level": 55
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -19240,11 +18770,6 @@
         "move": "solar-beam",
         "method": "LevelUp",
         "level": 61
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -19404,11 +18929,6 @@
       },
       {
         "move": "crush-claw",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "fury-swipes",
         "method": "Egg",
         "level": 0
       },
@@ -20255,11 +19775,6 @@
         "level": 7
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 12
-      },
-      {
         "move": "slam",
         "method": "LevelUp",
         "level": 24
@@ -20405,11 +19920,6 @@
         "move": "quick-attack",
         "method": "LevelUp",
         "level": 7
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 12
       },
       {
         "move": "slam",
@@ -20781,11 +20291,6 @@
         "level": 1
       },
       {
-        "move": "comet-punch",
-        "method": "LevelUp",
-        "level": 15
-      },
-      {
         "move": "swift",
         "method": "LevelUp",
         "level": 36
@@ -20887,11 +20392,6 @@
         "move": "tackle",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "comet-punch",
-        "method": "LevelUp",
-        "level": 15
       },
       {
         "move": "swift",
@@ -21000,11 +20500,6 @@
         "move": "leech-life",
         "method": "LevelUp",
         "level": 23
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 30
       },
       {
         "move": "psychic",
@@ -21118,11 +20613,6 @@
         "move": "leech-life",
         "method": "LevelUp",
         "level": 25
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 34
       },
       {
         "move": "psychic",
@@ -21571,11 +21061,6 @@
       {
         "move": "thunderbolt",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "double-slap",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -22651,11 +22136,6 @@
         "level": 55
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -23149,11 +22629,6 @@
     "captureRate": 45,
     "learnset": [
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "water-gun",
         "method": "LevelUp",
         "level": 1
@@ -23301,11 +22776,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -23383,11 +22853,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -23455,11 +22920,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -23520,11 +22980,6 @@
         "move": "astonish",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 31
       },
       {
         "move": "swift",
@@ -23617,16 +23072,6 @@
         "level": 0
       },
       {
-        "move": "beat-up",
-        "method": "Egg",
-        "level": 0
-      },
-      {
-        "move": "double-slap",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "pursuit",
         "method": "Egg",
         "level": 0
@@ -23696,11 +23141,6 @@
         "move": "giga-drain",
         "method": "LevelUp",
         "level": 42
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -23774,11 +23214,6 @@
         "level": 13
       },
       {
-        "move": "bullet-seed",
-        "method": "LevelUp",
-        "level": 25
-      },
-      {
         "move": "petal-dance",
         "method": "LevelUp",
         "level": 37
@@ -23787,11 +23222,6 @@
         "move": "solar-beam",
         "method": "LevelUp",
         "level": 42
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -24939,11 +24369,6 @@
         "level": 0
       },
       {
-        "move": "beat-up",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "future-sight",
         "method": "Egg",
         "level": 0
@@ -25057,11 +24482,6 @@
       {
         "move": "strength",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "pin-missile",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -26096,11 +25516,6 @@
         "level": 13
       },
       {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 21
-      },
-      {
         "move": "revenge",
         "method": "LevelUp",
         "level": 25
@@ -26408,11 +25823,6 @@
         "level": 6
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 17
-      },
-      {
         "move": "brick-break",
         "method": "LevelUp",
         "level": 23
@@ -26546,11 +25956,6 @@
         "level": 22
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 29
-      },
-      {
         "move": "icy-wind",
         "method": "LevelUp",
         "level": 43
@@ -26559,11 +25964,6 @@
         "move": "slash",
         "method": "LevelUp",
         "level": 50
-      },
-      {
-        "move": "beat-up",
-        "method": "LevelUp",
-        "level": 57
       },
       {
         "move": "metal-claw",
@@ -26702,11 +26102,6 @@
         "level": 7
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 13
-      },
-      {
         "move": "feint-attack",
         "method": "LevelUp",
         "level": 25
@@ -26838,11 +26233,6 @@
     "captureRate": 60,
     "learnset": [
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "lick",
         "method": "LevelUp",
         "level": 1
@@ -26856,11 +26246,6 @@
         "move": "lick",
         "method": "LevelUp",
         "level": 7
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 13
       },
       {
         "move": "feint-attack",
@@ -27310,11 +26695,6 @@
         "level": 0
       },
       {
-        "move": "icicle-spear",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "mud-shot",
         "method": "Egg",
         "level": 0
@@ -27385,11 +26765,6 @@
         "move": "take-down",
         "method": "LevelUp",
         "level": 28
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 33
       },
       {
         "move": "blizzard",
@@ -27500,16 +26875,6 @@
         "level": 23
       },
       {
-        "move": "spike-cannon",
-        "method": "LevelUp",
-        "level": 28
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 34
-      },
-      {
         "move": "ancient-power",
         "method": "LevelUp",
         "level": 45
@@ -27577,11 +26942,6 @@
       {
         "move": "water-pulse",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "icicle-spear",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -27736,11 +27096,6 @@
         "level": 0
       },
       {
-        "move": "rock-blast",
-        "method": "Egg",
-        "level": 0
-      },
-      {
         "move": "double-edge",
         "method": "Tutor",
         "level": 0
@@ -27808,11 +27163,6 @@
       },
       {
         "move": "blizzard",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -28166,11 +27516,6 @@
         "level": 13
       },
       {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 26
-      },
-      {
         "move": "air-cutter",
         "method": "LevelUp",
         "level": 29
@@ -28351,11 +27696,6 @@
       {
         "move": "thief",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "beat-up",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -28749,11 +28089,6 @@
         "move": "horn-attack",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 25
       },
       {
         "move": "rollout",
@@ -29223,11 +28558,6 @@
         "move": "quick-attack",
         "method": "LevelUp",
         "level": 19
-      },
-      {
-        "move": "triple-kick",
-        "method": "LevelUp",
-        "level": 20
       },
       {
         "move": "rapid-spin",
@@ -29885,11 +29215,6 @@
         "move": "pound",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 13
       },
       {
         "move": "egg-bomb",
@@ -31303,11 +30628,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -31479,11 +30799,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -31636,11 +30951,6 @@
       },
       {
         "move": "brick-break",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -31918,11 +31228,6 @@
         "level": 13
       },
       {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 16
-      },
-      {
         "move": "peck",
         "method": "LevelUp",
         "level": 17
@@ -32073,11 +31378,6 @@
         "move": "ember",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "double-kick",
-        "method": "LevelUp",
-        "level": 16
       },
       {
         "move": "peck",
@@ -32928,11 +32228,6 @@
         "level": 9
       },
       {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 25
-      },
-      {
         "move": "covet",
         "method": "LevelUp",
         "level": 29
@@ -33062,11 +32357,6 @@
         "move": "headbutt",
         "method": "LevelUp",
         "level": 9
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 29
       },
       {
         "move": "covet",
@@ -33492,11 +32782,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -33595,11 +32880,6 @@
         "level": 19
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 25
-      },
-      {
         "move": "thief",
         "method": "LevelUp",
         "level": 37
@@ -33621,11 +32901,6 @@
       },
       {
         "move": "brick-break",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -33739,11 +33014,6 @@
       },
       {
         "move": "brick-break",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -33863,11 +33133,6 @@
         "move": "explosion",
         "method": "LevelUp",
         "level": 43
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "dig",
@@ -33993,11 +33258,6 @@
         "level": 0
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -34112,11 +33372,6 @@
       },
       {
         "move": "brick-break",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -35150,11 +34405,6 @@
         "level": 45
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -35258,11 +34508,6 @@
       },
       {
         "move": "brick-break",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },
@@ -35552,11 +34797,6 @@
         "move": "uproar",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 19
       },
       {
         "move": "slash",
@@ -35882,11 +35122,6 @@
         "level": 5
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 14
-      },
-      {
         "move": "false-swipe",
         "method": "LevelUp",
         "level": 25
@@ -36004,11 +35239,6 @@
         "level": 5
       },
       {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 14
-      },
-      {
         "move": "fury-cutter",
         "method": "LevelUp",
         "level": 20
@@ -36104,11 +35334,6 @@
         "move": "leech-life",
         "method": "LevelUp",
         "level": 5
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 14
       },
       {
         "move": "shadow-ball",
@@ -36661,11 +35886,6 @@
         "level": 1
       },
       {
-        "move": "arm-thrust",
-        "method": "LevelUp",
-        "level": 10
-      },
-      {
         "move": "vital-throw",
         "method": "LevelUp",
         "level": 13
@@ -36803,19 +36023,9 @@
     "captureRate": 200,
     "learnset": [
       {
-        "move": "arm-thrust",
-        "method": "LevelUp",
-        "level": 1
-      },
-      {
         "move": "tackle",
         "method": "LevelUp",
         "level": 1
-      },
-      {
-        "move": "arm-thrust",
-        "method": "LevelUp",
-        "level": 10
       },
       {
         "move": "vital-throw",
@@ -37153,11 +36363,6 @@
         "level": 1
       },
       {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 15
-      },
-      {
         "move": "feint-attack",
         "method": "LevelUp",
         "level": 27
@@ -37273,11 +36478,6 @@
     ],
     "captureRate": 60,
     "learnset": [
-      {
-        "move": "double-slap",
-        "method": "LevelUp",
-        "level": 1
-      },
       {
         "move": "blizzard",
         "method": "Machine",
@@ -37399,11 +36599,6 @@
         "move": "astonish",
         "method": "LevelUp",
         "level": 13
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 17
       },
       {
         "move": "fake-out",
@@ -39138,11 +38333,6 @@
         "level": 49
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "cut",
         "method": "Machine",
         "level": 0
@@ -39175,11 +38365,6 @@
       {
         "move": "solar-beam",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "pin-missile",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -39228,11 +38413,6 @@
         "move": "sludge-bomb",
         "method": "LevelUp",
         "level": 39
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "facade",
@@ -39365,11 +38545,6 @@
         "move": "sludge-bomb",
         "method": "LevelUp",
         "level": 48
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "facade",
@@ -41187,11 +40362,6 @@
         "level": 5
       },
       {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 21
-      },
-      {
         "move": "feint-attack",
         "method": "LevelUp",
         "level": 29
@@ -41200,11 +40370,6 @@
         "move": "needle-arm",
         "method": "LevelUp",
         "level": 37
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -41304,11 +40469,6 @@
         "level": 5
       },
       {
-        "move": "pin-missile",
-        "method": "LevelUp",
-        "level": 21
-      },
-      {
         "move": "feint-attack",
         "method": "LevelUp",
         "level": 29
@@ -41317,11 +40477,6 @@
         "move": "needle-arm",
         "method": "LevelUp",
         "level": 41
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "cut",
@@ -41414,11 +40569,6 @@
         "move": "astonish",
         "method": "LevelUp",
         "level": 8
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 18
       },
       {
         "move": "take-down",
@@ -41526,11 +40676,6 @@
         "move": "astonish",
         "method": "LevelUp",
         "level": 8
-      },
-      {
-        "move": "fury-attack",
-        "method": "LevelUp",
-        "level": 18
       },
       {
         "move": "take-down",
@@ -41796,11 +40941,6 @@
       {
         "move": "water-pulse",
         "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "double-kick",
-        "method": "Egg",
         "level": 0
       },
       {
@@ -43069,11 +42209,6 @@
         "level": 43
       },
       {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
-      },
-      {
         "move": "facade",
         "method": "Machine",
         "level": 0
@@ -43169,11 +42304,6 @@
         "move": "ancient-power",
         "method": "LevelUp",
         "level": 48
-      },
-      {
-        "move": "bullet-seed",
-        "method": "Machine",
-        "level": 0
       },
       {
         "move": "earthquake",
@@ -43291,11 +42421,6 @@
         "move": "slash",
         "method": "LevelUp",
         "level": 49
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 55
       },
       {
         "move": "aerial-ace",
@@ -43428,11 +42553,6 @@
         "move": "slash",
         "method": "LevelUp",
         "level": 55
-      },
-      {
-        "move": "rock-blast",
-        "method": "LevelUp",
-        "level": 64
       },
       {
         "move": "aerial-ace",
@@ -43872,11 +42992,6 @@
         "move": "feint-attack",
         "method": "LevelUp",
         "level": 7
-      },
-      {
-        "move": "fury-swipes",
-        "method": "LevelUp",
-        "level": 12
       },
       {
         "move": "psybeam",
@@ -44506,11 +43621,6 @@
       },
       {
         "move": "aerial-ace",
-        "method": "Machine",
-        "level": 0
-      },
-      {
-        "move": "bullet-seed",
         "method": "Machine",
         "level": 0
       },

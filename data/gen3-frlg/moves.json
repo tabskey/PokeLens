@@ -22,28 +22,6 @@
     "machine": null
   },
   {
-    "id": 3,
-    "name": "double-slap",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 15,
-    "accuracy": 85,
-    "pp": 10,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 4,
-    "name": "comet-punch",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 18,
-    "accuracy": 85,
-    "pp": 15,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
     "id": 5,
     "name": "mega-punch",
     "type": "Normal",
@@ -220,17 +198,6 @@
     "machine": null
   },
   {
-    "id": 24,
-    "name": "double-kick",
-    "type": "Fighting",
-    "category": "Physical",
-    "power": 30,
-    "accuracy": 100,
-    "pp": 30,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
     "id": 25,
     "name": "mega-kick",
     "type": "Normal",
@@ -282,17 +249,6 @@
     "power": 65,
     "accuracy": 100,
     "pp": 25,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 31,
-    "name": "fury-attack",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 15,
-    "accuracy": 85,
-    "pp": 20,
     "highCriticalRatio": false,
     "machine": null
   },
@@ -370,28 +326,6 @@
     "power": 15,
     "accuracy": 100,
     "pp": 35,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 41,
-    "name": "twineedle",
-    "type": "Bug",
-    "category": "Physical",
-    "power": 25,
-    "accuracy": 100,
-    "pp": 20,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 42,
-    "name": "pin-missile",
-    "type": "Bug",
-    "category": "Physical",
-    "power": 14,
-    "accuracy": 85,
-    "pp": 20,
     "highCriticalRatio": false,
     "machine": null
   },
@@ -880,17 +814,6 @@
     "machine": null
   },
   {
-    "id": 131,
-    "name": "spike-cannon",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 20,
-    "accuracy": 100,
-    "pp": 15,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
     "id": 132,
     "name": "constrict",
     "type": "Normal",
@@ -920,17 +843,6 @@
     "power": 100,
     "accuracy": 100,
     "pp": 15,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 140,
-    "name": "barrage",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 15,
-    "accuracy": 85,
-    "pp": 20,
     "highCriticalRatio": false,
     "machine": null
   },
@@ -1001,28 +913,6 @@
     "machine": null
   },
   {
-    "id": 154,
-    "name": "fury-swipes",
-    "type": "Normal",
-    "category": "Physical",
-    "power": 18,
-    "accuracy": 80,
-    "pp": 15,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 155,
-    "name": "bonemerang",
-    "type": "Ground",
-    "category": "Physical",
-    "power": 50,
-    "accuracy": 90,
-    "pp": 10,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
     "id": 157,
     "name": "rock-slide",
     "type": "Rock",
@@ -1074,17 +964,6 @@
     "power": 50,
     "accuracy": null,
     "pp": 1,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 167,
-    "name": "triple-kick",
-    "type": "Fighting",
-    "category": "Physical",
-    "power": 10,
-    "accuracy": 90,
-    "pp": 10,
     "highCriticalRatio": false,
     "machine": null
   },
@@ -1217,17 +1096,6 @@
     "power": 55,
     "accuracy": 95,
     "pp": 15,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
-    "id": 198,
-    "name": "bone-rush",
-    "type": "Ground",
-    "category": "Physical",
-    "power": 25,
-    "accuracy": 80,
-    "pp": 10,
     "highCriticalRatio": false,
     "machine": null
   },
@@ -1507,17 +1375,6 @@
     "machine": null
   },
   {
-    "id": 251,
-    "name": "beat-up",
-    "type": "Dark",
-    "category": "Special",
-    "power": 10,
-    "accuracy": 100,
-    "pp": 10,
-    "highCriticalRatio": false,
-    "machine": null
-  },
-  {
     "id": 252,
     "name": "fake-out",
     "type": "Normal",
@@ -1659,17 +1516,6 @@
     "pp": 10,
     "highCriticalRatio": false,
     "machine": "hm08"
-  },
-  {
-    "id": 292,
-    "name": "arm-thrust",
-    "type": "Fighting",
-    "category": "Physical",
-    "power": 15,
-    "accuracy": 100,
-    "pp": 20,
-    "highCriticalRatio": false,
-    "machine": null
   },
   {
     "id": 295,
@@ -1936,17 +1782,6 @@
     "machine": null
   },
   {
-    "id": 331,
-    "name": "bullet-seed",
-    "type": "Grass",
-    "category": "Special",
-    "power": 10,
-    "accuracy": 100,
-    "pp": 30,
-    "highCriticalRatio": false,
-    "machine": "tm09"
-  },
-  {
     "id": 332,
     "name": "aerial-ace",
     "type": "Flying",
@@ -1956,17 +1791,6 @@
     "pp": 20,
     "highCriticalRatio": false,
     "machine": "tm40"
-  },
-  {
-    "id": 333,
-    "name": "icicle-spear",
-    "type": "Ice",
-    "category": "Special",
-    "power": 10,
-    "accuracy": 100,
-    "pp": 30,
-    "highCriticalRatio": false,
-    "machine": null
   },
   {
     "id": 337,
@@ -2065,17 +1889,6 @@
     "accuracy": 100,
     "pp": 15,
     "highCriticalRatio": true,
-    "machine": null
-  },
-  {
-    "id": 350,
-    "name": "rock-blast",
-    "type": "Rock",
-    "category": "Physical",
-    "power": 25,
-    "accuracy": 80,
-    "pp": 10,
-    "highCriticalRatio": false,
     "machine": null
   },
   {
