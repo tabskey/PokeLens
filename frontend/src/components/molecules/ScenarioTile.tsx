@@ -5,7 +5,7 @@ import { DamageRange } from './DamageRange'
 
 const borders = { good: 'border-t-good', neutral: 'border-t-neutral', bad: 'border-t-bad' }
 
-/** The outcome label is the headline; numbers are supporting detail (no win percentage). */
+/** The outcome label is the headline; numbers are supporting detail. The only percentages are HP shares, never a win chance. */
 export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
   return (
     <section aria-label={`Cenário ${scenario.title}`} className={`rounded-lg border border-line border-t-4 bg-white p-3 ${borders[scenario.tone]}`}>
@@ -15,7 +15,7 @@ export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
         <Tag>{scenario.ko}</Tag>
       </div>
       <div className="mt-2 space-y-1">
-        <DamageRange who="Você" attack={scenario.attack} />
+        <DamageRange who="Você" attack={scenario.attack} showBar />
         <DamageRange who="Oponente" attack={scenario.opponent} />
       </div>
       {scenario.catch && <CatchOdds plan={scenario.catch} />}

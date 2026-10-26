@@ -415,7 +415,7 @@ Exemplo (Charmander L10 Ember → Bulbasaur L10): sem crítico **17–20**, com 
 Cada candidato aparece num card com os **três cenários lado a lado**. Em cada cenário:
 - **em destaque:** o resultado (**Favorável**, **Equilibrado** ou **Desfavorável**) e o rótulo de KO (ex.: "2 golpes", "KO possível");
 - **como detalhe:** o golpe usado, os golpes para KO ("3–4 golpes para KO"), o dano ("8–10 de 25 HP") e o HP que sobra, para você e para o oponente;
-- **nenhum percentual** no objetivo derrotar. Rodapé fixo: "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed".
+- o único percentual no objetivo derrotar é o **dano como fatia do HP do alvo**, sempre em faixa e com "do HP" (ex.: "Absorb tira 121%–142% do HP"). A barra embaixo mostra essa mesma fatia: cheia até o roll mais fraco, mais clara até o mais forte, e limitada a 100%. **Não** é chance de vencer, ao contrário do mockup antigo (48% / 76% / 94%), que tinha números ilustrativos. Rodapé fixo: "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed".
 - **Capturar:** o golpe de preparo, o risco de KO (%), o HP do alvo e uma tabela com a **chance por bola** numa coluna e **quantas bolas para 50/90/95/99%** em outras.
 
 O jogador escolhe a ordem com três botões: **Mais seguro** (cenário pessimista), **Equilibrado** (neutro) e **Maior potencial** (otimista).

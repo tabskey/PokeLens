@@ -394,7 +394,28 @@ no job publish-image do ci.yml. Dependabot para npm.
 
 ---
 
-### Etapa 9 — Login e auditoria (`X014Auth`) · M
+### Etapa 8.1 — Progressão completa (`X016Progression`) · G — **próxima**
+
+Hoje o `backend/data/curated/progression.json` só vai até a Insígnia Cascade: 4 marcos, 14 áreas (Pallet Town até as Routes 24/25) e 5 TMs. O formulário esconde as áreas fora da curadoria, então o app fica limitado ao começo do jogo.
+
+**Prompt:**
+
+```
+Complete backend/data/curated/progression.json para FireRed/LeafGreen:
+- marcos em ordem do jogo: as 8 insígnias, SS Anne/Cut, Silph Scope, Pokéflute, Surf, Strength,
+  Ilhas Sevii (Tri-Pass e Rainbow Pass) e Elite Four;
+- todas as áreas de Kanto e das Sevii com o marco que as libera;
+- métodos de encontro (old-rod, good-rod, super-rod, surf, rock-smash) no marco em que são obtidos;
+- ponto de obtenção de cada TM/HM do pacote.
+Rode o importador (data-check sem diff), atualize os labels de marco em frontend/src/models/labels.ts
+e registre os marcos escolhidos em docs/revisao-especialista.md para conferência.
+```
+
+**Aceite:** todas as áreas do pacote com encontros em FRLG têm marco; `GamePackage.Validate` sem erros; o formulário oferece o jogo inteiro.
+
+---
+
+### Etapa 9 — Login e auditoria (`X017Auth`) · M
 
 **Prompt:**
 
@@ -432,6 +453,7 @@ Não implemente Pokédex pessoal (é V2).
 - [ ] Critério de "vencer" (Etapa 5): em revisão com jogadores, provisório = faixas de turnos sem sobreposição, sem Speed (`docs/decisoes-simulacao.md` §2). Golpe do oponente (sempre o melhor) e precisão (fora da V1) decididos
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
 - [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
+- [ ] Progressão curada completa (Etapa 8.1, `X016Progression`): hoje só até a Insígnia Cascade
 - [ ] Destino de deploy: nenhum por ora, VPS com compose, ou um serviço gerenciado de containers (define o job `deploy`)
 
 ## 9. Uso no Claude Code

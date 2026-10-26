@@ -21,16 +21,31 @@ describe('toResultView', () => {
     expect(candidate?.scenarios[0]?.attack).toEqual({
       move: 'Karate Chop',
       damage: '8–10 de 25 HP',
+      hpShare: '32%–40% do HP',
+      bar: { min: 32, max: 40 },
       remainingHp: '15–17 HP',
       turns: '3–4 golpes para KO',
     })
   })
 
-  it('keeps defeat results free of percentages', () => {
+  it('only uses percentages as shares of HP in defeat results, never as a win chance', () => {
     const view = toResultView(response())
 
-    expect(JSON.stringify(view)).not.toContain('%')
+    const percentages = JSON.stringify(view).match(/[^"]*%[^"]*/g) ?? []
+    expect(percentages.length).toBeGreaterThan(0)
+    expect(percentages.every((text) => text.endsWith('% do HP'))).toBe(true)
     expect(view.candidates[0]?.scenarios[0]?.catch).toBeNull()
+  })
+
+  it('caps the bar at 100% when one hit takes more than the whole HP', () => {
+    const attack = { ...response().candidates[0]!.scenarios[0]!.candidateAttack!, minDamage: 34, maxDamage: 40, targetMaxHp: 28 }
+    const base = response()
+    base.candidates[0]!.scenarios[0]!.candidateAttack = attack
+
+    const view = toResultView(base).candidates[0]?.scenarios[0]?.attack
+
+    expect(view?.hpShare).toBe('121%–142% do HP')
+    expect(view?.bar).toEqual({ min: 100, max: 100 })
   })
 
   it('formats capture odds as calculated probabilities, separate from balls needed', () => {

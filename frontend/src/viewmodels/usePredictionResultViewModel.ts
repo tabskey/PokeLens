@@ -21,6 +21,10 @@ export interface AttackView {
   move: string
   /** "8–10 de 25 HP": a range, never a win chance. */
   damage: string
+  /** The same range as a share of the target's HP ("32%–40% do HP"); can exceed 100%. */
+  hpShare: string
+  /** Bar widths in percent (0–100): weakest and strongest roll. */
+  bar: { min: number; max: number }
   remainingHp: string
   turns: string
 }
@@ -85,9 +89,15 @@ function toAttackView(attack: AttackResult | null): AttackView | null {
     ? 'não causa dano'
     : `${range(attack.turnsToKoMin, attack.turnsToKoMax)} ${attack.turnsToKoMax === 1 ? 'golpe' : 'golpes'} para KO`
 
+  // Truncated to whole percents: more digits would be false precision.
+  const shareMin = Math.floor((attack.minDamage * 100) / attack.targetMaxHp)
+  const shareMax = Math.floor((attack.maxDamage * 100) / attack.targetMaxHp)
+
   return {
     move: moveName(attack.move),
     damage: `${range(attack.minDamage, attack.maxDamage)} de ${attack.targetMaxHp} HP`,
+    hpShare: shareMin === shareMax ? `${shareMin}% do HP` : `${shareMin}%–${shareMax}% do HP`,
+    bar: { min: Math.min(shareMin, 100), max: Math.min(shareMax, 100) },
     remainingHp: `${range(attack.remainingHpMin, attack.remainingHpMax)} HP`,
     turns,
   }

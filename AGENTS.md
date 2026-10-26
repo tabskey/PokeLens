@@ -64,7 +64,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
   - `src/components/`: as Views.
 - **Atomic Design** em `src/components/`: `atoms/`, `molecules/`, `organisms/`, `templates/`, `pages/`.
 - **Fronteiras:** as Views não importam `models/api` nem lógica de ViewModel, só os tipos dele. `pages/` é o único lugar que liga um ViewModel a uma View. O ESLint garante isso.
-- **Exibição** (regra 6): o rótulo (Favorável, Equilibrado, Desfavorável) é o destaque, e os números vêm como detalhe. Nenhum percentual pode parecer chance de vitória. Na captura, a chance por bola e as bolas para 50/90/95/99% ficam separadas.
+- **Exibição** (regra 6): o rótulo (Favorável, Equilibrado, Desfavorável) é o destaque, e os números vêm como detalhe. Percentual só como fatia do HP do alvo, em faixa e com o texto "do HP" ("32%–40% do HP"), nunca como chance de vitória. Na captura, a chance por bola e as bolas para 50/90/95/99% ficam separadas.
 
 ## Testes
 
