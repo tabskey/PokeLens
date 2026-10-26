@@ -342,7 +342,7 @@ A diferença aparece **só nos empates exatos**, e eles são comuns no começo d
 
 ✅ / ❌ / 💬
 
-### 6.7 Ranking final (planejado, ainda não implementado)
+### 6.7 Ranking final (implementado na Etapa 7)
 
 Ordem de critérios prevista para escolher os até 5 candidatos:
 
@@ -357,7 +357,9 @@ Acessível na progressão → Consegue baixar o HP com segurança → Tem golpe 
 → Chance de captura → Risco de KO → Bolas necessárias
 ```
 
-Ainda em aberto: **qual cenário alimenta o ranking** (o pessimista? o neutro?) ou se o jogador escolhe um modo ("mais seguro", "equilibrado", "maior potencial").
+**Decidido:** o **jogador escolhe** o cenário que ordena o ranking (pessimista = "mais seguro", neutro = "equilibrado", otimista = "maior potencial"). Os três cenários continuam aparecendo para cada candidato.
+
+Na V1, o critério "tem golpe de status disponível" fica de fora: o pacote de dados ainda não traz golpes de status. "Bolas necessárias" acompanha a chance por bola, então não muda a ordem.
 
 💬 Ver perguntas 7 e 8 na seção 10.
 
@@ -477,7 +479,7 @@ No objetivo **capturar**, bater forte demais é ruim: derrubar o alvo perde a ca
 
 Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e arrisca KO no próximo golpe pode ser **pior** para capturar do que outro que causa menos dano, mesmo sendo pior para derrotar.
 
-Ainda **não decidido** (Etapa 7): a estratégia de captura em si, ou seja, qual golpe usar, quantas vezes, e quando parar de bater e começar a jogar bola.
+**Decidido para a V1** (Etapa 7): o candidato dá **um golpe** e depois começa a jogar bola. O golpe é o mais forte entre os que **nunca derrubam** o alvo com HP cheio (risco 0%, crítico incluído); se todos podem derrubar, o de menor risco. A captura é calculada com o HP que sobra no **pior roll** (o que tira menos HP), sem status, para Poké, Great e Ultra Ball. O ranking usa a Poké Ball.
 
 ✅ / ❌ / 💬 — Ver pergunta 9 na seção 10.
 

@@ -117,6 +117,6 @@ Os pontos de obtenção da tabela devem ser revisados contra uma fonte da Gen II
 
 ## 6. Pontos em aberto
 
-- [ ] Qual cenário alimenta o ranking Top 5 da V1, ou se o usuário escolhe ("mais seguro", "equilibrado", "maior potencial")
+- [x] Qual cenário alimenta o ranking Top 5 da V1: **o usuário escolhe** (campo `scenario` da requisição; decidido na Etapa 7)
 - [ ] Exibir ou não a margem de erro na V4 para o público comum
 - [ ] Confirmar a premissa de progressão linear para as varas na curadoria do `progression.json`
