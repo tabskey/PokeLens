@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PokeBattle.DataImporter.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PokeBattle.Application\PokeBattle.Application.csproj" />
+  </ItemGroup>
+
+</Project>

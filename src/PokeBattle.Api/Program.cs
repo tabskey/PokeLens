@@ -1,4 +1,5 @@
 using PokeBattle.Api.Endpoints;
+using PokeBattle.Infrastructure.GameData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ else
 
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
+builder.Services.AddSingleton(GamePackageLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "gen3-frlg")));
 
 var app = builder.Build();
 

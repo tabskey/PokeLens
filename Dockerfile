@@ -9,6 +9,7 @@ COPY src/PokeBattle.Api/PokeBattle.Api.csproj src/PokeBattle.Api/
 RUN dotnet restore src/PokeBattle.Api/PokeBattle.Api.csproj
 
 COPY src/ src/
+COPY data/gen3-frlg/ data/gen3-frlg/
 RUN dotnet publish src/PokeBattle.Api/PokeBattle.Api.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime

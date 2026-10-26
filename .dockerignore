@@ -7,7 +7,7 @@
 docs/
 tests/
 tools/
-data/
+data/curated/
 frontend/
 *.md
 *.sln
