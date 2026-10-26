@@ -102,7 +102,7 @@ for (const [a, al, ai, an, d, dl, di, dn, m] of cases) {
 }
 ```
 
-Os stats impressos são os usados como `Combatant` em `tests/PokeBattle.Core.Tests/Damage/DamageCalculatorTests.cs`.
+Os stats impressos são os usados como `Combatant` em `backend/tests/PokeBattle.Core.Tests/Damage/DamageCalculatorTests.cs`.
 
 ---
 
@@ -125,5 +125,5 @@ Depois da **Etapa 6** (pacote de dados FRLG), para usar espécies, base stats e 
 
 ### Decisões pendentes
 - [ ] Tamanho da amostra (sugestão: 2.000 confrontos, seed fixa)
-- [ ] Onde fica o script gerador (sugestão: `tools/damage-oracle/`, fora da solution .NET, com versão do `@smogon/calc` fixa no `package.json` e Dependabot desligado para ele, porque mudar o oráculo exige regenerar `expected.json` num PR próprio)
+- [ ] Onde fica o script gerador (sugestão: `backend/tools/damage-oracle/`, fora da solution .NET, com versão do `@smogon/calc` fixa no `package.json` e Dependabot desligado para ele, porque mudar o oráculo exige regenerar `expected.json` num PR próprio)
 - [ ] Se o mesmo método vale para a captura (Etapa 5); o Showdown não calcula captura, então ali o oráculo seria a decompilação mais cálculo manual

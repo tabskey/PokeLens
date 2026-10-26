@@ -7,19 +7,25 @@ Leia `AGENTS.md` antes de contribuir. Arquitetura em `docs/arquitetura.md`, fase
 ## Estrutura
 
 ```
-src/PokeBattle.Core            Regras de domínio (batalha, dano, stats, tipos, captura)
-src/PokeBattle.Application     Orquestração dos casos de uso
-src/PokeBattle.Infrastructure   Dados do jogo, persistência, auditoria
-src/PokeBattle.Api              Endpoints HTTP
-tests/                          Core.Tests, Application.Tests, IntegrationTests
+backend/src/PokeBattle.Core            Regras de domínio (batalha, dano, stats, tipos, captura)
+backend/src/PokeBattle.Application     Orquestração dos casos de uso
+backend/src/PokeBattle.Infrastructure  Dados do jogo, persistência, auditoria
+backend/src/PokeBattle.Api             Endpoints HTTP
+backend/tests/                         Core, Application, DataImporter e Integration tests
+backend/tools/PokeBattle.DataImporter  Gera o pacote de dados a partir da PokeAPI
+backend/data/                          Progressão curada e pacote Gen III gerado
+frontend/                              React + Vite (Etapa 8)
 ```
 
 ## Comandos
 
 ```bash
+cd backend
 dotnet build PokeBattle.slnx
 dotnet test PokeBattle.slnx
 dotnet run --project src/PokeBattle.Api
+
+# na raiz
 docker compose up --build
 ```
 

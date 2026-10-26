@@ -5,9 +5,9 @@ name: Data check
 on:
   pull_request:
     paths:
-      - "data/**"
-      - "tools/**"
-      - "src/PokeBattle.Application/GameData/**"
+      - "backend/data/**"
+      - "backend/tools/**"
+      - "backend/src/PokeBattle.Application/GameData/**"
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
 
@@ -34,4 +37,4 @@ jobs:
         run: |
           git add -N data/
           git diff --exit-code --stat data/ \
-            || { echo "::error::data/gen3-frlg differs from a fresh import. Run the importer and commit the result."; exit 1; }
+            || { echo "::error::backend/data/gen3-frlg differs from a fresh import. Run the importer and commit the result."; exit 1; }

@@ -84,8 +84,8 @@ Os dois lados variam em direções opostas dentro de cada cenário: o que é rui
 
 ## Fase 5 — Dados próprios
 
-- `tools/PokeBattle.DataImporter`: importa da PokeAPI espécies, golpes, learnsets e encontros (a PokeAPI traz `min_level`, `max_level` e `chance` por slot e versão), aplica a normalização Gen III e grava `data/gen3-frlg/`
-- `data/curated/progression.json` (manual): ordem das áreas, requisitos, presentes/estáticos/trocas, obtenção de TM/HM
+- `backend/tools/PokeBattle.DataImporter`: importa da PokeAPI espécies, golpes, learnsets e encontros (a PokeAPI traz `min_level`, `max_level` e `chance` por slot e versão), aplica a normalização Gen III e grava `data/gen3-frlg/`
+- `backend/data/curated/progression.json` (manual): ordem das áreas, requisitos, presentes/estáticos/trocas, obtenção de TM/HM
 - Infrastructure lê o pacote em memória; a API não chama a PokeAPI em runtime
 - Ordem das rotas e modelo de progressão do jogador
 - Exclusão de Pokémon obtidos por troca (modelados como `Gift` ou fora da V1)

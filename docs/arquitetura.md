@@ -48,14 +48,14 @@ graph TD
         INFRA["PokeBattle.Infrastructure"]
     end
 
-    subgraph Build["Offline (tools/)"]
+    subgraph Build["Offline (backend/tools/)"]
         IMPORTER["PokeBattle.DataImporter"]
         POKEAPI["PokeAPI"]
         CURATED["progression.json (curado)"]
     end
 
     subgraph Data["Dados"]
-        PACK[("Pacote Gen III (data/gen3-frlg)")]
+        PACK[("Pacote Gen III (backend/data/gen3-frlg)")]
         DB[("Postgres: usuários e auditoria")]
     end
 
@@ -137,10 +137,10 @@ Excelente matchup + Inacessível = Não pode ser recomendado
 
 ## 8. Dados do jogo
 
-Os dados do jogo são estáticos e ficam num **pacote de dados Gen III versionado no repositório** (`data/gen3-frlg/`), gerado por `tools/PokeBattle.DataImporter`. A API **não** chama a PokeAPI em runtime.
+Os dados do jogo são estáticos e ficam num **pacote de dados Gen III versionado no repositório** (`backend/data/gen3-frlg/`), gerado por `backend/tools/PokeBattle.DataImporter`. A API **não** chama a PokeAPI em runtime.
 
 - **Vem da PokeAPI (importado e normalizado):** espécies, base stats, tipos, habilidades, golpes, learnsets (`version_group = firered-leafgreen`) e encontros por área. A PokeAPI traz, por slot de encontro e versão, `method`, `min_level`, `max_level` e `chance`.
-- **Curado à mão (`data/curated/progression.json`):** ordem de progressão das áreas, requisitos de cada área (insígnia, HM, item), presentes/estáticos/trocas e ponto de obtenção de cada TM/HM.
+- **Curado à mão (`backend/data/curated/progression.json`):** ordem de progressão das áreas, requisitos de cada área (insígnia, HM, item), presentes/estáticos/trocas e ponto de obtenção de cada TM/HM.
 
 ```
 RouteEncounters    Route, Pokemon, EncounterMethod, MinLevel, MaxLevel, Chance, Version
@@ -165,9 +165,9 @@ A PokeAPI devolve dados modernos. Antes de chegar ao `Core`, todo dado passa pel
 
 ### Pacote gerado e progressão curada
 
-`data/gen3-frlg/` tem quatro arquivos: `species.json` (tipos, base stats, habilidades, taxa de captura e learnset FRLG), `moves.json`, `encounters.json` (slots por área e versão, com o método da PokeAPI: `walk`, `surf`, `gift`, `npc-trade`...) e `progression.json` (cópia validada do curado). Presentes e trocas já vêm da PokeAPI como encontros (`gift`, `npc-trade`).
+`backend/data/gen3-frlg/` tem quatro arquivos: `species.json` (tipos, base stats, habilidades, taxa de captura e learnset FRLG), `moves.json`, `encounters.json` (slots por área e versão, com o método da PokeAPI: `walk`, `surf`, `gift`, `npc-trade`...) e `progression.json` (cópia validada do curado). Presentes e trocas já vêm da PokeAPI como encontros (`gift`, `npc-trade`).
 
-`data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
+`backend/data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
 
 ## 9. BattleObjective
 
@@ -372,6 +372,8 @@ Todos os cálculos são determinísticos quando o RNG é controlado pela políti
 6. **Dados do jogo como pacote estático.** Gerado offline a partir da PokeAPI e versionado. API determinística, sem dependência externa em produção, e mudança de dado sempre passa por PR.
 
 ## 19. Estrutura de projeto
+
+Tudo abaixo fica em `backend/`; o frontend fica em `frontend/`.
 
 ```
 src/

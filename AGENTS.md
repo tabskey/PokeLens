@@ -25,16 +25,20 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 ## Estrutura esperada
 
 ```
-/src
-  /PokeBattle.Core            Battles/, Damage/, Stats/, Types/, Capture/
-  /PokeBattle.Application     Battles/PredictBattleOutcome/, DTOs
-  /PokeBattle.Infrastructure  PokeApi/, Persistence/, Routes/, Encounters/, Moves/, Auditing/
-  /PokeBattle.Api             Endpoints/, Contracts/
-/tests
-  /PokeBattle.Core.Tests
-  /PokeBattle.Application.Tests
-  /PokeBattle.IntegrationTests
-/frontend                     React + Vite
+/backend                        .NET: PokeBattle.slnx, Directory.*.props, Dockerfile
+  /src
+    /PokeBattle.Core            Battles/, Damage/, Stats/, Types/, Capture/
+    /PokeBattle.Application     Battles/PredictBattleOutcome/, GameData/
+    /PokeBattle.Infrastructure  GameData/, Persistence/, Auditing/
+    /PokeBattle.Api             Endpoints/
+  /tests
+    /PokeBattle.Core.Tests
+    /PokeBattle.Application.Tests
+    /PokeBattle.DataImporter.Tests
+    /PokeBattle.IntegrationTests
+  /tools/PokeBattle.DataImporter
+  /data                         curated/ (à mão), gen3-frlg/ (gerado)
+/frontend                       React + Vite
 /docs                         arquitetura.md, fases.md, roadmap.md, PLANO.md, validacao-dano.md, validacao-captura.md, decisoes-cenarios.md, decisoes-simulacao.md
 ```
 
@@ -46,7 +50,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 4. **Progressão é filtro de validade.** Pokémon ou golpe inacessível é descartado antes da simulação; nunca recomendar por matchup excelente.
 5. **Captura é domínio próprio.** Usar a fórmula real da Gen III (X → Y → `(Y/65536)^4`) com **aritmética inteira e truncamento a cada etapa**. Nunca usar `X/255` como probabilidade.
 6. **Sem precisão falsa.** Mostrar faixa (`79%–81%`) em vez de ponto (`80.17%`) quando o valor não é uma probabilidade calculada. Faixa de dano **não** é probabilidade de vitória. Chance por bola e chance acumulada são métricas distintas.
-7. **A API não chama a PokeAPI em runtime.** Dados do jogo vêm do pacote versionado em `data/gen3-frlg/`, gerado por `tools/PokeBattle.DataImporter`. Encontros e níveis por slot vêm da PokeAPI via importador; progressão, presentes/trocas e obtenção de TM/HM vêm de `data/curated/progression.json`. Nunca editar `data/gen3-frlg/` à mão.
+7. **A API não chama a PokeAPI em runtime.** Dados do jogo vêm do pacote versionado em `backend/data/gen3-frlg/`, gerado por `backend/tools/PokeBattle.DataImporter`. Encontros e níveis por slot vêm da PokeAPI via importador; progressão, presentes/trocas e obtenção de TM/HM vêm de `backend/data/curated/progression.json`. Nunca editar `backend/data/gen3-frlg/` à mão.
 8. **Normalização Gen III** no importador: ignorar `damage_class`, aplicar `past_values`, `past_types` e `past_abilities`, descartar hidden abilities, corrigir base stats alterados na Gen VI.
 9. **Ordem das operações e truncamentos** das fórmulas de stat e dano seguem a Gen III; não "simplificar" arredondamentos.
 10. Natureza, IV e habilidade só são eixo de incerteza para Pokémon selvagens/estimados. Dados `Known` ou `UserProvided` não variam entre cenários.
@@ -68,10 +72,10 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 
 ## Comandos
 
-- Backend: `dotnet build`, `dotnet test`, `dotnet run --project src/PokeBattle.Api`
-- Frontend: `npm install`, `npm run dev`, `npm run build`
-- Ambiente completo: `docker compose up --build`
-- Dados: `dotnet run --project tools/PokeBattle.DataImporter`
+- Backend (dentro de `backend/`): `dotnet build`, `dotnet test`, `dotnet run --project src/PokeBattle.Api`
+- Frontend (dentro de `frontend/`): `npm install`, `npm run dev`, `npm run build`
+- Ambiente completo (na raiz): `docker compose up --build`
+- Dados (dentro de `backend/`): `dotnet run --project tools/PokeBattle.DataImporter`
 
 ## Fora de escopo da V1 (não implementar sem pedido explícito)
 
