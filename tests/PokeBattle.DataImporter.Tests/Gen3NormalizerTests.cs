@@ -91,6 +91,23 @@ public class Gen3NormalizerTests
     }
 
     [Fact]
+    public void NormalizeMove_MultiHit_IsExcluded()
+    {
+        // Bullet Seed hits 2 to 5 times; Gen III power 10 (25 from Gen V on).
+        var bulletSeed = Parse<MoveResponse>("""
+            {
+              "id": 331, "name": "bullet-seed", "power": 25, "accuracy": 100, "pp": 30,
+              "type": { "name": "grass", "url": "https://pokeapi.co/api/v2/type/12/" },
+              "past_values": [],
+              "meta": { "crit_rate": 0, "min_hits": 2, "max_hits": 5 },
+              "machines": []
+            }
+            """);
+
+        Assert.Null(Gen3Normalizer.NormalizeMove(bulletSeed, VersionGroupOrder, machine: null));
+    }
+
+    [Fact]
     public void NormalizePokemon_Butterfree_DropsHiddenAbilityAndUsesGen3BaseStats()
     {
         var butterfree = Parse<PokemonResponse>("""

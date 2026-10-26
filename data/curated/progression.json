@@ -27,7 +27,6 @@
   ],
   "machines": [
     { "name": "tm39", "milestone": "boulder-badge" },
-    { "name": "tm09", "milestone": "boulder-badge" },
     { "name": "tm46", "milestone": "boulder-badge" },
     { "name": "tm28", "milestone": "boulder-badge" },
     { "name": "tm43", "milestone": "boulder-badge" },

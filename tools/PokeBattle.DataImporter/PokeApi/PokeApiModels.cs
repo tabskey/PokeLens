@@ -52,7 +52,7 @@ internal sealed record MoveResponse(
 
 internal sealed record PastMoveValues(int? Power, int? Accuracy, int? Pp, NamedResource? Type, NamedResource VersionGroup);
 
-internal sealed record MoveMeta(int CritRate);
+internal sealed record MoveMeta(int CritRate, int? MaxHits);
 
 internal sealed record MachineEntry(NamedResource Machine, NamedResource VersionGroup);
 

@@ -17,9 +17,15 @@ internal static class Gen3Normalizer
     public static readonly string[] Versions = ["firered", "leafgreen"];
 
     /// <param name="versionGroupOrder">PokeAPI "order" of each version group, to place past_values in time.</param>
-    /// <returns>Null when the move has no fixed base power in Gen III (status or variable power).</returns>
+    /// <returns>Null when the move has no fixed base power in Gen III (status, variable power or multi-hit).</returns>
     public static MoveData? NormalizeMove(MoveResponse move, IReadOnlyDictionary<string, int> versionGroupOrder, string? machine)
     {
+        // Multi-hit moves (Double Kick, Bullet Seed, Beat Up...) are out of scope for the V1 damage calculator.
+        if (move.Meta?.MaxHits > 1)
+        {
+            return null;
+        }
+
         var frlgOrder = versionGroupOrder[VersionGroup];
         var past = move.PastValues
             .Where(p => versionGroupOrder[p.VersionGroup.Name] >= frlgOrder)
