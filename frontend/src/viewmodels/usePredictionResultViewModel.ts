@@ -12,6 +12,7 @@ import {
   pokemonName,
   rankingLabels,
   scenarioLabels,
+  spriteUrl,
 } from '../models/labels'
 
 export type Tone = 'good' | 'neutral' | 'bad'
@@ -52,6 +53,7 @@ export interface ScenarioView {
 
 export interface CandidateView {
   name: string
+  sprite: string
   types: PokemonType[]
   where: string
   scenarios: ScenarioView[]
@@ -59,6 +61,7 @@ export interface CandidateView {
 
 export interface ResultView {
   target: string
+  targetSprite: string
   targetTypes: PokemonType[]
   targetLevels: string
   objective: string
@@ -112,6 +115,7 @@ function toCatchView(plan: CatchResult): CatchView {
 export function toResultView(response: PredictResponse): ResultView {
   return {
     target: pokemonName(response.target),
+    targetSprite: spriteUrl(response.targetId),
     targetTypes: response.targetTypes,
     targetLevels: `Nv. ${range(response.targetMinLevel, response.targetMaxLevel)}`,
     objective: objectiveLabels[response.objective],
@@ -119,6 +123,7 @@ export function toResultView(response: PredictResponse): ResultView {
     isCatch: response.objective === 'Catch',
     candidates: response.candidates.map((candidate) => ({
       name: pokemonName(candidate.pokemon),
+      sprite: spriteUrl(candidate.id),
       types: candidate.types,
       where: `${areaName(candidate.area)} · Nv. ${range(candidate.minLevel, candidate.maxLevel)} · ${methodLabel(candidate.method)}`,
       scenarios: candidate.scenarios.map((scenario) => ({

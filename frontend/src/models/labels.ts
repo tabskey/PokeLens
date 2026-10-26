@@ -79,3 +79,10 @@ export const areaName = (slug: string): string =>
   titleCase(slug.replace(/^kanto-/, '').replace(/-area$/, '').split('-'))
 
 export const moveName = (slug: string): string => titleCase(slug.split('-'))
+
+/**
+ * FireRed/LeafGreen front sprite from the PokeAPI sprites repository. Loaded by the browser; the
+ * backend never calls PokeAPI at runtime.
+ */
+export const spriteUrl = (id: number): string =>
+  `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/${id}.png`

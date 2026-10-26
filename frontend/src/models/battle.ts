@@ -57,6 +57,8 @@ export interface ScenarioResult {
 }
 
 export interface CandidateResult {
+  /** National Pokédex number. */
+  id: number
   pokemon: string
   types: PokemonType[]
   area: string
@@ -67,6 +69,7 @@ export interface CandidateResult {
 }
 
 export interface PredictResponse {
+  targetId: number
   target: string
   targetTypes: PokemonType[]
   targetMinLevel: number

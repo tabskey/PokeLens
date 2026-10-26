@@ -412,6 +412,7 @@ src/
 
 - **Organização:** MVVM com Atomic Design. As Views só recebem dados prontos do ViewModel; `pages/` liga os dois.
 - **Opções do formulário:** vêm de `GET /api/v1/game-data/options?version=`, que traz os marcos e as áreas com os Pokémon de cada uma. O formulário só oferece as áreas liberadas no marco escolhido, o mesmo filtro que o backend aplica aos candidatos.
+- **Sprites:** o navegador carrega os sprites da FireRed/LeafGreen do repositório de sprites da PokeAPI (`PokeAPI/sprites`, `versions/generation-iii/firered-leafgreen/{id}.png`), usando o número da Pokédex que a API devolve. A API continua sem chamar a PokeAPI em runtime. Se a imagem não carregar, o card mostra as iniciais.
 - **Containers:** em produção, o nginx (imagem não-root) serve a SPA e faz proxy de `/api` para o serviço `api`. Em dev, o Vite faz o proxy para `localhost:5000`.
 
 ## 20. Fluxo completo

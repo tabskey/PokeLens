@@ -5,7 +5,7 @@ import { TypeBadge } from '../atoms/TypeBadge'
 export function TargetSummary({ result }: { result: ResultView }) {
   return (
     <div className="flex items-center gap-4 rounded-[10px] border border-line bg-panel p-[18px]">
-      <Avatar name={result.target} size="lg" />
+      <Avatar name={result.target} src={result.targetSprite} size="lg" />
       <div>
         <p className="text-[13px] text-muted">Alvo selvagem · objetivo: {result.objective}</p>
         <h3 className="text-lg font-bold">

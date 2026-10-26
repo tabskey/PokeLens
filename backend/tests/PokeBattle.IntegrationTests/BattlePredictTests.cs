@@ -36,6 +36,7 @@ public class BattlePredictTests(WebApplicationFactory<Program> factory) : IClass
             Assert.Equal(["Pessimistic", "Neutral", "Optimistic"], scenarios);
         });
         Assert.Equal("Pessimistic", body.RootElement.GetProperty("rankedBy").GetString());
+        Assert.Equal(16, body.RootElement.GetProperty("targetId").GetInt32());
     }
 
     [Fact]

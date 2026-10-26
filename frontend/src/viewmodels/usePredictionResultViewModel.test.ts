@@ -8,6 +8,7 @@ describe('toResultView', () => {
     const view = toResultView(response())
 
     expect(view.target).toBe('Geodude')
+    expect(view.targetSprite).toBe('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/firered-leafgreen/74.png')
     expect(view.targetLevels).toBe('Nv. 7–9')
     expect(view.rankedBy).toBe('Equilibrado')
     const [candidate] = view.candidates

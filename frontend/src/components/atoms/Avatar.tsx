@@ -1,11 +1,18 @@
-/** Initials in a tile: the data package has no sprites yet. */
-export function Avatar({ name, size = 'md' }: { name: string; size?: 'md' | 'lg' }) {
+import { useState } from 'react'
+
+const sizes = { md: 'size-14 text-xs', lg: 'size-20 text-base' }
+
+/** The Pokémon sprite; falls back to the name's initials when the image cannot load. */
+export function Avatar({ name, src, size = 'md' }: { name: string; src?: string; size?: 'md' | 'lg' }) {
+  const [failed, setFailed] = useState(false)
+
   return (
-    <div
-      aria-hidden="true"
-      className={`grid shrink-0 place-items-center rounded-lg border border-line bg-[#f1ede4] font-pixel text-ink ${size === 'lg' ? 'size-20 text-base' : 'size-14 text-xs'}`}
-    >
-      {name.slice(0, 2).toUpperCase()}
+    <div className={`grid shrink-0 place-items-center rounded-lg border border-line bg-[#f1ede4] font-pixel text-ink ${sizes[size]}`}>
+      {src && !failed ? (
+        <img src={src} alt={name} className="size-full object-contain [image-rendering:pixelated]" onError={() => setFailed(true)} />
+      ) : (
+        <span aria-hidden="true">{name.slice(0, 2).toUpperCase()}</span>
+      )}
     </div>
   )
 }

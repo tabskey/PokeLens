@@ -17,7 +17,9 @@ public sealed record PredictBattleOutcomeRequest(
     BattleObjective Objective,
     ScenarioKind Scenario);
 
+/// <param name="TargetId">National Pokédex number, e.g. for the frontend to show the sprite.</param>
 public sealed record PredictBattleOutcomeResponse(
+    int TargetId,
     string Target,
     IReadOnlyList<PokemonType> TargetTypes,
     int TargetMinLevel,
@@ -26,8 +28,9 @@ public sealed record PredictBattleOutcomeResponse(
     ScenarioKind RankedBy,
     IReadOnlyList<CandidateResult> Candidates);
 
-/// <summary>A recommended Pokémon and where the player gets it.</summary>
+/// <summary>A recommended Pokémon and where the player gets it. Id is the National Pokédex number.</summary>
 public sealed record CandidateResult(
+    int Id,
     string Pokemon,
     IReadOnlyList<PokemonType> Types,
     string Area,

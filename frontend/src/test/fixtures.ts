@@ -38,6 +38,7 @@ const scenario = (kind: ScenarioKind, withCatch: boolean): ScenarioResult => ({
 })
 
 export const candidate = (withCatch = false): CandidateResult => ({
+  id: 56,
   pokemon: 'mankey',
   types: ['Fighting'],
   area: 'kanto-route-22-area',
@@ -48,6 +49,7 @@ export const candidate = (withCatch = false): CandidateResult => ({
 })
 
 export const response = (objective: 'Defeat' | 'Catch' = 'Defeat'): PredictResponse => ({
+  targetId: 74,
   target: 'geodude',
   targetTypes: ['Rock', 'Ground'],
   targetMinLevel: 7,

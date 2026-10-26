@@ -129,6 +129,18 @@ HP restante → Capture Rate → Chance por bola → P(captura ≤ n bolas)
 
 Identifica não só o melhor Pokémon para capturar, mas a melhor estratégia de captura.
 
+### Fechamento da V4: sprites hospedados no projeto
+
+Hoje o navegador carrega os sprites da FRLG de `raw.githubusercontent.com` (repositório `PokeAPI/sprites`, o mesmo link que a PokeAPI devolve). Se o GitHub estiver fora do ar ou bloqueado, o card mostra as iniciais.
+
+Ao final da V4, hospedar os sprites junto com o app, como já acontece com os dados do jogo:
+- o `DataImporter` baixa os 386 PNGs da FRLG uma vez;
+- os PNGs são versionados e servidos pelo nginx do frontend (cerca de 1 a 2 MB);
+- o `data-check` passa a cobrir os sprites;
+- o `spriteUrl` em `frontend/src/models/labels.ts` aponta para o caminho local.
+
+Resultado: nenhuma dependência externa em runtime.
+
 ---
 
 ## V5 — Outras gerações

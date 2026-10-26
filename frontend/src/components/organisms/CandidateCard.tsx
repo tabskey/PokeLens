@@ -8,7 +8,7 @@ export function CandidateCard({ rank, candidate }: { rank: number; candidate: Ca
     <article className="rounded-[10px] border border-line bg-panel p-[18px]" aria-label={`${rank}º ${candidate.name}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <Avatar name={candidate.name} />
+          <Avatar name={candidate.name} src={candidate.sprite} />
           <div>
             <h4 className="text-base font-bold">
               <span className="text-muted">{rank}.</span> {candidate.name}
