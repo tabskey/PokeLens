@@ -54,6 +54,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 8. **Normalização Gen III** no importador: ignorar `damage_class`, aplicar `past_values`, `past_types` e `past_abilities`, descartar hidden abilities, corrigir base stats alterados na Gen VI.
 9. **Ordem das operações e truncamentos** das fórmulas de stat e dano seguem a Gen III; não "simplificar" arredondamentos.
 10. Natureza, IV e habilidade só são eixo de incerteza para Pokémon selvagens/estimados. Dados `Known` ou `UserProvided` não variam entre cenários.
+11. **Alvo parte do Pokémon, não da rota.** Busca única com sugestões de Pokémon e rotas; só pares (área, método) liberados no marco; uma opção → segue direto, várias → o jogador escolhe vendo método, nível e chance. Itens de encontro (varas, Surf) são inferidos da progressão, nunca perguntados. Detalhes em `docs/arquitetura.md` §7.1.
 
 ## Frontend (`frontend/`)
 

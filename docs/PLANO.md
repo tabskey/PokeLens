@@ -21,29 +21,29 @@ Plano para executar no Claude Code a partir do repositório `tabskey/PokeLens`. 
 
 ### Inventário
 
-| Área | Conteúdo | Situação |
-|---|---|---|
-| Projeto | Um único Web API (`PokeLens`), **net9.0** | Vira 4 projetos em .NET 10 |
-| Endpoints | `GET api/poke/species/{name}`; `GET api/pokemon/{name}/pokelocation/generation-iv`; `.../game/{game}` | Focados em HG/SS (Gen IV) |
-| Serviços | `PokeApiService`, `PokeLocationService` (typed `HttpClient`) | Padrão aproveitável |
-| Mappers | `GameGenerationMapper`; `HeartGoldSoulSilverMapper` (121 áreas numeradas) | Específicos de Gen IV |
-| Modelos | `PokeSpecies`, `PokeLocation`, `VersionDetail`, `EncounterDetail` | Ignoram `min_level` / `max_level` |
-| Testes | xUnit + Moq + FluentAssertions, `StubHttpMessageHandler`, ~675 linhas | Utilitários aproveitáveis |
-| Infra | Sem Dockerfile, sem CI, sem health check | Tudo a criar |
+| Área      | Conteúdo                                                                                              | Situação                          |
+| --------- | ----------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Projeto   | Um único Web API (`PokeLens`), **net9.0**                                                             | Vira 4 projetos em .NET 10        |
+| Endpoints | `GET api/poke/species/{name}`; `GET api/pokemon/{name}/pokelocation/generation-iv`; `.../game/{game}` | Focados em HG/SS (Gen IV)         |
+| Serviços  | `PokeApiService`, `PokeLocationService` (typed `HttpClient`)                                          | Padrão aproveitável               |
+| Mappers   | `GameGenerationMapper`; `HeartGoldSoulSilverMapper` (121 áreas numeradas)                             | Específicos de Gen IV             |
+| Modelos   | `PokeSpecies`, `PokeLocation`, `VersionDetail`, `EncounterDetail`                                     | Ignoram `min_level` / `max_level` |
+| Testes    | xUnit + Moq + FluentAssertions, `StubHttpMessageHandler`, ~675 linhas                                 | Utilitários aproveitáveis         |
+| Infra     | Sem Dockerfile, sem CI, sem health check                                                              | Tudo a criar                      |
 
 ### Problemas encontrados
 
-| # | Problema | Evidência | Impacto |
-|---|---|---|---|
-| 1 | Erro de DI em runtime | `PokeController` injeta a classe concreta `PokeLocationService`; `Program.cs` só registra `AddHttpClient<IPokeAPILocationService, PokeLocationService>` | O endpoint de species lança `InvalidOperationException` ao resolver o controller. Testes não pegam porque instanciam na mão. A dependência nem é usada |
-| 2 | Toggle HG/SS não filtra | Em `GetPokemonLocationsGenerationIV`, `gameName` é calculado e descartado; a busca usa `"generation-iv"`. `exclusiveTo` também não é usado | Resposta diz "HeartGold" mas traz locais dos dois jogos |
-| 3 | Filtros do Swagger mortos | Procuram parâmetros `version` e `progressDisplayName`, que não existem (o real é `isHeartGold`) | `HeartGoldSoulSilverMapper` só é usado por código que nunca roda |
-| 4 | Filtro por geração, não por versão | `GetGamesByGeneration("generation-iii")` inclui Ruby, Sapphire, Emerald, Colosseum e XD | Inútil para FRLG, que precisa filtrar por `firered` / `leafgreen` |
-| 5 | Exceções como controle de fluxo | `catch (Exception)` → 404; detecção de 404 por `ex.Message.Contains("404")` | Falha de rede vira "não encontrado" |
-| 6 | Configuração duplicada | `BaseAddress` em `Program.cs` e no construtor do serviço | Fonte de divergência |
-| 7 | Dependência inconsistente | `System.Text.Json 10.0.0-preview` em projeto net9 | Build frágil |
-| 8 | Artefato versionado | `TestResults/.../coverage.cobertura.xml` no git | Ruído em diff |
-| 9 | Nomes inconsistentes | `pokeController.cs`, pasta `mappers/`, `IPokeAPIBaseService.cs` contendo `IPokeApiService` | Menor |
+| #   | Problema                           | Evidência                                                                                                                                               | Impacto                                                                                                                                                |
+| --- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Erro de DI em runtime              | `PokeController` injeta a classe concreta `PokeLocationService`; `Program.cs` só registra `AddHttpClient<IPokeAPILocationService, PokeLocationService>` | O endpoint de species lança `InvalidOperationException` ao resolver o controller. Testes não pegam porque instanciam na mão. A dependência nem é usada |
+| 2   | Toggle HG/SS não filtra            | Em `GetPokemonLocationsGenerationIV`, `gameName` é calculado e descartado; a busca usa `"generation-iv"`. `exclusiveTo` também não é usado              | Resposta diz "HeartGold" mas traz locais dos dois jogos                                                                                                |
+| 3   | Filtros do Swagger mortos          | Procuram parâmetros `version` e `progressDisplayName`, que não existem (o real é `isHeartGold`)                                                         | `HeartGoldSoulSilverMapper` só é usado por código que nunca roda                                                                                       |
+| 4   | Filtro por geração, não por versão | `GetGamesByGeneration("generation-iii")` inclui Ruby, Sapphire, Emerald, Colosseum e XD                                                                 | Inútil para FRLG, que precisa filtrar por `firered` / `leafgreen`                                                                                      |
+| 5   | Exceções como controle de fluxo    | `catch (Exception)` → 404; detecção de 404 por `ex.Message.Contains("404")`                                                                             | Falha de rede vira "não encontrado"                                                                                                                    |
+| 6   | Configuração duplicada             | `BaseAddress` em `Program.cs` e no construtor do serviço                                                                                                | Fonte de divergência                                                                                                                                   |
+| 7   | Dependência inconsistente          | `System.Text.Json 10.0.0-preview` em projeto net9                                                                                                       | Build frágil                                                                                                                                           |
+| 8   | Artefato versionado                | `TestResults/.../coverage.cobertura.xml` no git                                                                                                         | Ruído em diff                                                                                                                                          |
+| 9   | Nomes inconsistentes               | `pokeController.cs`, pasta `mappers/`, `IPokeAPIBaseService.cs` contendo `IPokeApiService`                                                              | Menor                                                                                                                                                  |
 
 ### Trabalho fora da `main`
 
@@ -78,6 +78,7 @@ Endpoints, exclusivos, filtros de Swagger e mapper de HG/SS. Ficam no histórico
 Os documentos anteriores diziam que a PokeAPI não fornece níveis de encontro por rota. **Estava errado.** Em `location-area/kanto-route-1-area`, para `firered` e `leafgreen`, cada slot traz `method`, `min_level`, `max_level` e `chance` (ex.: Pidgey, `walk`, nível 2–5).
 
 Dado próprio fica restrito a:
+
 - ordem de progressão das áreas
 - requisitos de progressão (insígnias, HMs, Silph Scope, Poké Flute)
 - Pokémon de presente, estáticos e trocas in-game
@@ -85,14 +86,14 @@ Dado próprio fica restrito a:
 
 ### Armadilhas (bloqueantes para o `Core`)
 
-| Dado da PokeAPI | Problema | Tratamento |
-|---|---|---|
-| `move.damage_class` | Classificação moderna. `bite` vem **Physical**; na Gen III golpes Dark são **especiais** | Ignorar; tabela tipo → categoria da Gen III |
-| `move.power` / `type` | Valores atuais | Aplicar `past_values` pelo version group (`bite` tem entrada em `gold-silver` com tipo Normal) |
-| `pokemon.types` | Tipos atuais (Fairy) | Aplicar `past_types` |
-| Base stats | Alguns mudaram na Gen VI (ex.: Butterfree). Não confirmei se existe `past_stats` | Verificar; se não houver, tabela de overrides Gen III |
-| `pokemon.abilities` | Inclui hidden abilities | Descartar `is_hidden` e aplicar `past_abilities` |
-| Learnset | Todos os jogos | Filtrar `version_group = firered-leafgreen` |
+| Dado da PokeAPI       | Problema                                                                                 | Tratamento                                                                                     |
+| --------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `move.damage_class`   | Classificação moderna. `bite` vem **Physical**; na Gen III golpes Dark são **especiais** | Ignorar; tabela tipo → categoria da Gen III                                                    |
+| `move.power` / `type` | Valores atuais                                                                           | Aplicar `past_values` pelo version group (`bite` tem entrada em `gold-silver` com tipo Normal) |
+| `pokemon.types`       | Tipos atuais (Fairy)                                                                     | Aplicar `past_types`                                                                           |
+| Base stats            | Alguns mudaram na Gen VI (ex.: Butterfree). Não confirmei se existe `past_stats`         | Verificar; se não houver, tabela de overrides Gen III                                          |
+| `pokemon.abilities`   | Inclui hidden abilities                                                                  | Descartar `is_hidden` e aplicar `past_abilities`                                               |
+| Learnset              | Todos os jogos                                                                           | Filtrar `version_group = firered-leafgreen`                                                    |
 
 Regra: **todo dado da PokeAPI passa por um normalizador Gen III antes de chegar ao `Core`.**
 
@@ -102,16 +103,17 @@ Regra: **todo dado da PokeAPI passa por um normalizador Gen III antes de chegar 
 
 ### 4.1 Dados do jogo como pacote estático, não chamada em runtime
 
-| | PokeAPI em runtime + cache | Pacote de dados gerado (recomendado) |
-|---|---|---|
-| Determinismo | Depende de API externa | Total; o dado está no commit |
-| Testes | Precisam de stub em todo lugar | Testes leem o pacote real |
-| Produção | Latência, rate limit, indisponibilidade | Zero dependência externa |
-| Fair use da PokeAPI | Chamadas por usuário | Uma importação por mudança de dado |
-| Auditoria de dado | Difícil saber o que mudou | Diff no PR |
-| Custo | Cache, retry, circuit breaker | Uma ferramenta CLI |
+|                     | PokeAPI em runtime + cache              | Pacote de dados gerado (recomendado) |
+| ------------------- | --------------------------------------- | ------------------------------------ |
+| Determinismo        | Depende de API externa                  | Total; o dado está no commit         |
+| Testes              | Precisam de stub em todo lugar          | Testes leem o pacote real            |
+| Produção            | Latência, rate limit, indisponibilidade | Zero dependência externa             |
+| Fair use da PokeAPI | Chamadas por usuário                    | Uma importação por mudança de dado   |
+| Auditoria de dado   | Difícil saber o que mudou               | Diff no PR                           |
+| Custo               | Cache, retry, circuit breaker           | Uma ferramenta CLI                   |
 
 Como fica:
+
 - `tools/PokeBattle.DataImporter` (console .NET): baixa da PokeAPI, normaliza para Gen III, junta com o JSON curado de progressão e grava `data/gen3-frlg/*.json`.
 - `PokeBattle.Infrastructure` lê esses JSONs (embedded resource ou arquivo copiado na imagem) e expõe repositórios em memória.
 - A esteira tem um job que roda o importador e **falha se o resultado diferir do que está commitado** (dado nunca muda sem PR).
@@ -135,11 +137,11 @@ Isso remove do V1: cache distribuído, retry/circuit breaker para PokeAPI e tabe
 
 ### 5.1 Containers
 
-| Imagem | Base | Observações |
-|---|---|---|
-| `api` | build: `mcr.microsoft.com/dotnet/sdk:10.0`; runtime: `mcr.microsoft.com/dotnet/aspnet:10.0` (ou variante `-noble-chiseled`) | Multi-stage, usuário não-root, `HEALTHCHECK`, pacote de dados Gen III copiado na imagem |
-| `web` | build: `node` LTS; runtime: `nginx` alpine | Multi-stage, SPA servida estática, proxy `/api` para o container da API |
-| `db` | Postgres | Só a partir da Etapa 9 |
+| Imagem | Base                                                                                                                        | Observações                                                                             |
+| ------ | --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `api`  | build: `mcr.microsoft.com/dotnet/sdk:10.0`; runtime: `mcr.microsoft.com/dotnet/aspnet:10.0` (ou variante `-noble-chiseled`) | Multi-stage, usuário não-root, `HEALTHCHECK`, pacote de dados Gen III copiado na imagem |
+| `web`  | build: `node` LTS; runtime: `nginx` alpine                                                                                  | Multi-stage, SPA servida estática, proxy `/api` para o container da API                 |
+| `db`   | Postgres                                                                                                                    | Só a partir da Etapa 9                                                                  |
 
 `docker-compose.yml` sobe o ambiente completo local; `docker-compose.override.yml` para desenvolvimento (hot reload). Um `.dockerignore` por contexto. Tags de imagem fixas por versão, nunca `latest` em base.
 
@@ -162,6 +164,7 @@ tag v*
 ```
 
 Complementos:
+
 - **Branch protection** em `main`: PR obrigatório, checks verdes, sem push direto.
 - **Dependabot** para NuGet, npm, Docker e Actions.
 - **Conventional Commits** + template de PR com checklist (testes, docs, `AGENTS.md` respeitado).
@@ -372,15 +375,49 @@ exclusivo de leafgreen não aparece em firered.
 
 ---
 
-> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 8 = `X015Frontend`.
+> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 7b = `X015TargetSearch`, Etapa 8 = `X016Frontend`.
 
-### Etapa 8 — Frontend (`X015Frontend`) · G ✅
+### Etapa 7b — Busca e seleção do alvo (`X015TargetSearch`) · M
+
+Decisões em `docs/arquitetura.md` §7.1 e `docs/fases.md` Fase 7. Vem antes do frontend porque ele consome este endpoint.
+
+**Prompt:**
+
+```
+Implemente a seleção do alvo a partir do Pokémon, conforme docs/arquitetura.md §7.1:
+
+1. progression.json: encounterMethods ganha os marcos de old-rod, good-rod, super-rod e surf
+   (conferir onde cada item é obtido em FR/LG; só até onde a progressão já cobre) e cada área
+   ganha displayName. O importador e a API continuam recusando referências inexistentes.
+2. Application: caso de uso ListTargetsUseCase(version, milestone) que devolve, por espécie, as
+   opções de encontro (area, displayName, method, minLevel, maxLevel, chance) apenas com áreas
+   E métodos liberados no marco. Só métodos selvagens (walk, surf, varas, rock-smash); gift,
+   static e npc-trade ficam fora da V1.
+3. Api: GET /api/v1/targets?version=&milestone= com validação e ProblemDetails.
+4. PredictBattleOutcomeRequest recebe Method. TargetEncounters filtra por área E método; a faixa
+   de nível do alvo vem desse par. Área ou método não liberados no marco → erro de validação.
+
+Testes: alvo só em área futura não aparece; método antes do marco do item não aparece; Pokémon
+em duas áreas liberadas traz duas opções; mesma área com grama e vara traz duas opções com faixas
+distintas; predict com método não liberado devolve 400.
+```
+
+**Aceite:** testes passam; a Etapa 8 consegue montar a busca só com `GET /targets` e `POST /battles/predict`.
+
+**Não fazer:** perguntar ao jogador quais itens ele tem; endpoint de busca no servidor por tecla (o filtro é no frontend); trocas e presentes como alvo.
+
+---
+
+### Etapa 8 — Frontend (`X016Frontend`) · G
 
 **Prompt:**
 
 ```
 Crie frontend/ com React + Vite + TypeScript consumindo POST /api/v1/battles/predict.
 Telas: versão, progressão, alvo e objetivo; até 5 candidatos com os 3 cenários.
+Alvo (docs/arquitetura.md §7.1): um único campo de busca com autocomplete local sobre GET /api/v1/targets,
+sugestões agrupadas em Pokémon e Rotas. Uma opção liberada → segue direto; várias → lista com tag de
+método (Grama, Surf, Vara Velha, Vara Boa, Super Vara), faixa de nível e chance. Nada de perguntar itens.
 Exibição (docs/arquitetura.md seção 18): categoria em destaque, faixa de dano como detalhe, nunca
 percentual que pareça chance de vitória; para Catch, chance por bola e bolas para 50/90/95/99% separadas.
 Textos em português e inglês (`src/locales/{pt,en}/translation.json`, escritos à mão).
@@ -435,13 +472,13 @@ Não implemente Pokédex pessoal (é V2).
 
 ## 7. Riscos
 
-| Risco | Probabilidade | Mitigação |
-|---|---|---|
-| Números divergentes do jogo (truncamento, ordem de operações, dado moderno) | Alta | Core primeiro, oráculo externo, normalizador Gen III, testes com fonte comentada |
-| `progression.json` incompleto ou errado | Alta | Começar até Cerulean; revisar contra walkthrough; teste que valida que toda área referenciada existe |
-| Escopo crescer antes da V1 (ginásio, Pokédex, turno a turno) | Média | `AGENTS.md` lista o fora de escopo; roadmap separado |
-| PokeAPI mudar formato ou dado | Baixa | Dado é gerado e commitado; `data-check` semanal avisa |
-| Agente "simplificando" fórmulas | Média | Regras explícitas no `AGENTS.md` e revisão do plano dele antes de implementar |
+| Risco                                                                       | Probabilidade | Mitigação                                                                                            |
+| --------------------------------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------------- |
+| Números divergentes do jogo (truncamento, ordem de operações, dado moderno) | Alta          | Core primeiro, oráculo externo, normalizador Gen III, testes com fonte comentada                     |
+| `progression.json` incompleto ou errado                                     | Alta          | Começar até Cerulean; revisar contra walkthrough; teste que valida que toda área referenciada existe |
+| Escopo crescer antes da V1 (ginásio, Pokédex, turno a turno)                | Média         | `AGENTS.md` lista o fora de escopo; roadmap separado                                                 |
+| PokeAPI mudar formato ou dado                                               | Baixa         | Dado é gerado e commitado; `data-check` semanal avisa                                                |
+| Agente "simplificando" fórmulas                                             | Média         | Regras explícitas no `AGENTS.md` e revisão do plano dele antes de implementar                        |
 
 ---
 
