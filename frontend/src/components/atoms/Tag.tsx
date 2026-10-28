@@ -3,9 +3,10 @@ import type { ReactNode } from 'react'
 export type TagTone = 'good' | 'neutral' | 'bad' | 'plain'
 
 const tones: Record<TagTone, string> = {
-  good: 'bg-good text-white',
-  neutral: 'bg-neutral text-ink',
-  bad: 'bg-bad text-white',
+  good: 'bg-good text-on-status',
+  // Yellow needs dark text in both themes.
+  neutral: 'bg-neutral text-[#1f2328]',
+  bad: 'bg-bad text-on-status',
   plain: 'border border-line text-muted',
 }
 

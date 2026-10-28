@@ -58,6 +58,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 ## Frontend (`frontend/`)
 
 - React + Vite + TypeScript estrito, Tailwind v4 (tokens em `src/styles/index.css`), Vitest + Testing Library.
+- **Tema claro/escuro:** cor só por token (`bg-surface`, `text-ink`…), nunca hex ou `white` solto num componente; o escuro redefine os tokens em `index.css` (dois blocos: escolha do jogador e sistema). Ícones com `lucide-react`.
 - **MVVM:**
   - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e nomes do jogo (`labels.ts`);
   - `src/viewmodels/`: hooks `useXViewModel`, com estado, validação e formatação para exibição, sem JSX;

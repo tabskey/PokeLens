@@ -1,7 +1,8 @@
 {
   "app": {
     "version": "Versão do jogo",
-    "language": "Idioma"
+    "language": "Idioma",
+    "darkTheme": "Tema escuro"
   },
   "form": {
     "heading": "SUA BATALHA",

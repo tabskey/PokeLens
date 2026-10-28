@@ -14,7 +14,7 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onC
 export function Select({ options, placeholder, onChange, className = '', ...props }: SelectProps) {
   return (
     <select
-      className={`w-full rounded-lg border border-line bg-white px-2.5 py-2 aria-invalid:border-bad ${className}`}
+      className={`w-full rounded-lg border border-line bg-surface px-2.5 py-2 aria-invalid:border-bad ${className}`}
       onChange={(event) => onChange(event.target.value)}
       {...props}
     >

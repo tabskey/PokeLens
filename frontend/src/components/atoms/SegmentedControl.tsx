@@ -14,7 +14,7 @@ interface SegmentedControlProps<T extends string> {
 }
 
 const variants = {
-  light: 'border-line bg-white font-semibold aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-white',
+  light: 'border-line bg-surface font-semibold aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-bg',
   dark: 'border-white font-pixel text-[9px] text-white',
 }
 

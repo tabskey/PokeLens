@@ -19,7 +19,7 @@ export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
   const featured = scenario.catch ? scenario.catch.hit : attack
 
   return (
-    <section aria-label={t('results.scenarioRegion', { title: scenario.title })} className={`rounded-lg border border-line border-t-4 bg-white p-3 ${borders[scenario.tone]}`}>
+    <section aria-label={t('results.scenarioRegion', { title: scenario.title })} className={`rounded-lg border border-line border-t-4 bg-surface p-3 ${borders[scenario.tone]}`}>
       <h5 className="font-pixel text-[9px] text-muted">{scenario.title.toUpperCase()}</h5>
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <Tag tone={scenario.tone}>{scenario.outcome}</Tag>

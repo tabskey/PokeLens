@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
-/* Tokens from docs/pokebattle-mockup.html */
+/* Tokens from docs/pokebattle-mockup.html; the dark theme below redefines them. */
 @theme {
   --color-bg: #f4f1ea;
   --color-panel: #ffffff;
+  --color-surface: #ffffff;
+  --color-sprite: #f1ede4;
+  --color-header: #1f2328;
   --color-ink: #1f2328;
   --color-muted: #6b6f76;
   --color-line: #e2ddd2;
@@ -11,11 +14,46 @@
   --color-bad: #d9534f;
   --color-neutral: #e0a526;
   --color-good: #2e9e5b;
+  /* Text on good/bad tags: white on the darker light-theme colours, near-black on the brighter dark ones. */
+  --color-on-status: #ffffff;
   --color-firered: #e8613c;
   --color-leafgreen: #4caf50;
   --color-gold: #f5c542;
   --font-sans: Inter, system-ui, sans-serif;
   --font-pixel: "Press Start 2P", monospace;
+}
+
+/* Dark when the player picks it, or when the system is dark and nothing was picked (keep both blocks in sync). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #14171b;
+  --color-panel: #1c2026;
+  --color-surface: #232830;
+  --color-sprite: #2a3039;
+  --color-header: #0b0d10;
+  --color-ink: #e6e8eb;
+  --color-muted: #9aa1aa;
+  --color-line: #343a43;
+  --color-bad: #e5635f;
+  --color-good: #3fb872;
+  --color-on-status: #0b0d10;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #14171b;
+    --color-panel: #1c2026;
+    --color-surface: #232830;
+    --color-sprite: #2a3039;
+    --color-header: #0b0d10;
+    --color-ink: #e6e8eb;
+    --color-muted: #9aa1aa;
+    --color-line: #343a43;
+    --color-bad: #e5635f;
+    --color-good: #3fb872;
+    --color-on-status: #0b0d10;
+  }
 }
 
 body {

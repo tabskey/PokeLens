@@ -1,3 +1,4 @@
+import { Moon, Sun } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 import { useTranslation } from '../../i18n/useTranslation'
@@ -10,6 +11,8 @@ interface PredictorLayoutProps<T extends string, L extends string> {
   languages: Segment<L>[]
   language: L
   onLanguageChange: (language: L) => void
+  dark: boolean
+  onToggleTheme: () => void
   form: ReactNode
   results: ReactNode
 }
@@ -21,6 +24,8 @@ export function PredictorLayout<T extends string, L extends string>({
   languages,
   language,
   onLanguageChange,
+  dark,
+  onToggleTheme,
   form,
   results,
 }: PredictorLayoutProps<T, L>) {
@@ -28,7 +33,7 @@ export function PredictorLayout<T extends string, L extends string>({
 
   return (
     <>
-      <header className="flex flex-wrap items-center justify-between gap-3 bg-ink px-6 py-3.5 text-white">
+      <header className="flex flex-wrap items-center justify-between gap-3 bg-header px-6 py-3.5 text-white">
         <h1 className="font-pixel text-[13px]">
           POKEBATTLE <span className="text-gold">PREDICTOR</span>
         </h1>
@@ -39,6 +44,16 @@ export function PredictorLayout<T extends string, L extends string>({
           <div className="w-24">
             <SegmentedControl label={t('app.language')} variant="dark" options={languages} value={language} onChange={onLanguageChange} />
           </div>
+          <button
+            type="button"
+            aria-label={t('app.darkTheme')}
+            title={t('app.darkTheme')}
+            aria-pressed={dark}
+            onClick={onToggleTheme}
+            className="grid size-[38px] shrink-0 cursor-pointer place-items-center rounded-lg border border-white text-white aria-pressed:bg-white/15"
+          >
+            {dark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
+          </button>
         </div>
       </header>
       <main className="mx-auto my-6 grid max-w-[1180px] gap-5 px-4 md:grid-cols-[320px_1fr]">

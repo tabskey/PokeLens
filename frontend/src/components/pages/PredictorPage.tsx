@@ -2,6 +2,7 @@ import { languages } from '../../i18n/translator'
 import { useTranslation } from '../../i18n/useTranslation'
 import { usePredictionFormViewModel } from '../../viewmodels/usePredictionFormViewModel'
 import { usePredictionResultViewModel } from '../../viewmodels/usePredictionResultViewModel'
+import { useThemeViewModel } from '../../viewmodels/useThemeViewModel'
 import { Spinner } from '../atoms/Spinner'
 import { PredictionForm } from '../organisms/PredictionForm'
 import { ResultsList } from '../organisms/ResultsList'
@@ -13,6 +14,7 @@ export function PredictorPage() {
   const form = usePredictionFormViewModel()
   const result = usePredictionResultViewModel(form.result)
   const { t, language, setLanguage } = useTranslation()
+  const theme = useThemeViewModel()
 
   let results
   if (form.loading) {
@@ -31,6 +33,8 @@ export function PredictorPage() {
       languages={languageOptions}
       language={language}
       onLanguageChange={setLanguage}
+      dark={theme.dark}
+      onToggleTheme={theme.toggleTheme}
       form={<PredictionForm form={form} />}
       results={results}
     />
