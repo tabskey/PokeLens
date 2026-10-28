@@ -6,12 +6,14 @@ namespace PokeBattle.Application.Battles.PredictBattleOutcome;
 
 /// <param name="Target">Species name as in the data package (e.g. "pidgey").</param>
 /// <param name="Area">Location area where the player meets the target (e.g. "kanto-route-1-area").</param>
+/// <param name="Method">Wild encounter method in that area (walk, surf, old-rod...); the target's level range comes from the pair.</param>
 /// <param name="Version">"firered" or "leafgreen".</param>
 /// <param name="Milestone">How far the player is, one of the progression milestones (e.g. "boulder-badge").</param>
 /// <param name="Scenario">Scenario that orders the ranking: Pessimistic (safest), Neutral or Optimistic.</param>
 public sealed record PredictBattleOutcomeRequest(
     string Target,
     string Area,
+    string Method,
     string Version,
     string Milestone,
     BattleObjective Objective,

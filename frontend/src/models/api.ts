@@ -1,4 +1,4 @@
-import type { GameOptions, PredictRequest, PredictResponse, Version } from './battle'
+import type { GameOptions, PredictRequest, PredictResponse, TargetOption, Version } from './battle'
 
 /**
  * A failed API call. `message` is a translation key; `fieldErrors` comes from ValidationProblemDetails
@@ -29,8 +29,13 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   throw new ApiError(response.status === 400 ? 'errors.validation' : 'errors.server', problem?.errors ?? {})
 }
 
-export function getOptions(version: Version): Promise<GameOptions> {
-  return request<GameOptions>(`/api/v1/game-data/options?version=${encodeURIComponent(version)}`)
+export function getOptions(): Promise<GameOptions> {
+  return request<GameOptions>('/api/v1/game-data/options')
+}
+
+export function getTargets(version: Version, milestone: string): Promise<TargetOption[]> {
+  const query = new URLSearchParams({ version, milestone })
+  return request<TargetOption[]>(`/api/v1/targets?${query.toString()}`)
 }
 
 export function postPredict(body: PredictRequest): Promise<PredictResponse> {

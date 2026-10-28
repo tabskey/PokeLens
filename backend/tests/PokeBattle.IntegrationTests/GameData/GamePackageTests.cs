@@ -44,7 +44,7 @@ public class GamePackageTests
         {
             Progression = Package.Progression with
             {
-                Areas = [new Unlock("kanto-route-99-area", "start")],
+                Areas = [new AreaUnlock("kanto-route-99-area", "start", " ")],
                 Machines = [new Unlock("tm39", "earth-badge")],
             },
         };
@@ -53,5 +53,6 @@ public class GamePackageTests
 
         Assert.Contains(errors, e => e.Contains("kanto-route-99-area", StringComparison.Ordinal));
         Assert.Contains(errors, e => e.Contains("earth-badge", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("displayName", StringComparison.Ordinal));
     }
 }

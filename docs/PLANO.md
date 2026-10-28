@@ -379,7 +379,7 @@ exclusivo de leafgreen não aparece em firered.
 
 > **Ordem real:** o frontend (Etapa 8) entrou antes da 7b. Por isso a 7b ficou só no backend e a troca do seletor de área pela busca virou a Etapa 8b.
 
-### Etapa 7b — Busca e seleção do alvo (`X016TargetSearch`) · M — **próxima**
+### Etapa 7b — Busca e seleção do alvo (`X016TargetSearch`) · M — **feita**
 
 Decisões em `docs/arquitetura.md` §7.1 e `docs/fases.md` Fase 7. Só backend; o frontend é a Etapa 8b.
 
@@ -416,7 +416,7 @@ distintas (pacote de teste); predict com método não liberado devolve 400.
 
 ---
 
-### Etapa 8b — Busca do alvo no frontend (`X017TargetSearchUi`) · M
+### Etapa 8b — Busca do alvo no frontend (`X017TargetSearchUi`) · M — **próxima**
 
 O formulário da Etapa 8 escolhe área e depois Pokémon. Esta etapa troca isso pela busca única de `docs/arquitetura.md` §7.1.
 

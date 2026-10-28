@@ -15,6 +15,15 @@ public sealed record GamePackage(
     public const string EncountersFile = "encounters.json";
     public const string ProgressionFile = "progression.json";
 
+    public static readonly IReadOnlyList<string> Versions = ["firered", "leafgreen"];
+
+    /// <summary>
+    /// Methods a target can be met with in V1. Gift, static and trades already come in the package
+    /// but are left out until they are offered as targets (docs/arquitetura.md §7.1).
+    /// </summary>
+    public static readonly IReadOnlySet<string> WildMethods =
+        new HashSet<string>(["walk", "surf", "old-rod", "good-rod", "super-rod", "rock-smash"], StringComparer.Ordinal);
+
     /// <summary>Shared by the importer and the loader so the files round-trip byte for byte.</summary>
     public static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
@@ -22,6 +31,31 @@ public sealed record GamePackage(
         NewLine = "\n",
         Converters = { new JsonStringEnumConverter() },
     };
+
+    /// <summary>Errors for an unknown version or milestone, keyed by request field; empty when both are valid.</summary>
+    public Dictionary<string, string[]> ValidateProgress(string? version, string? milestone)
+    {
+        var errors = new Dictionary<string, string[]>();
+        if (version is null || !Versions.Contains(version))
+        {
+            errors["version"] = ["Versão deve ser 'firered' ou 'leafgreen'."];
+        }
+
+        if (milestone is null || !Progression.Milestones.Contains(milestone))
+        {
+            errors["milestone"] = [$"Ponto de progressão desconhecido. Valores aceitos: {string.Join(", ", Progression.Milestones)}."];
+        }
+
+        return errors;
+    }
+
+    /// <summary>Encounters of the version whose area and method are both unlocked at the milestone.</summary>
+    public IEnumerable<EncounterData> UnlockedEncounters(string version, string milestone)
+    {
+        var areas = Progression.UnlockedAt(Progression.Areas, milestone);
+        var methods = Progression.UnlockedAt(Progression.EncounterMethods, milestone);
+        return Encounters.Where(e => e.Version == version && areas.Contains(e.Area) && methods.Contains(e.Method));
+    }
 
     /// <summary>Every cross-reference must resolve; an empty list means the package is consistent.</summary>
     public IReadOnlyList<string> Validate()
@@ -49,6 +83,9 @@ public sealed record GamePackage(
         CheckUnlocks("encounter method", Progression.EncounterMethods, methodNames);
         CheckUnlocks("area", Progression.Areas, areaNames);
         CheckUnlocks("machine", Progression.Machines, machineNames);
+        errors.AddRange(Progression.Areas
+            .Where(a => string.IsNullOrWhiteSpace(a.DisplayName))
+            .Select(a => $"Progression area '{a.Name}' has no displayName."));
         return errors;
 
         void CheckUnlocks(string kind, IReadOnlyList<Unlock> unlocks, HashSet<string> known)
