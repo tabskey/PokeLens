@@ -58,6 +58,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 ## Frontend (`frontend/`)
 
 - React + Vite + TypeScript estrito, Tailwind v4 (tokens em `src/styles/index.css`), Vitest + Testing Library.
+- **Marca:** `docs/guia-de-marca.png`. Fontes: Space Grotesk (logo, títulos, botão), Inter (interface; ExtraBold no destaque, Semibold no nome do Pokémon, Medium nas tags), JetBrains Mono (rótulos de seção e números). O tema escuro usa a paleta do guia sem mudança; o claro deriva dela com vermelho e verde mais escuros para contraste.
 - **Tema claro/escuro:** cor só por token (`bg-surface`, `text-ink`…), nunca hex ou `white` solto num componente; o escuro redefine os tokens em `index.css` (dois blocos: escolha do jogador e sistema). Ícones com `lucide-react`.
 - **MVVM:**
   - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e nomes do jogo (`labels.ts`);

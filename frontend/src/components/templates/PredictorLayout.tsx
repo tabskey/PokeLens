@@ -1,4 +1,4 @@
-import { Moon, Sun } from 'lucide-react'
+import { LocateFixed, Moon, Sun } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 import { useTranslation } from '../../i18n/useTranslation'
@@ -33,9 +33,10 @@ export function PredictorLayout<T extends string, L extends string>({
 
   return (
     <>
-      <header className="flex flex-wrap items-center justify-between gap-3 bg-header px-6 py-3.5 text-white">
-        <h1 className="font-pixel text-[13px]">
-          POKEBATTLE <span className="text-gold">PREDICTOR</span>
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-header px-6 py-3.5 text-white">
+        <h1 className="flex items-center gap-2 font-display text-xl font-bold">
+          <LocateFixed size={22} strokeWidth={2.5} className="text-accent" aria-hidden="true" />
+          PokéLens
         </h1>
         <div className="flex gap-3">
           <div className="w-64">
@@ -50,7 +51,7 @@ export function PredictorLayout<T extends string, L extends string>({
             title={t('app.darkTheme')}
             aria-pressed={dark}
             onClick={onToggleTheme}
-            className="grid size-[38px] shrink-0 cursor-pointer place-items-center rounded-lg border border-white text-white aria-pressed:bg-white/15"
+            className="grid size-[38px] shrink-0 cursor-pointer place-items-center rounded-lg border border-white/30 text-white aria-pressed:bg-white/15"
           >
             {dark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
           </button>

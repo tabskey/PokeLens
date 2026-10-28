@@ -13,9 +13,9 @@ export function BallOddsRow({ ball }: { ball: BallView }) {
       <th scope="row" className="py-1 pr-2 text-left font-semibold">
         {ball.ball}
       </th>
-      <td className="py-1 pr-2 text-right">{ball.chancePerBall}</td>
+      <td className="py-1 pr-2 text-right font-mono font-medium">{ball.chancePerBall}</td>
       {ball.ballsFor.map((entry) => (
-        <td key={entry.confidence} className="py-1 pl-2 text-right" aria-label={t('catch.ballsForCell', { balls: entry.balls, confidence: entry.confidence })}>
+        <td key={entry.confidence} className="py-1 pl-2 text-right font-mono font-medium" aria-label={t('catch.ballsForCell', { balls: entry.balls, confidence: entry.confidence })}>
           {entry.balls}
         </td>
       ))}

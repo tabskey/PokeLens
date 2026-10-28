@@ -17,7 +17,7 @@ export function PredictionForm({ form }: { form: PredictionFormViewModel }) {
         void form.submit()
       }}
     >
-      <h2 className="mb-4 font-pixel text-[10px] text-accent">{t('form.heading')}</h2>
+      <h2 className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-muted">{t('form.heading')}</h2>
 
       {form.optionsError && <Hint error>{form.optionsError}</Hint>}
 

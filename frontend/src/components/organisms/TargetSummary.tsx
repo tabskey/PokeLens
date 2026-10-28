@@ -11,7 +11,7 @@ export function TargetSummary({ result }: { result: ResultView }) {
       <Avatar name={result.target} src={result.targetSprite} size="lg" />
       <div>
         <p className="text-[13px] text-muted">{t('results.wildTarget', { objective: result.objective })}</p>
-        <h3 className="text-lg font-bold">
+        <h3 className="text-lg font-semibold">
           {result.target} <span className="text-[13px] font-normal text-muted">{result.targetLevels}</span>
         </h3>
         <div className="mt-1.5 flex flex-wrap gap-1">

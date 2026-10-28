@@ -19,7 +19,7 @@ export function CandidateCard({ rank, candidate }: { rank: number; candidate: Ca
         <div className="flex items-center gap-3">
           <Avatar name={candidate.name} src={candidate.sprite} />
           <div>
-            <h4 className="text-base font-bold">
+            <h4 className="text-base font-semibold">
               <span className="text-muted">{rank}.</span> {candidate.name} {best && <Tag tone="good">{t('results.best')}</Tag>}
             </h4>
             <p className="text-xs text-muted">{candidate.where}</p>

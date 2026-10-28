@@ -20,14 +20,14 @@ export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
 
   return (
     <section aria-label={t('results.scenarioRegion', { title: scenario.title })} className={`rounded-lg border border-line border-t-4 bg-surface p-3 ${borders[scenario.tone]}`}>
-      <h5 className="font-pixel text-[9px] text-muted">{scenario.title.toUpperCase()}</h5>
+      <h5 className="font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-muted">{scenario.title}</h5>
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <Tag tone={scenario.tone}>{scenario.outcome}</Tag>
         <Tag>{scenario.ko}</Tag>
       </div>
       {featured !== null && (
         <>
-          <p className={`mt-2 text-2xl font-bold leading-tight ${headlineColors[scenario.tone]}`}>
+          <p className={`mt-2 text-2xl font-extrabold leading-tight ${headlineColors[scenario.tone]}`}>
             {scenario.catch ? (
               scenario.catch.safeHits
             ) : (

@@ -10,7 +10,7 @@ export function ResultsList({ result }: { result: ResultView }) {
     <div className="space-y-4">
       <TargetSummary result={result} />
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="font-pixel text-[10px] text-accent">{t('results.heading')}</h2>
+        <h2 className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-muted">{t('results.heading')}</h2>
         <span className="text-[13px] text-muted">
           {t('results.count', { count: result.candidates.length })} · {t('results.rankedBy', { ranking: result.rankedBy })}
         </span>

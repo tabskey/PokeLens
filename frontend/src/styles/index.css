@@ -1,58 +1,65 @@
 @import "tailwindcss";
 
-/* Tokens from docs/pokebattle-mockup.html; the dark theme below redefines them. */
+/*
+ * PokéLens brand (Guia de Marca, dark interface): the dark theme uses its palette as is. The light
+ * theme derives from it, with darker red and green so text on white stays readable.
+ */
 @theme {
-  --color-bg: #f4f1ea;
+  --color-bg: #f5f5f6;
   --color-panel: #ffffff;
   --color-surface: #ffffff;
-  --color-sprite: #f1ede4;
-  --color-header: #1f2328;
-  --color-ink: #1f2328;
-  --color-muted: #6b6f76;
-  --color-line: #e2ddd2;
-  --color-accent: #c0392b;
-  --color-bad: #d9534f;
-  --color-neutral: #e0a526;
-  --color-good: #2e9e5b;
-  /* Text on good/bad tags: white on the darker light-theme colours, near-black on the brighter dark ones. */
+  --color-sprite: #ededed;
+  --color-header: #1e1f23;
+  --color-ink: #1e1f23;
+  --color-muted: #5f636b;
+  --color-line: #dfe0e3;
+  --color-accent: #d62839;
+  --color-good: #1a7f45;
+  --color-neutral: #f6c744;
+  --color-bad: #d62839;
+  /* Text on accent and on good/bad fills: white on the darker light colours, near-black on the brand ones. */
   --color-on-status: #ffffff;
   --color-firered: #e8613c;
   --color-leafgreen: #4caf50;
-  --color-gold: #f5c542;
   --font-sans: Inter, system-ui, sans-serif;
-  --font-pixel: "Press Start 2P", monospace;
+  --font-display: "Space Grotesk", Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Dark when the player picks it, or when the system is dark and nothing was picked (keep both blocks in sync). */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-bg: #14171b;
-  --color-panel: #1c2026;
-  --color-surface: #232830;
-  --color-sprite: #2a3039;
-  --color-header: #0b0d10;
-  --color-ink: #e6e8eb;
-  --color-muted: #9aa1aa;
-  --color-line: #343a43;
-  --color-bad: #e5635f;
-  --color-good: #3fb872;
-  --color-on-status: #0b0d10;
+  --color-bg: #141518;
+  --color-panel: #1e1f23;
+  --color-surface: #24262b;
+  --color-sprite: #2a2d33;
+  --color-header: #141518;
+  --color-ink: #ededed;
+  --color-muted: #9a9da3;
+  --color-line: #2a2d33;
+  --color-accent: #ff4d4d;
+  --color-good: #2ecc71;
+  --color-neutral: #f6c744;
+  --color-bad: #e63946;
+  --color-on-status: #141518;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --color-bg: #14171b;
-    --color-panel: #1c2026;
-    --color-surface: #232830;
-    --color-sprite: #2a3039;
-    --color-header: #0b0d10;
-    --color-ink: #e6e8eb;
-    --color-muted: #9aa1aa;
-    --color-line: #343a43;
-    --color-bad: #e5635f;
-    --color-good: #3fb872;
-    --color-on-status: #0b0d10;
+    --color-bg: #141518;
+    --color-panel: #1e1f23;
+    --color-surface: #24262b;
+    --color-sprite: #2a2d33;
+    --color-header: #141518;
+    --color-ink: #ededed;
+    --color-muted: #9a9da3;
+    --color-line: #2a2d33;
+    --color-accent: #ff4d4d;
+    --color-good: #2ecc71;
+    --color-neutral: #f6c744;
+    --color-bad: #e63946;
+    --color-on-status: #141518;
   }
 }
 

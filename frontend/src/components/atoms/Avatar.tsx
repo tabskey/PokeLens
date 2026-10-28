@@ -7,7 +7,7 @@ export function Avatar({ name, src, size = 'md' }: { name: string; src?: string;
   const [failed, setFailed] = useState(false)
 
   return (
-    <div className={`grid shrink-0 place-items-center rounded-lg border border-line bg-sprite font-pixel text-ink ${sizes[size]}`}>
+    <div className={`grid shrink-0 place-items-center rounded-lg border border-line bg-sprite font-display font-bold text-ink ${sizes[size]}`}>
       {src && !failed ? (
         <img src={src} alt={name} className="size-full object-contain [image-rendering:pixelated]" onError={() => setFailed(true)} />
       ) : (
