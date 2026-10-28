@@ -1,0 +1,120 @@
+{
+  "app": {
+    "version": "Game version",
+    "language": "Language"
+  },
+  "form": {
+    "heading": "YOUR BATTLE",
+    "milestone": "How far have you got?",
+    "milestoneHint": "We only suggest Pokémon and moves you can already get by this point.",
+    "choose": "Choose…",
+    "loading": "Loading…",
+    "area": "Where is the target Pokémon?",
+    "areaPlaceholder": "Choose the area…",
+    "target": "Target Pokémon",
+    "targetPlaceholder": "Choose the Pokémon…",
+    "objective": "Goal",
+    "rankBy": "Rank suggestions by",
+    "rankHint": "Safest uses the pessimistic scenario; highest potential, the optimistic one. All three are always shown.",
+    "submit": "PREDICT BATTLE",
+    "submitting": "CALCULATING…"
+  },
+  "page": {
+    "simulating": "Simulating the three scenarios…",
+    "empty": "Choose the target and how far you have got to see the best options."
+  },
+  "errors": {
+    "network": "Could not reach the server. Please try again.",
+    "validation": "Check the highlighted fields.",
+    "server": "Unexpected server error.",
+    "options": "Could not load the options.",
+    "unexpected": "Unexpected error.",
+    "milestoneRequired": "Choose how far you have got.",
+    "areaRequired": "Choose the area.",
+    "targetRequired": "Choose the target Pokémon."
+  },
+  "objective": {
+    "Defeat": "Defeat",
+    "Catch": "Catch"
+  },
+  "ranking": {
+    "Pessimistic": "Safest",
+    "Neutral": "Balanced",
+    "Optimistic": "Highest potential"
+  },
+  "scenario": {
+    "Pessimistic": "Pessimistic",
+    "Neutral": "Neutral",
+    "Optimistic": "Optimistic"
+  },
+  "outcome": {
+    "Favorable": "Favorable",
+    "Balanced": "Even",
+    "Unfavorable": "Unfavorable"
+  },
+  "ko": {
+    "NoDamage": "No damage",
+    "GuaranteedKo": "Guaranteed KO",
+    "PossibleKo": "Possible KO",
+    "TwoHitKo": "2 hits",
+    "ThreeHitKo": "3 hits",
+    "FourOrMoreHits": "4+ hits"
+  },
+  "milestone": {
+    "start": "Start (Pallet Town)",
+    "pokedex": "Got the Pokédex",
+    "boulder-badge": "Boulder Badge (Brock)",
+    "cascade-badge": "Cascade Badge (Misty)"
+  },
+  "method": {
+    "walk": "grass/cave",
+    "gift": "gift"
+  },
+  "results": {
+    "wildTarget": "Wild target · goal: {{objective}}",
+    "level": "Lv. {{levels}}",
+    "heading": "BEST OPTIONS",
+    "count_one": "{{count}} suggestion",
+    "count_other": "{{count}} suggestions",
+    "rankedBy": "ranked by: {{ranking}}",
+    "none": "No Pokémon available yet. Progress further and try again.",
+    "footer": "A damage range is not a chance to win. V1 assumes every move hits and ignores Speed.",
+    "footerCatch": "Chance per ball is the chance of each throw; balls for 50/90/95/99% is how many to throw to reach that cumulative chance.",
+    "rank": "#{{rank}} {{name}}",
+    "best": "★ Best pick",
+    "scenarioRegion": "{{title}} scenario"
+  },
+  "attack": {
+    "hits_one": "{{range}} hit",
+    "hits_other": "{{range}} hits",
+    "toKo": "{{hits}} to KO",
+    "forKo": "to KO",
+    "doesNoDamage": "deals no damage",
+    "noDamage": "No damage",
+    "damage": "{{range}} of {{hp}} HP",
+    "targetHp": "of the target's HP",
+    "yourHp": "of your HP",
+    "you": "You",
+    "opponent": "Opponent",
+    "noDamagingMove": "no damaging move",
+    "noMove": "No damaging move",
+    "details": "{{move}} · details",
+    "barTitle": "Damage of 1 hit on the target's HP (min–max roll)"
+  },
+  "catch": {
+    "safeHits_one": "{{count}} safe hit",
+    "safeHits_other": "{{count}} safe hits",
+    "noSafeHit": "No safe hit",
+    "summary": "Prep and Poké Balls",
+    "summaryChance": "Prep and Poké Balls · {{chance}} per ball",
+    "prepare": "Prep:",
+    "noHit": "no damaging move; balls at full HP",
+    "risk": "KO risk {{risk}}",
+    "targetWith": "target at {{hp}}",
+    "alwaysKo": "The hit knocks the target out on every roll: it cannot be caught this way.",
+    "ball": "Ball",
+    "chancePerBall": "Chance per ball",
+    "ballsFor": "Balls for 50 / 90 / 95 / 99%",
+    "ballsForCell": "{{balls}} balls for {{confidence}}"
+  }
+}

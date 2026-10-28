@@ -13,7 +13,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 ## Idioma
 
 - Todo código, nomes de classes, métodos, testes e comentários em **inglês**
-- Conteúdo voltado ao usuário (UI, mensagens, documentação) em **português**, salvo pedido em contrário
+- Conteúdo voltado ao usuário (UI, mensagens, documentação) em **português**, salvo pedido em contrário. A UI também tem **inglês** (ver Frontend)
 
 ## Princípios inegociáveis
 
@@ -59,11 +59,12 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 
 - React + Vite + TypeScript estrito, Tailwind v4 (tokens em `src/styles/index.css`), Vitest + Testing Library.
 - **MVVM:**
-  - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e rótulos em português (`labels.ts`);
+  - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e nomes do jogo (`labels.ts`);
   - `src/viewmodels/`: hooks `useXViewModel`, com estado, validação e formatação para exibição, sem JSX;
   - `src/components/`: as Views.
 - **Atomic Design** em `src/components/`: `atoms/`, `molecules/`, `organisms/`, `templates/`, `pages/`.
 - **Fronteiras:** as Views não importam `models/api` nem lógica de ViewModel, só os tipos dele. `pages/` é o único lugar que liga um ViewModel a uma View. O ESLint garante isso.
+- **Idiomas (pt/en):** todo texto da UI vem de `src/locales/{pt,en}/translation.json`, escrito à mão (nunca tradução automática), lido por `t()` de `src/i18n/` (formato i18next: chaves com ponto, `{{var}}`, `_one`/`_other`). Uma chave nova entra nos dois arquivos (um teste confere). **Não se traduzem** nomes do jogo: golpes, Poké Balls, Pokémon, áreas, versões e tipos ficam como nos jogos em inglês (`labels.ts`). As mensagens de validação do backend continuam em português.
 - **Exibição** (regra 6): o rótulo (Favorável, Equilibrado, Desfavorável) e os golpes para KO ("3–4 golpes"; na captura, golpes seguros, crítico incluído) são o destaque; o 1º do ranking leva o selo "Melhor escolha"; o resto vem como detalhe, fechado num `<details>` com o nome do golpe. Percentual só como fatia do HP, em faixa e dizendo de quem ("32%–40% do HP do alvo", "15%–20% do seu HP"), nunca como chance de vitória. Na captura, a chance por bola e as bolas para 50/90/95/99% ficam separadas.
 
 ## Testes

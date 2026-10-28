@@ -2,10 +2,13 @@ import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { toResultView } from '../../viewmodels/usePredictionResultViewModel'
+import { createTranslator } from '../../i18n/translator'
 import { response } from '../../test/fixtures'
 import { ScenarioTile } from './ScenarioTile'
 
-const firstScenario = (objective: 'Defeat' | 'Catch') => toResultView(response(objective)).candidates[0]!.scenarios[0]!
+const pt = createTranslator('pt')
+
+const firstScenario = (objective: 'Defeat' | 'Catch') => toResultView(response(objective), pt).candidates[0]!.scenarios[0]!
 
 describe('ScenarioTile', () => {
   it('headlines the outcome and hits to KO, and shows percentages only as HP taken', () => {

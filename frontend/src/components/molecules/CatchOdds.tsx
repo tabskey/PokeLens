@@ -1,25 +1,28 @@
+import { useTranslation } from '../../i18n/useTranslation'
 import type { CatchView } from '../../viewmodels/usePredictionResultViewModel'
 import { BallOddsRow } from './BallOddsRow'
 
 export function CatchOdds({ plan }: { plan: CatchView }) {
+  const { t } = useTranslation()
+
   return (
     <details className="mt-2 text-xs">
       <summary className="cursor-pointer font-semibold text-ink">
-        Preparação e Poké Balls{plan.pokeBallChance !== null && ` · ${plan.pokeBallChance} por bola`}
+        {plan.pokeBallChance === null ? t('catch.summary') : t('catch.summaryChance', { chance: plan.pokeBallChance })}
       </summary>
       <p className="mt-1 text-muted">
-        <span className="font-semibold text-ink">Preparar:</span>{' '}
-        {plan.hit === null ? 'sem golpe de dano; bolas com HP cheio' : `${plan.hits} ${plan.hit.move}`} · risco de KO {plan.koRisk} · alvo com {plan.targetHp}
+        <span className="font-semibold text-ink">{t('catch.prepare')}</span>{' '}
+        {plan.hit === null ? t('catch.noHit') : `${plan.hits} ${plan.hit.move}`} · {t('catch.risk', { risk: plan.koRisk })} · {t('catch.targetWith', { hp: plan.targetHp })}
       </p>
       {plan.balls.length === 0 ? (
-        <p className="mt-1 text-bad">O golpe derruba o alvo em qualquer roll: não dá para capturar assim.</p>
+        <p className="mt-1 text-bad">{t('catch.alwaysKo')}</p>
       ) : (
         <table className="mt-1 w-full">
           <thead className="text-muted">
             <tr>
-              <th scope="col" className="text-left font-normal">Bola</th>
-              <th scope="col" className="text-right font-normal">Chance por bola</th>
-              <th scope="col" colSpan={4} className="text-right font-normal">Bolas para 50 / 90 / 95 / 99%</th>
+              <th scope="col" className="text-left font-normal">{t('catch.ball')}</th>
+              <th scope="col" className="text-right font-normal">{t('catch.chancePerBall')}</th>
+              <th scope="col" colSpan={4} className="text-right font-normal">{t('catch.ballsFor')}</th>
             </tr>
           </thead>
           <tbody>

@@ -1,0 +1,120 @@
+{
+  "app": {
+    "version": "Versão do jogo",
+    "language": "Idioma"
+  },
+  "form": {
+    "heading": "SUA BATALHA",
+    "milestone": "Até onde você chegou?",
+    "milestoneHint": "Só sugerimos Pokémon e golpes que você já consegue obter até aqui.",
+    "choose": "Escolha…",
+    "loading": "Carregando…",
+    "area": "Onde está o Pokémon-alvo?",
+    "areaPlaceholder": "Escolha a área…",
+    "target": "Pokémon-alvo",
+    "targetPlaceholder": "Escolha o Pokémon…",
+    "objective": "Objetivo",
+    "rankBy": "Ordenar sugestões por",
+    "rankHint": "Mais seguro usa o cenário pessimista; maior potencial, o otimista. Os três aparecem sempre.",
+    "submit": "PREVER BATALHA",
+    "submitting": "CALCULANDO…"
+  },
+  "page": {
+    "simulating": "Simulando os três cenários…",
+    "empty": "Escolha o alvo e até onde você chegou para ver as melhores opções."
+  },
+  "errors": {
+    "network": "Não foi possível falar com o servidor. Tente de novo.",
+    "validation": "Confira os campos destacados.",
+    "server": "Erro inesperado no servidor.",
+    "options": "Não foi possível carregar as opções.",
+    "unexpected": "Erro inesperado.",
+    "milestoneRequired": "Escolha até onde você chegou.",
+    "areaRequired": "Escolha a área.",
+    "targetRequired": "Escolha o Pokémon-alvo."
+  },
+  "objective": {
+    "Defeat": "Derrotar",
+    "Catch": "Capturar"
+  },
+  "ranking": {
+    "Pessimistic": "Mais seguro",
+    "Neutral": "Equilibrado",
+    "Optimistic": "Maior potencial"
+  },
+  "scenario": {
+    "Pessimistic": "Pessimista",
+    "Neutral": "Neutro",
+    "Optimistic": "Otimista"
+  },
+  "outcome": {
+    "Favorable": "Favorável",
+    "Balanced": "Equilibrado",
+    "Unfavorable": "Desfavorável"
+  },
+  "ko": {
+    "NoDamage": "Sem dano",
+    "GuaranteedKo": "KO garantido",
+    "PossibleKo": "KO possível",
+    "TwoHitKo": "2 golpes",
+    "ThreeHitKo": "3 golpes",
+    "FourOrMoreHits": "4 golpes ou mais"
+  },
+  "milestone": {
+    "start": "Início (Pallet Town)",
+    "pokedex": "Recebeu a Pokédex",
+    "boulder-badge": "Insígnia Boulder (Brock)",
+    "cascade-badge": "Insígnia Cascade (Misty)"
+  },
+  "method": {
+    "walk": "grama/caverna",
+    "gift": "presente"
+  },
+  "results": {
+    "wildTarget": "Alvo selvagem · objetivo: {{objective}}",
+    "level": "Nv. {{levels}}",
+    "heading": "MELHORES OPÇÕES",
+    "count_one": "{{count}} sugestão",
+    "count_other": "{{count}} sugestões",
+    "rankedBy": "ordenadas por: {{ranking}}",
+    "none": "Nenhum Pokémon disponível até aqui. Avance na progressão e tente de novo.",
+    "footer": "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed.",
+    "footerCatch": "Chance por bola é a chance de cada arremesso; bolas para 50/90/95/99% é quantas jogar para chegar a essa chance acumulada.",
+    "rank": "{{rank}}º {{name}}",
+    "best": "★ Melhor escolha",
+    "scenarioRegion": "Cenário {{title}}"
+  },
+  "attack": {
+    "hits_one": "{{range}} golpe",
+    "hits_other": "{{range}} golpes",
+    "toKo": "{{hits}} para KO",
+    "forKo": "para KO",
+    "doesNoDamage": "não causa dano",
+    "noDamage": "Sem dano",
+    "damage": "{{range}} de {{hp}} HP",
+    "targetHp": "do HP do alvo",
+    "yourHp": "do seu HP",
+    "you": "Você",
+    "opponent": "Oponente",
+    "noDamagingMove": "nenhum golpe de dano",
+    "noMove": "Sem golpe de dano",
+    "details": "{{move}} · detalhes",
+    "barTitle": "Dano de 1 golpe no HP do alvo (roll mínimo–máximo)"
+  },
+  "catch": {
+    "safeHits_one": "{{count}} golpe seguro",
+    "safeHits_other": "{{count}} golpes seguros",
+    "noSafeHit": "Nenhum golpe seguro",
+    "summary": "Preparação e Poké Balls",
+    "summaryChance": "Preparação e Poké Balls · {{chance}} por bola",
+    "prepare": "Preparar:",
+    "noHit": "sem golpe de dano; bolas com HP cheio",
+    "risk": "risco de KO {{risk}}",
+    "targetWith": "alvo com {{hp}}",
+    "alwaysKo": "O golpe derruba o alvo em qualquer roll: não dá para capturar assim.",
+    "ball": "Bola",
+    "chancePerBall": "Chance por bola",
+    "ballsFor": "Bolas para 50 / 90 / 95 / 99%",
+    "ballsForCell": "{{balls}} bolas para {{confidence}}"
+  }
+}

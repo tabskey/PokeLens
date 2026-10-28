@@ -1,59 +1,15 @@
-import type { BattleOutcome, KoClassification, Objective, PokeBall, ScenarioKind, Version } from './battle'
+import type { Translator } from '../i18n/translator'
+import type { PokeBall, Version } from './battle'
+
+// Game names (versions, balls, Pokémon, areas, moves) stay as in the English games; UI words are in locales/.
 
 export const versionLabels: Record<Version, string> = { firered: 'FireRed', leafgreen: 'LeafGreen' }
-
-export const objectiveLabels: Record<Objective, string> = { Defeat: 'Derrotar', Catch: 'Capturar' }
-
-/** Scenario names as the player sees them when choosing how to rank. */
-export const rankingLabels: Record<ScenarioKind, string> = {
-  Pessimistic: 'Mais seguro',
-  Neutral: 'Equilibrado',
-  Optimistic: 'Maior potencial',
-}
-
-export const scenarioLabels: Record<ScenarioKind, string> = {
-  Pessimistic: 'Pessimista',
-  Neutral: 'Neutro',
-  Optimistic: 'Otimista',
-}
-
-export const outcomeLabels: Record<BattleOutcome, string> = {
-  Favorable: 'Favorável',
-  Balanced: 'Equilibrado',
-  Unfavorable: 'Desfavorável',
-}
-
-export const koLabels: Record<KoClassification, string> = {
-  NoDamage: 'Sem dano',
-  GuaranteedKo: 'KO garantido',
-  PossibleKo: 'KO possível',
-  TwoHitKo: '2 golpes',
-  ThreeHitKo: '3 golpes',
-  FourOrMoreHits: '4 golpes ou mais',
-}
 
 export const ballLabels: Record<PokeBall, string> = {
   PokeBall: 'Poké Ball',
   GreatBall: 'Great Ball',
   UltraBall: 'Ultra Ball',
   MasterBall: 'Master Ball',
-}
-
-const milestoneLabels: Record<string, string> = {
-  start: 'Início (Pallet Town)',
-  pokedex: 'Recebeu a Pokédex',
-  'boulder-badge': 'Insígnia Boulder (Brock)',
-  'cascade-badge': 'Insígnia Cascade (Misty)',
-}
-
-const methodLabels: Record<string, string> = {
-  walk: 'grama/caverna',
-  gift: 'presente',
-  surf: 'Surf',
-  'old-rod': 'Old Rod',
-  'good-rod': 'Good Rod',
-  'super-rod': 'Super Rod',
-  'rock-smash': 'Rock Smash',
 }
 
 const pokemonNames: Record<string, string> = {
@@ -68,9 +24,11 @@ function titleCase(words: string[]): string {
   return words.map((word) => (/^b?\d+f$/.test(word) ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1))).join(' ')
 }
 
-export const milestoneLabel = (milestone: string): string => milestoneLabels[milestone] ?? titleCase(milestone.split('-'))
+export const milestoneLabel = (milestone: string, t: Translator['t']): string =>
+  t(`milestone.${milestone}`, { defaultValue: titleCase(milestone.split('-')) })
 
-export const methodLabel = (method: string): string => methodLabels[method] ?? method
+// Rods, Surf and Rock Smash are item and move names, so only walk and gift are translated.
+export const methodLabel = (method: string, t: Translator['t']): string => t(`method.${method}`, { defaultValue: titleCase(method.split('-')) })
 
 export const pokemonName = (slug: string): string => pokemonNames[slug] ?? titleCase(slug.split('-'))
 

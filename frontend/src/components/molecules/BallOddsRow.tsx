@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n/useTranslation'
 import type { BallView } from '../../viewmodels/usePredictionResultViewModel'
 
 /**
@@ -5,6 +6,8 @@ import type { BallView } from '../../viewmodels/usePredictionResultViewModel'
  * separate columns with their own headings.
  */
 export function BallOddsRow({ ball }: { ball: BallView }) {
+  const { t } = useTranslation()
+
   return (
     <tr className="border-t border-line">
       <th scope="row" className="py-1 pr-2 text-left font-semibold">
@@ -12,7 +15,7 @@ export function BallOddsRow({ ball }: { ball: BallView }) {
       </th>
       <td className="py-1 pr-2 text-right">{ball.chancePerBall}</td>
       {ball.ballsFor.map((entry) => (
-        <td key={entry.confidence} className="py-1 pl-2 text-right" aria-label={`${entry.balls} bolas para ${entry.confidence}`}>
+        <td key={entry.confidence} className="py-1 pl-2 text-right" aria-label={t('catch.ballsForCell', { balls: entry.balls, confidence: entry.confidence })}>
           {entry.balls}
         </td>
       ))}

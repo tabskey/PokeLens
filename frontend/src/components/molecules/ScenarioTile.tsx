@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n/useTranslation'
 import type { ScenarioView } from '../../viewmodels/usePredictionResultViewModel'
 import { Tag } from '../atoms/Tag'
 import { CatchOdds } from './CatchOdds'
@@ -13,11 +14,12 @@ const headlineColors = { good: 'text-good', neutral: 'text-ink', bad: 'text-bad'
  */
 export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
   const { attack } = scenario
+  const { t } = useTranslation()
   // When catching, the hit that matters is the weakening move, and knocking out is what to avoid.
   const featured = scenario.catch ? scenario.catch.hit : attack
 
   return (
-    <section aria-label={`Cenário ${scenario.title}`} className={`rounded-lg border border-line border-t-4 bg-white p-3 ${borders[scenario.tone]}`}>
+    <section aria-label={t('results.scenarioRegion', { title: scenario.title })} className={`rounded-lg border border-line border-t-4 bg-white p-3 ${borders[scenario.tone]}`}>
       <h5 className="font-pixel text-[9px] text-muted">{scenario.title.toUpperCase()}</h5>
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <Tag tone={scenario.tone}>{scenario.outcome}</Tag>
@@ -30,23 +32,23 @@ export function ScenarioTile({ scenario }: { scenario: ScenarioView }) {
               scenario.catch.safeHits
             ) : (
               <>
-                {featured.hits ?? 'Sem dano'}
-                {featured.hits !== null && <span className="ml-1 text-xs font-normal text-muted">para KO</span>}
+                {featured.hits ?? t('attack.noDamage')}
+                {featured.hits !== null && <span className="ml-1 text-xs font-normal text-muted">{t('attack.forKo')}</span>}
               </>
             )}
           </p>
           {/* Solid up to the weakest roll, lighter up to the strongest: HP taken by one hit, not a chance. */}
-          <div className="relative mt-1 h-1.5 overflow-hidden rounded bg-line" title="Dano de 1 golpe no HP do alvo (roll mínimo–máximo)" aria-hidden="true">
+          <div className="relative mt-1 h-1.5 overflow-hidden rounded bg-line" title={t('attack.barTitle')} aria-hidden="true">
             <div className="absolute inset-y-0 left-0 bg-ink/30" style={{ width: `${featured.bar.max}%` }} />
             <div className="absolute inset-y-0 left-0 bg-ink" style={{ width: `${featured.bar.min}%` }} />
           </div>
         </>
       )}
       <details className="mt-2">
-        <summary className="cursor-pointer text-xs font-semibold text-ink">{featured?.move ?? 'Sem golpe de dano'} · detalhes</summary>
+        <summary className="cursor-pointer text-xs font-semibold text-ink">{t('attack.details', { move: featured?.move ?? t('attack.noMove') })}</summary>
         <div className="mt-1 space-y-1">
-          <DamageRange who="Você" attack={featured} />
-          <DamageRange who="Oponente" attack={scenario.opponent} withTurns />
+          <DamageRange who={t('attack.you')} attack={featured} />
+          <DamageRange who={t('attack.opponent')} attack={scenario.opponent} withTurns />
         </div>
       </details>
       {scenario.catch && <CatchOdds plan={scenario.catch} />}

@@ -1,19 +1,9 @@
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
 import type { AttackResult, BattleOutcome, CatchResult, PokemonType, PredictResponse, ScenarioKind } from '../models/battle'
-import {
-  areaName,
-  ballLabels,
-  koLabels,
-  methodLabel,
-  moveName,
-  objectiveLabels,
-  outcomeLabels,
-  pokemonName,
-  rankingLabels,
-  scenarioLabels,
-  spriteUrl,
-} from '../models/labels'
+import { LanguageContext } from '../i18n/LanguageContext'
+import type { Translator } from '../i18n/translator'
+import { areaName, ballLabels, methodLabel, moveName, pokemonName, spriteUrl } from '../models/labels'
 
 export type Tone = 'good' | 'neutral' | 'bad'
 
@@ -84,18 +74,16 @@ export interface ResultView {
 
 const tones: Record<BattleOutcome, Tone> = { Favorable: 'good', Balanced: 'neutral', Unfavorable: 'bad' }
 
-const percent = new Intl.NumberFormat('pt-BR', { style: 'percent', maximumFractionDigits: 1 })
-
 export const range = (min: number, max: number): string => (min === max ? `${min}` : `${min}–${max}`)
 
-function toAttackView(attack: AttackResult | null, hpOf: string): AttackView | null {
+function toAttackView(attack: AttackResult | null, hpOf: string, { t }: Translator): AttackView | null {
   if (attack === null) {
     return null
   }
 
   const hits = attack.turnsToKoMin === null || attack.turnsToKoMax === null
     ? null
-    : `${range(attack.turnsToKoMin, attack.turnsToKoMax)} ${attack.turnsToKoMax === 1 ? 'golpe' : 'golpes'}`
+    : t('attack.hits', { range: range(attack.turnsToKoMin, attack.turnsToKoMax), count: attack.turnsToKoMax })
 
   // Truncated to whole percents: more digits would be false precision.
   const shareMin = Math.floor((attack.minDamage * 100) / attack.targetMaxHp)
@@ -103,36 +91,37 @@ function toAttackView(attack: AttackResult | null, hpOf: string): AttackView | n
 
   return {
     move: moveName(attack.move),
-    damage: `${range(attack.minDamage, attack.maxDamage)} de ${attack.targetMaxHp} HP`,
+    damage: t('attack.damage', { range: range(attack.minDamage, attack.maxDamage), hp: attack.targetMaxHp }),
     hpShare: `${shareMin === shareMax ? `${shareMin}%` : `${shareMin}%–${shareMax}%`} ${hpOf}`,
     bar: { min: Math.min(shareMin, 100), max: Math.min(shareMax, 100) },
     hits,
-    turns: hits === null ? 'não causa dano' : `${hits} para KO`,
+    turns: hits === null ? t('attack.doesNoDamage') : t('attack.toKo', { hits }),
   }
 }
 
-function safeHits(plan: CatchResult): string {
+function safeHits(plan: CatchResult, { t }: Translator): string {
   if (plan.hit === null) {
-    return 'Sem golpe de dano'
+    return t('attack.noMove')
   }
 
   // The planner uses every safe hit, so zero risk means all of them are safe.
-  return plan.koRisk > 0 ? 'Nenhum golpe seguro' : `${plan.hits} ${plan.hits === 1 ? 'golpe seguro' : 'golpes seguros'}`
+  return plan.koRisk > 0 ? t('catch.noSafeHit') : t('catch.safeHits', { count: plan.hits })
 }
 
-function toCatchView(plan: CatchResult): CatchView {
+function toCatchView(plan: CatchResult, i18n: Translator): CatchView {
+  const { t, percent } = i18n
   const pokeBall = plan.balls.find((ball) => ball.ball === 'PokeBall')
 
   return {
-    hit: toAttackView(plan.hit, 'do HP do alvo'),
-    safeHits: safeHits(plan),
+    hit: toAttackView(plan.hit, t('attack.targetHp'), i18n),
+    safeHits: safeHits(plan, i18n),
     hits: `${plan.hits}×`,
-    koRisk: percent.format(plan.koRisk),
+    koRisk: percent(plan.koRisk),
     targetHp: `${plan.targetHp} HP`,
-    pokeBallChance: pokeBall === undefined ? null : percent.format(pokeBall.chancePerBall),
+    pokeBallChance: pokeBall === undefined ? null : percent(pokeBall.chancePerBall),
     balls: plan.balls.map((ball) => ({
       ball: ballLabels[ball.ball],
-      chancePerBall: percent.format(ball.chancePerBall),
+      chancePerBall: percent(ball.chancePerBall),
       ballsFor: [
         { confidence: '50%', balls: ball.ballsFor50Percent },
         { confidence: '90%', balls: ball.ballsFor90Percent },
@@ -144,34 +133,37 @@ function toCatchView(plan: CatchResult): CatchView {
 }
 
 /** Turns the API response into display-ready text. Pure, so it is tested without React. */
-export function toResultView(response: PredictResponse): ResultView {
+export function toResultView(response: PredictResponse, i18n: Translator): ResultView {
+  const { t } = i18n
+
   return {
     target: pokemonName(response.target),
     targetSprite: spriteUrl(response.targetId),
     targetTypes: response.targetTypes,
-    targetLevels: `Nv. ${range(response.targetMinLevel, response.targetMaxLevel)}`,
-    objective: objectiveLabels[response.objective],
-    rankedBy: rankingLabels[response.rankedBy],
+    targetLevels: t('results.level', { levels: range(response.targetMinLevel, response.targetMaxLevel) }),
+    objective: t(`objective.${response.objective}`),
+    rankedBy: t(`ranking.${response.rankedBy}`),
     isCatch: response.objective === 'Catch',
     candidates: response.candidates.map((candidate) => ({
       name: pokemonName(candidate.pokemon),
       sprite: spriteUrl(candidate.id),
       types: candidate.types,
-      where: `${areaName(candidate.area)} · Nv. ${range(candidate.minLevel, candidate.maxLevel)} · ${methodLabel(candidate.method)}`,
+      where: `${areaName(candidate.area)} · ${t('results.level', { levels: range(candidate.minLevel, candidate.maxLevel) })} · ${methodLabel(candidate.method, t)}`,
       scenarios: candidate.scenarios.map((scenario) => ({
         kind: scenario.scenario,
-        title: scenarioLabels[scenario.scenario],
-        outcome: outcomeLabels[scenario.outcome],
+        title: t(`scenario.${scenario.scenario}`),
+        outcome: t(`outcome.${scenario.outcome}`),
         tone: tones[scenario.outcome],
-        ko: koLabels[scenario.candidateKo],
-        attack: toAttackView(scenario.candidateAttack, 'do HP do alvo'),
-        opponent: toAttackView(scenario.opponentAttack, 'do seu HP'),
-        catch: scenario.catch === null ? null : toCatchView(scenario.catch),
+        ko: t(`ko.${scenario.candidateKo}`),
+        attack: toAttackView(scenario.candidateAttack, t('attack.targetHp'), i18n),
+        opponent: toAttackView(scenario.opponentAttack, t('attack.yourHp'), i18n),
+        catch: scenario.catch === null ? null : toCatchView(scenario.catch, i18n),
       })),
     })),
   }
 }
 
 export function usePredictionResultViewModel(response: PredictResponse | null): ResultView | null {
-  return useMemo(() => (response === null ? null : toResultView(response)), [response])
+  const { translator } = useContext(LanguageContext)
+  return useMemo(() => (response === null ? null : toResultView(response, translator)), [response, translator])
 }

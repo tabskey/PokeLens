@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { ApiError, getOptions, postPredict } from '../models/api'
 import type { GameOptions, Objective, PredictResponse, ScenarioKind, Version } from '../models/battle'
-import { areaName, milestoneLabel, objectiveLabels, pokemonName, rankingLabels, versionLabels } from '../models/labels'
+import { useTranslation } from '../i18n/useTranslation'
+import { areaName, milestoneLabel, pokemonName, versionLabels } from '../models/labels'
 
 export interface Option<T extends string = string> {
   value: T
@@ -12,8 +13,6 @@ export interface Option<T extends string = string> {
 
 type FieldErrors = Record<string, string[]>
 
-const objectives: Option<Objective>[] = (['Defeat', 'Catch'] as const).map((value) => ({ value, label: objectiveLabels[value] }))
-const scenarios: Option<ScenarioKind>[] = (['Pessimistic', 'Neutral', 'Optimistic'] as const).map((value) => ({ value, label: rankingLabels[value] }))
 const versions: Option<Version>[] = [
   { value: 'firered', label: versionLabels.firered.toUpperCase(), activeClassName: 'bg-firered' },
   { value: 'leafgreen', label: versionLabels.leafgreen.toUpperCase(), activeClassName: 'bg-leafgreen' },
@@ -24,6 +23,7 @@ const versions: Option<Version>[] = [
  * mirroring the progression filter the backend applies to candidates.
  */
 export function usePredictionFormViewModel() {
+  const { t } = useTranslation()
   const [version, setVersionState] = useState<Version>('firered')
   const [options, setOptions] = useState<GameOptions | null>(null)
   const [optionsError, setOptionsError] = useState<string | null>(null)
@@ -50,7 +50,7 @@ export function usePredictionFormViewModel() {
       })
       .catch((reason: unknown) => {
         if (!cancelled) {
-          setOptionsError(reason instanceof ApiError ? reason.message : 'Não foi possível carregar as opções.')
+          setOptionsError(reason instanceof ApiError ? reason.message : 'errors.options')
         }
       })
     return () => {
@@ -93,9 +93,9 @@ export function usePredictionFormViewModel() {
 
   const submit = async () => {
     const missing: FieldErrors = {}
-    if (!milestone) missing.milestone = ['Escolha até onde você chegou.']
-    if (!area) missing.area = ['Escolha a área.']
-    if (!target) missing.target = ['Escolha o Pokémon-alvo.']
+    if (!milestone) missing.milestone = ['errors.milestoneRequired']
+    if (!area) missing.area = ['errors.areaRequired']
+    if (!target) missing.target = ['errors.targetRequired']
     setFieldErrors(missing)
     setError(null)
     if (Object.keys(missing).length > 0) {
@@ -111,7 +111,7 @@ export function usePredictionFormViewModel() {
         setError(reason.message)
         setFieldErrors(reason.fieldErrors)
       } else {
-        setError('Erro inesperado.')
+        setError('errors.unexpected')
       }
     } finally {
       setLoading(false)
@@ -126,17 +126,18 @@ export function usePredictionFormViewModel() {
     objective,
     scenario,
     versions,
-    objectives,
-    scenarios,
-    milestoneOptions: milestones.map((value): Option => ({ value, label: milestoneLabel(value) })),
+    objectives: (['Defeat', 'Catch'] as const).map((value): Option<Objective> => ({ value, label: t(`objective.${value}`) })),
+    scenarios: (['Pessimistic', 'Neutral', 'Optimistic'] as const).map((value): Option<ScenarioKind> => ({ value, label: t(`ranking.${value}`) })),
+    milestoneOptions: milestones.map((value): Option => ({ value, label: milestoneLabel(value, t) })),
     areaOptions: areas.map((option): Option => ({ value: option.area, label: areaName(option.area) })),
     targetOptions: targets.map((value): Option => ({ value, label: pokemonName(value) })),
     optionsLoaded: options !== null,
-    optionsError,
+    // Errors are kept as keys so they follow a language switch; backend messages pass through as-is.
+    optionsError: optionsError && t(optionsError),
     loading,
     result,
-    error,
-    fieldErrors,
+    error: error && t(error),
+    fieldErrors: Object.fromEntries(Object.entries(fieldErrors).map(([field, messages]) => [field, messages.map((message) => t(message))])),
     setVersion,
     setMilestone,
     setArea,

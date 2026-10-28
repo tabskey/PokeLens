@@ -383,7 +383,7 @@ Crie frontend/ com React + Vite + TypeScript consumindo POST /api/v1/battles/pre
 Telas: versão, progressão, alvo e objetivo; até 5 candidatos com os 3 cenários.
 Exibição (docs/arquitetura.md seção 18): categoria em destaque, faixa de dano como detalhe, nunca
 percentual que pareça chance de vitória; para Catch, chance por bola e bolas para 50/90/95/99% separadas.
-Textos em português.
+Textos em português e inglês (`src/locales/{pt,en}/translation.json`, escritos à mão).
 
 Docker: Dockerfile multi-stage (node -> nginx) servindo a SPA com proxy /api para a Api; serviço web no
 docker-compose. Esteira: job frontend (lint, typecheck, testes, build) e build da imagem web; push no GHCR
