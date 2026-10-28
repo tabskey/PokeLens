@@ -135,6 +135,22 @@ Progressão do jogador → Pokémon disponíveis → Filtrar inacessíveis → S
 Excelente matchup + Inacessível = Não pode ser recomendado
 ```
 
+## 7.1 Seleção do alvo
+
+O jogador nem sempre sabe em que rota o alvo aparece. A seleção parte do **Pokémon**; a rota vira consequência.
+
+**Busca única.** Um campo só, com autocomplete que aceita nome de Pokémon ou de rota e agrupa as sugestões em **Pokémon** e **Rotas**. Não há seletor de modo. O autocomplete roda no frontend, sobre a lista devolvida por `GET /api/v1/targets?version=&milestone=` (pequena, carregada uma vez por marco); o backend só é chamado de novo na predição.
+
+**Filtro por progressão antes de perguntar.** A lista só traz pares (área, método) liberados no marco do jogador. Se o alvo tem uma opção, vai direto para os resultados; com mais de uma, o jogador escolhe.
+
+**A escolha mostra o que muda.** Cada opção aparece com tag de método, faixa de nível e chance, por exemplo `Route 24 · 🌿 Grama · nv. 20–22` e `Route 24 · 🎣 Super Vara · nv. 15–25`. A rota importa porque nível e método variam; o nível alimenta os três cenários (§10), o método diz ao jogador onde e como encontrar.
+
+**Itens inferidos, nunca perguntados.** Perguntar ao jogador quais itens ele tem afasta o usuário comum. Em FR/LG os itens de encontro estão amarrados à história (Old Rod em Vermilion, Good Rod em Fuchsia, Super Rod na Route 12; conferir no walkthrough durante a curadoria), então `progression.json` registra o marco em que cada método fica obtenível. Antes desse marco, o método some da lista. Depois dele, aparece **com a tag de requisito** (ex.: `Requer Super Vara`), mesmo que o item seja opcional e o jogador possa não tê-lo: esconder o Pokémon que ele queria custa mais do que mostrar uma opção que ele mesmo descarta. Isso vale só para a escolha do alvo; para os candidatos, a regra de §7 continua (inacessível é descartado).
+
+**Contrato.** `PredictBattleOutcomeRequest` recebe `Area` **e** `Method`; a faixa de nível do alvo vem desse par, não da junção de todos os métodos da área. Área ou método não liberados no marco são erro de validação.
+
+**Origem do encontro.** A V1 só oferece alvos selvagens (`walk`, `surf`, varas, `rock-smash`). Presente, estático e troca (inclusive troca entre jogador e NPC) ficam fora da V1, mas já chegam no pacote como métodos (`gift`, `npc-trade`), então entram depois sem mudar o contrato.
+
 ## 8. Dados do jogo
 
 Os dados do jogo são estáticos e ficam num **pacote de dados Gen III versionado no repositório** (`backend/data/gen3-frlg/`), gerado por `backend/tools/PokeBattle.DataImporter`. A API **não** chama a PokeAPI em runtime.
@@ -167,7 +183,7 @@ A PokeAPI devolve dados modernos. Antes de chegar ao `Core`, todo dado passa pel
 
 `backend/data/gen3-frlg/` tem quatro arquivos: `species.json` (tipos, base stats, habilidades, taxa de captura e learnset FRLG), `moves.json`, `encounters.json` (slots por área e versão, com o método da PokeAPI: `walk`, `surf`, `gift`, `npc-trade`...) e `progression.json` (cópia validada do curado). Presentes e trocas já vêm da PokeAPI como encontros (`gift`, `npc-trade`).
 
-`backend/data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
+`backend/data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. Cada área também leva um `displayName` (nome mostrado na busca do alvo, §7.1). O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
 
 ## 9. BattleObjective
 
