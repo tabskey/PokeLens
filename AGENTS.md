@@ -13,7 +13,7 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 ## Idioma
 
 - Todo código, nomes de classes, métodos, testes e comentários em **inglês**
-- Conteúdo voltado ao usuário (UI, mensagens, documentação) em **português**, salvo pedido em contrário
+- Conteúdo voltado ao usuário (UI, mensagens, documentação) em **português**, salvo pedido em contrário. A UI também tem **inglês** (ver Frontend)
 
 ## Princípios inegociáveis
 
@@ -56,11 +56,26 @@ PokeBattle Predictor recomenda até 5 Pokémon para **derrotar** ou **capturar**
 10. Natureza, IV e habilidade só são eixo de incerteza para Pokémon selvagens/estimados. Dados `Known` ou `UserProvided` não variam entre cenários.
 11. **Alvo parte do Pokémon, não da rota.** Busca única com sugestões de Pokémon e rotas; só pares (área, método) liberados no marco; uma opção → segue direto, várias → o jogador escolhe vendo método, nível e chance. Itens de encontro (varas, Surf) são inferidos da progressão, nunca perguntados. Detalhes em `docs/arquitetura.md` §7.1.
 
+## Frontend (`frontend/`)
+
+- React + Vite + TypeScript estrito, Tailwind v4 (tokens em `src/styles/index.css`), Vitest + Testing Library.
+- **Marca:** `docs/guia-de-marca.png`. Fontes: Space Grotesk (logo, títulos, botão), Inter (interface; ExtraBold no destaque, Semibold no nome do Pokémon, Medium nas tags), JetBrains Mono (rótulos de seção e números). O tema escuro usa a paleta do guia sem mudança; o claro deriva dela com vermelho e verde mais escuros para contraste.
+- **Tema claro/escuro:** cor só por token (`bg-surface`, `text-ink`…), nunca hex ou `white` solto num componente; o escuro redefine os tokens em `index.css` (dois blocos: escolha do jogador e sistema). Ícones com `lucide-react`.
+- **MVVM:**
+  - `src/models/`: contrato da API (`battle.ts`), cliente HTTP (`api.ts`) e nomes do jogo (`labels.ts`);
+  - `src/viewmodels/`: hooks `useXViewModel`, com estado, validação e formatação para exibição, sem JSX;
+  - `src/components/`: as Views.
+- **Atomic Design** em `src/components/`: `atoms/`, `molecules/`, `organisms/`, `templates/`, `pages/`.
+- **Fronteiras:** as Views não importam `models/api` nem lógica de ViewModel, só os tipos dele. `pages/` é o único lugar que liga um ViewModel a uma View. O ESLint garante isso.
+- **Idiomas (pt/en):** todo texto da UI vem de `src/locales/{pt,en}/translation.json`, escrito à mão (nunca tradução automática), lido por `t()` de `src/i18n/` (formato i18next: chaves com ponto, `{{var}}`, `_one`/`_other`). Uma chave nova entra nos dois arquivos (um teste confere). **Não se traduzem** nomes do jogo: golpes, Poké Balls, Pokémon, áreas, versões e tipos ficam como nos jogos em inglês (`labels.ts`). As mensagens de validação do backend continuam em português.
+- **Exibição** (regra 6): o rótulo (Favorável, Equilibrado, Desfavorável) e os golpes para KO ("3–4 golpes"; na captura, golpes seguros, crítico incluído) são o destaque; o 1º do ranking leva o selo "Melhor escolha"; o resto vem como detalhe, fechado num `<details>` com o nome do golpe. Percentual só como fatia do HP, em faixa e dizendo de quem ("32%–40% do HP do alvo", "15%–20% do seu HP"), nunca como chance de vitória. Na captura, a chance por bola e as bolas para 50/90/95/99% ficam separadas.
+
 ## Testes
 
 - `Core` exige testes unitários (xUnit) com RNG controlado pela política: dano `Minimum` e `FullRange`, cada fator de cenário isolado, captura (`FinalCaptureRate`, `ShakeThreshold`, `ChancePerBall`), bolas para 50/90/95/99%.
 - Testes de progressão (Pokémon só disponível em rota futura não entra) e de disponibilidade de golpes.
 - Valores esperados devem vir de cálculo manual ou de fonte da Gen III, **não** dos exemplos ilustrativos da documentação.
+- Frontend: ViewModels testados sem tela (fetch mockado) e componentes com Testing Library, verificando as regras de exibição acima.
 
 ## Docker e esteira
 

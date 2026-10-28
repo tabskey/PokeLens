@@ -287,7 +287,7 @@ Catch:   Accessibility → Ability to reduce HP safely → Status availability
          → Capture probability → KO risk → Required balls
 ```
 
-O cenário que ordena o ranking é escolhido pelo jogador (`scenario` na requisição); os três cenários sempre vêm na resposta. Para Catch, a estratégia da V1 está no `CatchPlanner`: um golpe, o mais forte com risco de KO 0% (senão o de menor risco), e captura no HP do pior roll. Golpe de status fica de fora até o pacote de dados trazê-los.
+O cenário que ordena o ranking é escolhido pelo jogador (`scenario` na requisição); os três cenários sempre vêm na resposta. Para Catch, a estratégia da V1 está no `CatchPlanner`: o golpe usado todas as vezes seguras, (HP − 1) ÷ maior roll com crítico, escolhendo o que deixa menos HP (senão um golpe com o menor risco), e captura no HP do pior roll de cada golpe. Golpe de status fica de fora até o pacote de dados trazê-los.
 
 ```mermaid
 flowchart TD
@@ -416,6 +416,20 @@ tests/
 ├── PokeBattle.Application.Tests/
 └── PokeBattle.IntegrationTests/
 ```
+
+### Frontend (`frontend/`)
+
+```
+src/
+├── models/        battle.ts (contrato da API), api.ts (fetch), labels.ts (pt-BR)
+├── viewmodels/    usePredictionFormViewModel, usePredictionResultViewModel
+└── components/    atoms/ → molecules/ → organisms/ → templates/ → pages/
+```
+
+- **Organização:** MVVM com Atomic Design. As Views só recebem dados prontos do ViewModel; `pages/` liga os dois.
+- **Opções do formulário:** vêm de `GET /api/v1/game-data/options?version=`, que traz os marcos e as áreas com os Pokémon de cada uma. O formulário só oferece as áreas liberadas no marco escolhido, o mesmo filtro que o backend aplica aos candidatos.
+- **Sprites:** o navegador carrega os sprites da FireRed/LeafGreen do repositório de sprites da PokeAPI (`PokeAPI/sprites`, `versions/generation-iii/firered-leafgreen/{id}.png`), usando o número da Pokédex que a API devolve. A API continua sem chamar a PokeAPI em runtime. Se a imagem não carregar, o card mostra as iniciais.
+- **Containers:** em produção, o nginx (imagem não-root) serve a SPA e faz proxy de `/api` para o serviço `api`. Em dev, o Vite faz o proxy para `localhost:5000`.
 
 ## 20. Fluxo completo
 

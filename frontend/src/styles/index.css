@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/*
+ * PokéLens brand (Guia de Marca, dark interface): the dark theme uses its palette as is. The light
+ * theme derives from it, with darker red and green so text on white stays readable.
+ */
+@theme {
+  --color-bg: #f5f5f6;
+  --color-panel: #ffffff;
+  --color-surface: #ffffff;
+  --color-sprite: #ededed;
+  --color-header: #1e1f23;
+  --color-ink: #1e1f23;
+  --color-muted: #5f636b;
+  --color-line: #dfe0e3;
+  --color-accent: #d62839;
+  --color-good: #1a7f45;
+  --color-neutral: #f6c744;
+  --color-bad: #d62839;
+  /* Text on accent and on good/bad fills: white on the darker light colours, near-black on the brand ones. */
+  --color-on-status: #ffffff;
+  --color-firered: #e8613c;
+  --color-leafgreen: #4caf50;
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-display: "Space Grotesk", Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Dark when the player picks it, or when the system is dark and nothing was picked (keep both blocks in sync). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #141518;
+  --color-panel: #1e1f23;
+  --color-surface: #24262b;
+  --color-sprite: #2a2d33;
+  --color-header: #141518;
+  --color-ink: #ededed;
+  --color-muted: #9a9da3;
+  --color-line: #2a2d33;
+  --color-accent: #ff4d4d;
+  --color-good: #2ecc71;
+  --color-neutral: #f6c744;
+  --color-bad: #e63946;
+  --color-on-status: #141518;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #141518;
+    --color-panel: #1e1f23;
+    --color-surface: #24262b;
+    --color-sprite: #2a2d33;
+    --color-header: #141518;
+    --color-ink: #ededed;
+    --color-muted: #9a9da3;
+    --color-line: #2a2d33;
+    --color-accent: #ff4d4d;
+    --color-good: #2ecc71;
+    --color-neutral: #f6c744;
+    --color-bad: #e63946;
+    --color-on-status: #141518;
+  }
+}
+
+body {
+  @apply bg-bg text-ink font-sans text-sm;
+}

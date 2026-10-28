@@ -9,7 +9,7 @@ namespace PokeBattle.Application.Tests.Battles;
 // the first badge; Ekans is FireRed only and Sandshrew LeafGreen only on route-a.
 public class PredictBattleOutcomeUseCaseTests
 {
-    private static readonly GamePackage Package = new(
+    internal static readonly GamePackage Package = new(
         Species:
         [
             Species("pidgey", [PokemonType.Normal, PokemonType.Flying], new(40, 45, 40, 35, 35, 56), 255, Level("tackle")),
@@ -69,6 +69,8 @@ public class PredictBattleOutcomeUseCaseTests
 
         Assert.Equal(ScenarioKind.Neutral, response.RankedBy);
         Assert.Equal((2, 5), (response.TargetMinLevel, response.TargetMaxLevel));
+        Assert.Equal([PokemonType.Normal, PokemonType.Flying], response.TargetTypes);
+        Assert.Equal([PokemonType.Normal], response.Candidates.Single(c => c.Pokemon == "rattata").Types);
         Assert.All(response.Candidates, candidate =>
         {
             Assert.Equal(3, candidate.Scenarios.Count);

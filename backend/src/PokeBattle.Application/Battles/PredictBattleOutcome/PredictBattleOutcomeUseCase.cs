@@ -119,7 +119,9 @@ public sealed class PredictBattleOutcomeUseCase
         var ranked = BattleRankingService.Rank(evaluations, request.Objective, request.Scenario);
 
         return new PredictBattleOutcomeResponse(
+            targetData.Id,
             request.Target,
+            targetData.Types,
             targetLevels.Min,
             targetLevels.Max,
             request.Objective,
@@ -158,7 +160,9 @@ public sealed class PredictBattleOutcomeUseCase
 
     private CandidateResult ToResult(CandidateEvaluation evaluation, EncounterData encounter)
         => new(
+            species[encounter.Pokemon].Id,
             encounter.Pokemon,
+            species[encounter.Pokemon].Types,
             encounter.Area,
             encounter.Method,
             encounter.MinLevel,
@@ -174,6 +178,7 @@ public sealed class PredictBattleOutcomeUseCase
     private CatchResult ToResult(CatchPlan plan)
         => new(
             ToResult(plan.Hit),
+            plan.Hits,
             plan.KoRisk,
             plan.TargetHp,
             [.. plan.Capture.Select(capture => new BallResult(
