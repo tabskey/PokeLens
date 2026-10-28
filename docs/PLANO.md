@@ -375,11 +375,15 @@ exclusivo de leafgreen não aparece em firered.
 
 ---
 
-> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 7b = `X015TargetSearch`, Etapa 8 = `X016Frontend`.
+> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 8 = `X015Frontend` (já mesclada, com o alvo escolhido por área), Etapa 7b = `X016TargetSearch`, Etapa 8b = `X017TargetSearchUi`, Etapa 8.1 = `X018Progression`, Etapa 9 = `X019Auth`. A branch `X015TargetSearch` só registrou a decisão nos docs.
 
-### Etapa 7b — Busca e seleção do alvo (`X015TargetSearch`) · M
+> **Ordem real:** o frontend (Etapa 8) entrou antes da 7b. Por isso a 7b ficou só no backend e a troca do seletor de área pela busca virou a Etapa 8b.
 
-Decisões em `docs/arquitetura.md` §7.1 e `docs/fases.md` Fase 7. Vem antes do frontend porque ele consome este endpoint.
+### Etapa 7b — Busca e seleção do alvo (`X016TargetSearch`) · M — **próxima**
+
+Decisões em `docs/arquitetura.md` §7.1 e `docs/fases.md` Fase 7. Só backend; o frontend é a Etapa 8b.
+
+**Limite dos dados hoje:** a progressão curada vai até a Insígnia Cascade e nenhum item de pesca ou Surf é obtido antes disso. Na prática só `walk` tem marco nesta etapa; varas e Surf entram na 8.1. Os testes de vara usam pacote de teste, não o real.
 
 **Prompt:**
 
@@ -396,19 +400,50 @@ Implemente a seleção do alvo a partir do Pokémon, conforme docs/arquitetura.m
 3. Api: GET /api/v1/targets?version=&milestone= com validação e ProblemDetails.
 4. PredictBattleOutcomeRequest recebe Method. TargetEncounters filtra por área E método; a faixa
    de nível do alvo vem desse par. Área ou método não liberados no marco → erro de validação.
+5. GET /api/v1/game-data/options fica só com os marcos: a lista de áreas sai (GET /targets substitui).
+6. Contrato do frontend (frontend/src/models/battle.ts e api.ts): tipos e cliente de GET /targets,
+   `method` no PredictRequest, `areas` fora de GameOptions. O formulário atual manda o método do
+   encontro escolhido para não quebrar até a 8b.
 
 Testes: alvo só em área futura não aparece; método antes do marco do item não aparece; Pokémon
 em duas áreas liberadas traz duas opções; mesma área com grama e vara traz duas opções com faixas
-distintas; predict com método não liberado devolve 400.
+distintas (pacote de teste); predict com método não liberado devolve 400.
 ```
 
-**Aceite:** testes passam; a Etapa 8 consegue montar a busca só com `GET /targets` e `POST /battles/predict`.
+**Aceite:** testes passam (backend e frontend); a Etapa 8b consegue montar a busca só com `GET /targets` e `POST /battles/predict`; `docs/revisao-especialista.md` §6.9 atualizado.
 
-**Não fazer:** perguntar ao jogador quais itens ele tem; endpoint de busca no servidor por tecla (o filtro é no frontend); trocas e presentes como alvo.
+**Não fazer:** perguntar ao jogador quais itens ele tem; endpoint de busca no servidor por tecla (o filtro é no frontend); trocas e presentes como alvo; inventar marco de vara/Surf além do que a progressão cobre.
 
 ---
 
-### Etapa 8 — Frontend (`X016Frontend`) · G
+### Etapa 8b — Busca do alvo no frontend (`X017TargetSearchUi`) · M
+
+O formulário da Etapa 8 escolhe área e depois Pokémon. Esta etapa troca isso pela busca única de `docs/arquitetura.md` §7.1.
+
+**Prompt:**
+
+```
+No frontend, troque os campos de área e alvo por um único campo de busca (docs/arquitetura.md §7.1):
+- autocomplete local sobre GET /api/v1/targets, recarregado quando versão ou marco mudam;
+  sugestões agrupadas em Pokémon e Rotas (buscar uma rota lista os Pokémon dela);
+- uma opção liberada → segue direto; várias → lista com tag de método (Grama, Surf, Vara Velha,
+  Vara Boa, Super Vara, Quebra-Pedra), faixa de nível e chance; o par escolhido vai no predict;
+- nome da área vem do displayName da API; areaName de labels.ts sai se ficar sem uso;
+- acessível por teclado (combobox ARIA: setas, Enter, Esc);
+- textos novos em pt e en; nomes de Pokémon e áreas não se traduzem.
+ViewModel testado sem tela (busca, agrupamento, uma vs. várias opções, troca de marco limpa a escolha)
+e componente com Testing Library.
+```
+
+**Aceite:** sem seletor de área; com a progressão atual, Pokémon de uma só rota vai direto e um de várias rotas (ex.: Pidgey) pede a escolha; job frontend verde.
+
+**Não fazer:** perguntar itens; chamar o backend a cada tecla; dependência nova de autocomplete se o combobox couber nos átomos existentes.
+
+---
+
+### Etapa 8 — Frontend (`X015Frontend`) · G — **feita** (PR #31)
+
+Entrou antes da 7b, com o alvo escolhido por área → Pokémon. A busca única descrita no prompt abaixo ficou para a Etapa 8b.
 
 **Prompt:**
 
@@ -431,7 +466,7 @@ no job publish-image do ci.yml. Dependabot para npm.
 
 ---
 
-### Etapa 8.1 — Progressão completa (`X016Progression`) · G — **próxima**
+### Etapa 8.1 — Progressão completa (`X018Progression`) · G
 
 Hoje o `backend/data/curated/progression.json` só vai até a Insígnia Cascade: 4 marcos, 14 áreas (Pallet Town até as Routes 24/25) e 5 TMs. O formulário esconde as áreas fora da curadoria, então o app fica limitado ao começo do jogo.
 
@@ -441,7 +476,7 @@ Hoje o `backend/data/curated/progression.json` só vai até a Insígnia Cascade:
 Complete backend/data/curated/progression.json para FireRed/LeafGreen:
 - marcos em ordem do jogo: as 8 insígnias, SS Anne/Cut, Silph Scope, Pokéflute, Surf, Strength,
   Ilhas Sevii (Tri-Pass e Rainbow Pass) e Elite Four;
-- todas as áreas de Kanto e das Sevii com o marco que as libera;
+- todas as áreas de Kanto e das Sevii com o marco que as libera e o displayName;
 - métodos de encontro (old-rod, good-rod, super-rod, surf, rock-smash) no marco em que são obtidos;
 - ponto de obtenção de cada TM/HM do pacote.
 Rode o importador (data-check sem diff), atualize os labels de marco em frontend/src/models/labels.ts
@@ -452,7 +487,7 @@ e registre os marcos escolhidos em docs/revisao-especialista.md para conferênci
 
 ---
 
-### Etapa 9 — Login e auditoria (`X017Auth`) · M
+### Etapa 9 — Login e auditoria (`X019Auth`) · M
 
 **Prompt:**
 
@@ -490,7 +525,7 @@ Não implemente Pokédex pessoal (é V2).
 - [ ] Critério de "vencer" (Etapa 5): em revisão com jogadores, provisório = faixas de turnos sem sobreposição, sem Speed (`docs/decisoes-simulacao.md` §2). Golpe do oponente (sempre o melhor) e precisão (fora da V1) decididos
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
 - [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
-- [ ] Progressão curada completa (Etapa 8.1, `X016Progression`): hoje só até a Insígnia Cascade
+- [ ] Progressão curada completa (Etapa 8.1, `X018Progression`): hoje só até a Insígnia Cascade, sem marco de vara nem de Surf
 - [ ] Destino de deploy: nenhum por ora, VPS com compose, ou um serviço gerenciado de containers (define o job `deploy`)
 
 ## 9. Uso no Claude Code

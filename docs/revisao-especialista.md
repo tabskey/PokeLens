@@ -376,6 +376,15 @@ Escolhas nossas ao montar a lista de candidatos:
 
 ✅ / ❌ / 💬 — Ver perguntas 11 a 13 na seção 10.
 
+### 6.9 Escolha do alvo (Etapa 7b)
+
+O jogador busca o **Pokémon** (ou a rota) num campo só. Se o alvo aparece em mais de um lugar liberado, ele escolhe vendo método, nível e chance (ex.: `Route 24 · Grama · nv. 20–22`). O nível do alvo nos cenários vem desse par (área, método), não de todos os encontros da área.
+
+- **Itens de encontro não são perguntados:** varas e Surf liberam no marco em que o item é obtido na história. Depois disso, o encontro aparece com a tag de requisito (ex.: `Requer Super Vara`), mesmo que o jogador possa não ter pego o item.
+- **Só selvagens na V1:** presente, estático e troca não aparecem como alvo.
+
+✅ / ❌ / 💬 — Ver perguntas 18 e 19 na seção 10.
+
 ---
 
 ## 7. Projeções de dano: o que a tela mostra
@@ -570,8 +579,12 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 
 17. ✅ **Decidido:** na captura, a chance das bolas agora é calculada depois de **todos os golpes seguros**, não só de 1. O custo é passar mais turnos apanhando do oponente, o que o app ainda não pesa. Você concorda, ou o jogador prefere menos turnos mesmo com bolas piores?
 
+**Escolha do alvo (6.9)**
+18. Mostrar o encontro de vara assim que a vara fica obtenível (com a tag "Requer"), mesmo para quem pulou o item, é melhor do que esconder? Em que marco você considera cada vara e o Surf obtidos em FR/LG?
+19. Faz falta poder escolher Pokémon de presente, estático (Snorlax, lendários) ou troca como alvo já na V1?
+
 **Geral**
-18. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
+20. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
 
 ---
 
