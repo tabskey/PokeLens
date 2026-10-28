@@ -16,21 +16,23 @@ public class CatchPlannerTests
     private static readonly Move Tackle = new(PokemonType.Normal, 35);
     private static readonly Move Lick = new(PokemonType.Ghost, 20);
 
-    // Rattata L2 Tackle vs Pidgey L5 (HP 20): 3..4, critical (3*2 = 6, STAB 9) 7..9 -> never KOs.
-    // Weakest roll leaves 17 HP: X = 255 * (60 - 34) / 60 = 110; 16711680 / 110 = 151924;
-    // sqrt = 389; sqrt = 19; Y = 1048560 / 19 = 55187.
+    // Rattata L2 Tackle vs Pidgey L5 (HP 20): 3..4, critical (3*2 = 6, STAB 9) 7..9.
+    // Two hits deal at most 18 even with criticals, so both are safe (19 / 9 = 2).
+    // Weakest rolls leave 20 - 2*3 = 14 HP: X = 255 * (60 - 28) / 60 = 136; 16711680 / 136 = 122880;
+    // sqrt = 350; sqrt = 18; Y = 1048560 / 18 = 58253.
     [Fact]
-    public void Plan_HitThatCannotKo_IsSafeAndCapturesAtWeakestRollHp()
+    public void Plan_UsesEverySafeHitAndCapturesAtWeakestRollsHp()
     {
         var plan = CatchPlanner.Plan(Rattata, [Tackle], Pidgey, 255, ScenarioCatalog.Pessimistic);
 
         Assert.Equal(ScenarioKind.Pessimistic, plan.Scenario);
         Assert.Equal(Tackle, plan.Hit!.Move);
+        Assert.Equal(2, plan.Hits);
         Assert.Equal(0, plan.KoRisk);
         Assert.True(plan.IsSafeHit);
-        Assert.Equal(17, plan.TargetHp);
-        Assert.Equal(110, plan.Capture[PokeBall.PokeBall].FinalCaptureRate);
-        Assert.Equal(55187, plan.Capture[PokeBall.PokeBall].ShakeThreshold);
+        Assert.Equal(14, plan.TargetHp);
+        Assert.Equal(136, plan.Capture[PokeBall.PokeBall].FinalCaptureRate);
+        Assert.Equal(58253, plan.Capture[PokeBall.PokeBall].ShakeThreshold);
         Assert.Equal([PokeBall.PokeBall, PokeBall.GreatBall, PokeBall.UltraBall], plan.Capture.Keys);
     }
 
@@ -43,6 +45,7 @@ public class CatchPlannerTests
     {
         var plan = CatchPlanner.Plan(RattataL16To20, [Tackle], Pidgey, 255, ScenarioCatalog.Pessimistic);
 
+        Assert.Equal(1, plan.Hits);
         Assert.Equal(1.0 / 16, plan.KoRisk);
         Assert.False(plan.IsSafeHit);
         Assert.Equal(4, plan.TargetHp);
@@ -51,7 +54,8 @@ public class CatchPlannerTests
     }
 
     // Same matchup with a power 10 Normal move: 21*10*8/10/50 = 3; +2 = 5; STAB 7 -> 5..7; critical
-    // 10, STAB 15 -> 12..15, never KOs 20 HP. It beats the stronger Tackle (KO risk 1/16) and leaves 15 HP.
+    // 10, STAB 15 -> 12..15: one hit is safe (19 / 15 = 1). It beats the stronger Tackle (KO risk 1/16)
+    // and leaves 15 HP.
     [Fact]
     public void Plan_PrefersASafeMoveOverAStrongerRiskyOne()
     {
@@ -60,6 +64,7 @@ public class CatchPlannerTests
         var plan = CatchPlanner.Plan(RattataL16To20, [Tackle, weak], Pidgey, 255, ScenarioCatalog.Pessimistic);
 
         Assert.Same(weak, plan.Hit!.Move);
+        Assert.Equal(1, plan.Hits);
         Assert.True(plan.IsSafeHit);
         Assert.Equal(15, plan.TargetHp);
     }
@@ -72,6 +77,7 @@ public class CatchPlannerTests
         var plan = CatchPlanner.Plan(Rattata, [Lick], Pidgey, 255, ScenarioCatalog.Pessimistic);
 
         Assert.Null(plan.Hit);
+        Assert.Equal(0, plan.Hits);
         Assert.False(plan.IsSafeHit);
         Assert.Equal(20, plan.TargetHp);
         Assert.Equal(85, plan.Capture[PokeBall.PokeBall].FinalCaptureRate);

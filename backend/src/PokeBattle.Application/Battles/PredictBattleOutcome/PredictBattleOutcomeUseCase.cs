@@ -178,6 +178,7 @@ public sealed class PredictBattleOutcomeUseCase
     private CatchResult ToResult(CatchPlan plan)
         => new(
             ToResult(plan.Hit),
+            plan.Hits,
             plan.KoRisk,
             plan.TargetHp,
             [.. plan.Capture.Select(capture => new BallResult(

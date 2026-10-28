@@ -412,15 +412,15 @@ Exemplo (Charmander L10 Ember → Bulbasaur L10): sem crítico **17–20**, com 
 
 ### 7.3.1 Como a tela mostra cada número (Etapa 8)
 
-Cada candidato aparece num card com os **três cenários lado a lado**. Em cada cenário:
-- **em destaque:** o resultado (**Favorável**, **Equilibrado** ou **Desfavorável**) e o rótulo de KO (ex.: "2 golpes", "KO possível");
-- **como detalhe:** o golpe usado, os golpes para KO ("3–4 golpes para KO"), o dano ("8–10 de 25 HP") e o HP que sobra, para você e para o oponente;
-- o único percentual no objetivo derrotar é o **dano como fatia do HP do alvo**, sempre em faixa e com "do HP" (ex.: "Absorb tira 121%–142% do HP"). A barra embaixo mostra essa mesma fatia: cheia até o roll mais fraco, mais clara até o mais forte, e limitada a 100%. **Não** é chance de vencer, ao contrário do mockup antigo (48% / 76% / 94%), que tinha números ilustrativos. Rodapé fixo: "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed".
-- **Capturar:** o golpe de preparo, o risco de KO (%), o HP do alvo e uma tabela com a **chance por bola** numa coluna e **quantas bolas para 50/90/95/99%** em outras.
+Cada candidato aparece num card com os **três cenários lado a lado**. O 1º da lista (a ordem vem do ranking) ganha borda verde e o selo **★ Melhor escolha**. Em cada cenário:
+- **em destaque:** o resultado (**Favorável**, **Equilibrado** ou **Desfavorável**), o rótulo de KO e, em número grande, **quantos golpes seus derrubam o alvo** ("3–4 golpes para KO"). Quanto menor, melhor. A cor do número segue o resultado (verde, preto ou vermelho);
+- **como detalhe**, escondido até o jogador clicar em "Karate Chop · detalhes", uma linha para cada lado: o golpe, o dano e, entre parênteses, a fatia do HP. Exemplo: "Você: Karate Chop 8–10 de 25 HP (32%–40% do HP do alvo)" e "Oponente: Tackle 3–4 de 20 HP (15%–20% do seu HP) · 5–7 golpes para KO". O texto sempre diz **de quem** é o HP. O "HP que sobra" saiu da tela porque era a mesma conta escrita de outro jeito;
+- o percentual no objetivo derrotar é só essa **fatia do HP**, sempre em faixa. A barra embaixo do número grande mostra a fatia do HP do alvo: cheia até o roll mais fraco, mais clara até o mais forte, e limitada a 100%. **Não** é chance de vencer, ao contrário do mockup antigo (48% / 76% / 94%), que tinha números ilustrativos. Rodapé fixo: "Faixa de dano não é chance de vitória. A V1 considera que todo golpe acerta e não olha Speed".
+- **Capturar:** o número grande vira **golpes seguros**: quantas vezes o golpe de preparo pode ser usado sem nunca derrubar o alvo, **crítico incluído** ("2 golpes seguros"; "Nenhum golpe seguro" quando um golpe já pode derrubar). A barra e os detalhes passam a mostrar o golpe de preparo. Abaixo, fechado em "Preparação e Poké Balls · 62,4% por bola" (o título já traz a chance da Poké Ball) até o jogador clicar: o golpe de preparo com quantas vezes usar ("2× Tackle"), o risco de KO (%), o HP do alvo e uma tabela com a **chance por bola** numa coluna e **quantas bolas para 50/90/95/99%** em outras.
 
 O jogador escolhe a ordem com três botões: **Mais seguro** (cenário pessimista), **Equilibrado** (neutro) e **Maior potencial** (otimista).
 
-✅ / ❌ / 💬 — Ver perguntas 14 e 15 na seção 10.
+✅ / ❌ / 💬 — Ver perguntas 14, 15 e 16 na seção 10.
 
 ### 7.4 Projeção para o futuro (V4): chance de vitória por simulação
 
@@ -504,7 +504,7 @@ No objetivo **capturar**, bater forte demais é ruim: derrubar o alvo perde a ca
 
 Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e arrisca KO no próximo golpe pode ser **pior** para capturar do que outro que causa menos dano, mesmo sendo pior para derrotar.
 
-**Decidido para a V1** (Etapa 7): o candidato dá **um golpe** e depois começa a jogar bola. O golpe é o mais forte entre os que **nunca derrubam** o alvo com HP cheio (risco 0%, crítico incluído); se todos podem derrubar, o de menor risco. A captura é calculada com o HP que sobra no **pior roll** (o que tira menos HP), sem status, para Poké, Great e Ultra Ball. O ranking usa a Poké Ball.
+**Decidido para a V1** (Etapa 7, revisto na Etapa 8): o candidato usa o golpe de preparo **todas as vezes que for seguro** e depois começa a jogar bola. "Seguro" quer dizer que nem o maior dano possível, **crítico incluído**, somado em todos os golpes, derruba o alvo: são (HP − 1) ÷ maior dano golpes. Entre os golpes que têm pelo menos 1 uso seguro, fica o que deixa **menos HP** no alvo. Se nenhum é seguro nem uma vez, o candidato dá **um golpe** com o de menor risco. Exemplo: Tackle tira 3–4 (7–9 com crítico) de um Pidgey com 20 HP: 19 ÷ 9 = **2 golpes seguros**, e o alvo fica com no máximo 20 − 2×3 = 14 HP. A captura é calculada com o HP que sobra no **pior roll** (o que tira menos HP), sem status, para Poké, Great e Ultra Ball. O ranking usa a Poké Ball.
 
 ✅ / ❌ / 💬 — Ver pergunta 9 na seção 10.
 
@@ -513,7 +513,7 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 - Bolas: **só Poké, Great, Ultra e Master.** Net, Nest, Repeat, Timer, Luxury, Premier e Dive ficam pendentes até confirmarmos onde se obtêm no FRLG (os multiplicadores já foram tirados do código do jogo).
 - **Safari Zone fora:** lá o catch rate muda com isca e pedra, é outra mecânica.
 - Golpes como False Swipe ainda não são tratados de forma especial: entram como golpe comum, com risco de KO calculado pela fórmula normal.
-- **Estratégia de captura da V1** (8.4): um golpe, o mais forte entre os que nunca derrubam o alvo com HP cheio; captura no HP do pior roll, sem status. Sem golpes de status, porque o pacote de dados ainda não os traz.
+- **Estratégia de captura da V1** (8.4): todos os golpes seguros (crítico incluído) do golpe que deixa menos HP; se nenhum é seguro, um golpe com o menor risco; captura no HP do pior roll, sem status. Sem golpes de status, porque o pacote de dados ainda não os traz.
 
 ---
 
@@ -566,8 +566,12 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 14. Os nomes **Mais seguro / Equilibrado / Maior potencial** deixam claro o que cada ordem faz? E **Pessimista / Neutro / Otimista** nos cards?
 15. O rótulo "Equilibrado" aparece em dois lugares com sentidos diferentes: como **resultado** de um cenário (faixas de turnos que se cruzam) e como **ordem** das sugestões (cenário neutro). Isso confunde? Sugestão nossa: renomear a ordem para "Cenário médio".
 
+16. O número grande de cada cenário é **quantos golpes você precisa para derrubar o alvo**. É isso que você olharia primeiro para saber se a escolha vale a pena, ou seria outro número (ex.: quantos golpes o oponente precisa para te derrubar)?
+
+17. ✅ **Decidido:** na captura, a chance das bolas agora é calculada depois de **todos os golpes seguros**, não só de 1. O custo é passar mais turnos apanhando do oponente, o que o app ainda não pesa. Você concorda, ou o jogador prefere menos turnos mesmo com bolas piores?
+
 **Geral**
-16. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
+18. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
 
 ---
 
@@ -590,8 +594,9 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 - se a Speed deve desempatar lutas;
 - para captura, se vale mais gastar menos bolas ou arriscar menos derrubar o alvo (hoje: arriscar menos vem primeiro);
 - se o candidato conta só com os golpes que já sabe ao ser pego, e se os três iniciais aparecem juntos;
-- se os nomes na tela ("Mais seguro", "Equilibrado", "Maior potencial") estão claros.
+- se os nomes na tela ("Mais seguro", "Equilibrado", "Maior potencial") estão claros;
+- se "golpes para derrubar o alvo" é o melhor número para ficar em destaque em cada cenário.
 
-**Já decidido:** você escolhe qual dos três cenários (azar, normal, sorte) ordena a lista.
+**Já decidido:** você escolhe qual dos três cenários (azar, normal, sorte) ordena a lista. Na captura, o app bate todas as vezes que for seguro (nem crítico derruba) antes de jogar bola.
 
 **O que fica para depois:** habilidades, itens, golpes que erram, Speed, troca de Pokémon, treinadores e ginásios. A ideia é começar com o que dá para calcular com certeza e ir adicionando.

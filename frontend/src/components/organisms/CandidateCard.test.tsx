@@ -16,5 +16,12 @@ describe('CandidateCard', () => {
       'Cenário Neutro',
       'Cenário Otimista',
     ])
+    expect(screen.getByText('★ Melhor escolha')).toBeInTheDocument()
+  })
+
+  it('marks only the first candidate as the best pick', () => {
+    render(<CandidateCard rank={2} candidate={toResultView(response()).candidates[0]!} />)
+
+    expect(screen.queryByText('★ Melhor escolha')).not.toBeInTheDocument()
   })
 })

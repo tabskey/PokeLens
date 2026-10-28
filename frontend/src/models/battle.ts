@@ -42,6 +42,8 @@ export interface BallResult {
 
 export interface CatchResult {
   hit: AttackResult | null
+  /** Times the hit is used: every safe hit, or 1 when none is safe; 0 without a hit. */
+  hits: number
   koRisk: number
   targetHp: number
   balls: BallResult[]

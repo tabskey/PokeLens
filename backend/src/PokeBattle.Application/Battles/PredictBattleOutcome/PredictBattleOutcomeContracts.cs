@@ -60,9 +60,10 @@ public sealed record AttackResult(
     int? TurnsToKoMax);
 
 /// <param name="Hit">Null when no move damages the target (balls are thrown at full HP).</param>
-/// <param name="KoRisk">Calculated chance that the hit knocks the target out.</param>
-/// <param name="TargetHp">HP after the weakest roll; balls are evaluated at this HP.</param>
-public sealed record CatchResult(AttackResult? Hit, double KoRisk, int TargetHp, IReadOnlyList<BallResult> Balls);
+/// <param name="Hits">Times the hit is used: every hit that can never knock out, or 1 when none can; 0 without a hit.</param>
+/// <param name="KoRisk">Calculated chance that the hits knock the target out.</param>
+/// <param name="TargetHp">HP after the weakest roll of every hit; balls are evaluated at this HP.</param>
+public sealed record CatchResult(AttackResult? Hit, int Hits, double KoRisk, int TargetHp, IReadOnlyList<BallResult> Balls);
 
 /// <summary>ChancePerBall is per throw; the BallsFor* values are throws needed for that cumulative chance.</summary>
 public sealed record BallResult(

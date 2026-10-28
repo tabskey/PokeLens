@@ -3,10 +3,13 @@ import { BallOddsRow } from './BallOddsRow'
 
 export function CatchOdds({ plan }: { plan: CatchView }) {
   return (
-    <div className="mt-2 text-xs">
-      <p className="text-muted">
+    <details className="mt-2 text-xs">
+      <summary className="cursor-pointer font-semibold text-ink">
+        Preparação e Poké Balls{plan.pokeBallChance !== null && ` · ${plan.pokeBallChance} por bola`}
+      </summary>
+      <p className="mt-1 text-muted">
         <span className="font-semibold text-ink">Preparar:</span>{' '}
-        {plan.move === null ? 'sem golpe de dano; bolas com HP cheio' : `1× ${plan.move}`} · risco de KO {plan.koRisk} · alvo com {plan.targetHp}
+        {plan.hit === null ? 'sem golpe de dano; bolas com HP cheio' : `${plan.hits} ${plan.hit.move}`} · risco de KO {plan.koRisk} · alvo com {plan.targetHp}
       </p>
       {plan.balls.length === 0 ? (
         <p className="mt-1 text-bad">O golpe derruba o alvo em qualquer roll: não dá para capturar assim.</p>
@@ -26,6 +29,6 @@ export function CatchOdds({ plan }: { plan: CatchView }) {
           </tbody>
         </table>
       )}
-    </div>
+    </details>
   )
 }

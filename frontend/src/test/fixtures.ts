@@ -30,6 +30,7 @@ const scenario = (kind: ScenarioKind, withCatch: boolean): ScenarioResult => ({
   catch: withCatch
     ? {
         hit: attack('karate-chop', 8, 10, 25, [3, 4]),
+        hits: 1,
         koRisk: 0.0625,
         targetHp: 17,
         balls: [{ ball: 'PokeBall', chancePerBall: 0.6241, ballsFor50Percent: 1, ballsFor90Percent: 3, ballsFor95Percent: 3, ballsFor99Percent: 5 }],

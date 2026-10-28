@@ -21,11 +21,12 @@ describe('toResultView', () => {
     expect(candidate?.scenarios[0]?.attack).toEqual({
       move: 'Karate Chop',
       damage: '8–10 de 25 HP',
-      hpShare: '32%–40% do HP',
+      hpShare: '32%–40% do HP do alvo',
       bar: { min: 32, max: 40 },
-      remainingHp: '15–17 HP',
+      hits: '3–4 golpes',
       turns: '3–4 golpes para KO',
     })
+    expect(candidate?.scenarios[0]?.opponent?.hpShare).toBe('15%–20% do seu HP')
   })
 
   it('only uses percentages as shares of HP in defeat results, never as a win chance', () => {
@@ -33,7 +34,7 @@ describe('toResultView', () => {
 
     const percentages = JSON.stringify(view).match(/[^"]*%[^"]*/g) ?? []
     expect(percentages.length).toBeGreaterThan(0)
-    expect(percentages.every((text) => text.endsWith('% do HP'))).toBe(true)
+    expect(percentages.every((text) => /% (do HP do alvo|do seu HP)$/.test(text))).toBe(true)
     expect(view.candidates[0]?.scenarios[0]?.catch).toBeNull()
   })
 
@@ -44,21 +45,45 @@ describe('toResultView', () => {
 
     const view = toResultView(base).candidates[0]?.scenarios[0]?.attack
 
-    expect(view?.hpShare).toBe('121%–142% do HP')
+    expect(view?.hpShare).toBe('121%–142% do HP do alvo')
     expect(view?.bar).toEqual({ min: 100, max: 100 })
   })
 
   it('formats capture odds as calculated probabilities, separate from balls needed', () => {
     const plan = toResultView(response('Catch')).candidates[0]?.scenarios[0]?.catch
 
+    expect(plan?.hit?.move).toBe('Karate Chop')
+    expect(plan?.hits).toBe('1×')
+    expect(plan?.safeHits).toBe('Nenhum golpe seguro')
     expect(plan?.koRisk).toBe('6,3%')
     expect(plan?.balls[0]?.chancePerBall).toBe('62,4%')
+    expect(plan?.pokeBallChance).toBe('62,4%')
     expect(plan?.balls[0]?.ballsFor).toEqual([
       { confidence: '50%', balls: 1 },
       { confidence: '90%', balls: 3 },
       { confidence: '95%', balls: 3 },
       { confidence: '99%', balls: 5 },
     ])
+  })
+
+  it('has no headline hits when the move does no damage', () => {
+    const base = response()
+    base.candidates[0]!.scenarios[0]!.candidateAttack = { ...base.candidates[0]!.scenarios[0]!.candidateAttack!, turnsToKoMin: null, turnsToKoMax: null }
+
+    const view = toResultView(base).candidates[0]?.scenarios[0]?.attack
+
+    expect(view?.hits).toBeNull()
+    expect(view?.turns).toBe('não causa dano')
+  })
+
+  it('counts the safe hits when the plan has no KO risk', () => {
+    const base = response('Catch')
+    base.candidates[0]!.scenarios[0]!.catch = { ...base.candidates[0]!.scenarios[0]!.catch!, hits: 2, koRisk: 0 }
+
+    const plan = toResultView(base).candidates[0]?.scenarios[0]?.catch
+
+    expect(plan?.safeHits).toBe('2 golpes seguros')
+    expect(plan?.hits).toBe('2×')
   })
 
   it('collapses equal bounds', () => {
