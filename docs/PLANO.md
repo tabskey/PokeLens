@@ -372,15 +372,49 @@ exclusivo de leafgreen não aparece em firered.
 
 ---
 
-> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 8 = `X015Frontend`.
+> **Reestruturação (`X014BackendFolder`):** a partir daqui o backend fica em `backend/` (`src/`, `tests/`, `tools/`, `data/`, solução e Dockerfile) e o frontend em `frontend/`. Os caminhos nos prompts das etapas anteriores são relativos a `backend/`. As branches seguem a numeração real: Etapa 7 = `X013Predict`, Etapa 7b = `X015TargetSearch`, Etapa 8 = `X016Frontend`.
 
-### Etapa 8 — Frontend (`X015Frontend`) · G
+### Etapa 7b — Busca e seleção do alvo (`X015TargetSearch`) · M
+
+Decisões em `docs/arquitetura.md` §7.1 e `docs/fases.md` Fase 7. Vem antes do frontend porque ele consome este endpoint.
+
+**Prompt:**
+
+```
+Implemente a seleção do alvo a partir do Pokémon, conforme docs/arquitetura.md §7.1:
+
+1. progression.json: encounterMethods ganha os marcos de old-rod, good-rod, super-rod e surf
+   (conferir onde cada item é obtido em FR/LG; só até onde a progressão já cobre) e cada área
+   ganha displayName. O importador e a API continuam recusando referências inexistentes.
+2. Application: caso de uso ListTargetsUseCase(version, milestone) que devolve, por espécie, as
+   opções de encontro (area, displayName, method, minLevel, maxLevel, chance) apenas com áreas
+   E métodos liberados no marco. Só métodos selvagens (walk, surf, varas, rock-smash); gift,
+   static e npc-trade ficam fora da V1.
+3. Api: GET /api/v1/targets?version=&milestone= com validação e ProblemDetails.
+4. PredictBattleOutcomeRequest recebe Method. TargetEncounters filtra por área E método; a faixa
+   de nível do alvo vem desse par. Área ou método não liberados no marco → erro de validação.
+
+Testes: alvo só em área futura não aparece; método antes do marco do item não aparece; Pokémon
+em duas áreas liberadas traz duas opções; mesma área com grama e vara traz duas opções com faixas
+distintas; predict com método não liberado devolve 400.
+```
+
+**Aceite:** testes passam; a Etapa 8 consegue montar a busca só com `GET /targets` e `POST /battles/predict`.
+
+**Não fazer:** perguntar ao jogador quais itens ele tem; endpoint de busca no servidor por tecla (o filtro é no frontend); trocas e presentes como alvo.
+
+---
+
+### Etapa 8 — Frontend (`X016Frontend`) · G
 
 **Prompt:**
 
 ```
 Crie frontend/ com React + Vite + TypeScript consumindo POST /api/v1/battles/predict.
 Telas: versão, progressão, alvo e objetivo; até 5 candidatos com os 3 cenários.
+Alvo (docs/arquitetura.md §7.1): um único campo de busca com autocomplete local sobre GET /api/v1/targets,
+sugestões agrupadas em Pokémon e Rotas. Uma opção liberada → segue direto; várias → lista com tag de
+método (Grama, Surf, Vara Velha, Vara Boa, Super Vara), faixa de nível e chance. Nada de perguntar itens.
 Exibição (docs/arquitetura.md seção 18): categoria em destaque, faixa de dano como detalhe, nunca
 percentual que pareça chance de vitória; para Catch, chance por bola e bolas para 50/90/95/99% separadas.
 Textos em português.

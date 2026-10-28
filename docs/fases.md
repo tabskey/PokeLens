@@ -105,16 +105,32 @@ Os dois lados variam em direções opostas dentro de cada cenário: o que é rui
 
 ---
 
-## Fase 7 — Frontend
+## Fase 7 — Busca e seleção do alvo
 
-- Seleção de alvo, objetivo e progressão
+O jogador nem sempre sabe em que rota está o Pokémon que quer enfrentar. A seleção do alvo passa a partir do **Pokémon**, não da rota. Decisões em `arquitetura.md` §7.1.
+
+- Endpoint `GET /api/v1/targets?version=&milestone=`: lista os alvos possíveis naquele ponto da progressão, cada um com suas opções de encontro (área, método, faixa de nível, chance). Só entram áreas **e** métodos liberados no marco informado
+- Na V1 só métodos selvagens (`walk`, `surf`, varas, `rock-smash`); presente, estático e troca (inclusive troca com NPC) ficam de fora
+- `PredictBattleOutcomeRequest` passa a receber `Method` além de `Area`: a faixa de nível do alvo vem do par (área, método), não da junção de todos os métodos da área
+- Validação: área ou método ainda não liberados no marco → 400 com `ProblemDetails`
+- `progression.json`: cada método de encontro ganha o marco em que o item fica obtenível (varas, Surf) e cada área ganha `displayName` para a busca
+
+**Pronto quando:** para um marco, o endpoint lista só o que o jogador alcança; um Pokémon em duas áreas liberadas aparece com duas opções; e a predição usa a faixa de nível do par escolhido.
+
+---
+
+## Fase 8 — Frontend
+
+- Seleção de versão, progressão e objetivo
+- Busca única do alvo (Fase 7): um campo só, com autocomplete local sobre a lista de `GET /targets`, sugestões agrupadas em **Pokémon** e **Rotas**; nenhum campo extra além do que já se pedia
+- Desambiguação: com uma opção liberada, vai direto para os resultados; com mais de uma, mostra a lista com tag de método, faixa de nível e chance (ex.: `Route 24 · 🎣 Super Vara · nv. 15–25`)
 - Exibição dos 3 cenários com categoria textual em destaque e faixa de dano como detalhe
 - Para Catch: chance por bola e bolas para cada nível de confiança, mostradas como métricas distintas
 - Sem percentuais que pareçam probabilidade de vitória
 
 ---
 
-## Fase 8 — Login e auditoria
+## Fase 9 — Login e auditoria
 
 - Autenticação de usuário
 - Eventos `BattlePredictionRequested` e `BattlePredictionCompleted` em `AuditLog`
@@ -128,7 +144,7 @@ A Pokédex pessoal **não** entra aqui; está na V2 (`roadmap.md`).
 
 - Critério de "vencer" (Fase 3)
 - Onde entra a habilidade no modelo de cenário (Fase 2)
-- Curadoria do `progression.json` (Fase 5)
+- Curadoria do `progression.json` (Fase 5), incluindo marcos das varas/Surf e `displayName` das áreas (Fase 7)
 - Destino de deploy
 
 Docker e esteira de CI/CD começam na Fase 0 e crescem a cada fase. O detalhamento e os prompts de cada etapa estão em `PLANO.md`.
