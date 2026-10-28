@@ -17,58 +17,72 @@
   ],
   "areas": [
     {
+      "displayName": "Pallet Town",
       "name": "pallet-town-area",
       "milestone": "start"
     },
     {
+      "displayName": "Route 1",
       "name": "kanto-route-1-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 22",
       "name": "kanto-route-22-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 2 (South)",
       "name": "kanto-route-2-south-towards-viridian-city",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Viridian Forest",
       "name": "viridian-forest-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 2 (North)",
       "name": "kanto-route-2-north-towards-pewter-city",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 3",
       "name": "kanto-route-3-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 4 (Pok\u00E9mon Center)",
       "name": "kanto-route-4-pokemon-center",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon 1F",
       "name": "mt-moon-1f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon B1F",
       "name": "mt-moon-b1f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon B2F",
       "name": "mt-moon-b2f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 4",
       "name": "kanto-route-4-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 24",
       "name": "kanto-route-24-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 25",
       "name": "kanto-route-25-area",
       "milestone": "boulder-badge"
     }
