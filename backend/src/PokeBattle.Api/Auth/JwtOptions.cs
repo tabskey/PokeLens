@@ -42,15 +42,19 @@ public sealed class JwtOptions
         return options;
     }
 
+    /// <summary>Claim that carries each role in the token.</summary>
+    public const string RoleClaim = "role";
+
     public TokenValidationParameters ValidationParameters() => new()
     {
+        RoleClaimType = RoleClaim,
         ValidIssuer = Issuer,
         ValidAudience = Audience,
         IssuerSigningKey = Key,
         ValidAlgorithms = [SecurityAlgorithms.HmacSha256],
     };
 
-    public TokenResponse CreateToken(IdentityUser user, DateTimeOffset now)
+    public TokenResponse CreateToken(IdentityUser user, IEnumerable<string> roles, DateTimeOffset now)
     {
         ArgumentNullException.ThrowIfNull(user);
 
@@ -62,6 +66,7 @@ public sealed class JwtOptions
             Subject = new ClaimsIdentity([
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+                .. roles.Select(role => new Claim(RoleClaim, role)),
             ]),
             IssuedAt = now.UtcDateTime,
             NotBefore = now.UtcDateTime,

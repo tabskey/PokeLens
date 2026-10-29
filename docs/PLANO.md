@@ -505,6 +505,10 @@ Segredos só por variável de ambiente; nada em appsettings commitado.
 Não implemente Pokédex pessoal (é V2).
 ```
 
+### Etapa 9b — Telas de conta e admin (`X020AuthUi`) · M — **feita**
+
+Telas de entrar e criar conta no frontend, role Admin (e-mails em `Auth__AdminEmails`, sincronizada no login) e tela de auditoria só para admin (`GET /api/v1/admin/audit`).
+
 ---
 
 ## 7. Riscos
