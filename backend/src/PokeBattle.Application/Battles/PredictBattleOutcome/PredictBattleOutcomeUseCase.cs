@@ -1,3 +1,4 @@
+using PokeBattle.Application.Auditing;
 using PokeBattle.Application.GameData;
 using PokeBattle.Core.Battles;
 using PokeBattle.Core.Capture;
@@ -12,15 +13,19 @@ namespace PokeBattle.Application.Battles.PredictBattleOutcome;
 public sealed class PredictBattleOutcomeUseCase
 {
     private readonly GamePackage package;
+    private readonly IAuditLog auditLog;
+    private readonly TimeProvider clock;
     private readonly Dictionary<string, SpeciesData> species;
     private readonly Dictionary<string, (MoveData Data, Move Move)> moves;
     private readonly Dictionary<Move, string> moveNames = new(ReferenceEqualityComparer.Instance);
 
-    public PredictBattleOutcomeUseCase(GamePackage package)
+    public PredictBattleOutcomeUseCase(GamePackage package, IAuditLog auditLog, TimeProvider clock)
     {
         ArgumentNullException.ThrowIfNull(package);
 
         this.package = package;
+        this.auditLog = auditLog;
+        this.clock = clock;
         species = package.Species.ToDictionary(s => s.Name, StringComparer.Ordinal);
         moves = package.Moves.ToDictionary(m => m.Name, m => (m, new Move(m.Type, m.Power, m.HighCriticalRatio)), StringComparer.Ordinal);
         foreach (var (name, entry) in moves)
@@ -63,6 +68,24 @@ public sealed class PredictBattleOutcomeUseCase
         }
 
         return errors;
+    }
+
+    /// <summary>
+    /// <see cref="Execute"/> recorded in the audit log as BattlePredictionRequested and BattlePredictionCompleted.
+    /// </summary>
+    /// <param name="userId">Null for anonymous players.</param>
+    /// <exception cref="ArgumentException">The request is invalid; call <see cref="Validate"/> first.</exception>
+    public async Task<PredictBattleOutcomeResponse> ExecuteAsync(PredictBattleOutcomeRequest request, string? userId, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        await auditLog.RecordAsync(Entry(AuditEvents.BattlePredictionRequested, []), cancellationToken).ConfigureAwait(false);
+        var response = Execute(request);
+        await auditLog.RecordAsync(Entry(AuditEvents.BattlePredictionCompleted, [.. response.Candidates.Select(c => c.Pokemon)]), cancellationToken).ConfigureAwait(false);
+        return response;
+
+        AuditEntry Entry(string name, IReadOnlyList<string> candidates)
+            => new(name, userId, request.Target, request.Area, request.Method, request.Version, request.Milestone, request.Objective, candidates, clock.GetUtcNow());
     }
 
     /// <exception cref="ArgumentException">The request is invalid; call <see cref="Validate"/> first.</exception>

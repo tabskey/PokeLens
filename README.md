@@ -22,7 +22,14 @@ frontend/                              React + Vite + Tailwind (MVVM, Atomic Des
 ```bash
 cd backend
 dotnet build PokeBattle.slnx
-dotnet test PokeBattle.slnx
+dotnet test PokeBattle.slnx            # testes de integração sobem Postgres via Docker (Testcontainers)
+
+# a API exige Postgres e segredos por ambiente (nada em appsettings)
+docker compose up -d db                # na raiz, com .env preenchido
+dotnet ef database update --project src/PokeBattle.Infrastructure --startup-project src/PokeBattle.Infrastructure \
+  --connection "Host=localhost;Database=pokebattle;Username=pokebattle;Password=<POSTGRES_PASSWORD>"
+ConnectionStrings__Default="Host=localhost;Database=pokebattle;Username=pokebattle;Password=<POSTGRES_PASSWORD>" \
+Jwt__SigningKey="<32+ caracteres>" \
 dotnet run --project src/PokeBattle.Api
 
 cd frontend
@@ -30,8 +37,10 @@ npm install
 npm run dev        # http://localhost:5173, com proxy de /api para o backend em :5000
 npm test
 
-# na raiz: API em :8080 e web em :8081
+# na raiz: copie .env.example para .env e preencha; sobe db, aplica migrations (serviço migrate), API em :8080 e web em :8081
 docker compose up --build
 ```
 
-`GET /api/v1/ping`, `GET /health/live` e `GET /health/ready` validam o pipeline da Api.
+`GET /api/v1/ping`, `GET /health/live` e `GET /health/ready` (inclui o banco) validam o pipeline da Api.
+
+Contas são opcionais: `POST /api/v1/auth/register` e `POST /api/v1/auth/login` (JWT). Com o token em `Authorization: Bearer`, as previsões ficam registradas no `AuditLog` com o usuário; sem ele, como anônimas.

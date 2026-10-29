@@ -32,8 +32,15 @@ jobs:
       - name: Build
         run: dotnet build PokeBattle.slnx --no-restore -c Release
 
+      # Integration tests start Postgres with Testcontainers (Docker is available on ubuntu-latest).
       - name: Test
         run: dotnet test PokeBattle.slnx --no-build -c Release
+
+      - name: No pending EF Core model changes
+        run: |
+          dotnet tool restore
+          dotnet ef migrations has-pending-model-changes --no-build --configuration Release \
+            --project src/PokeBattle.Infrastructure --startup-project src/PokeBattle.Infrastructure
 
       - name: Core coverage gate (90% line)
         run: |
@@ -96,6 +103,22 @@ jobs:
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: pokebattle-api:ci
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+
+      - name: Build migrations image
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          target: migrate
+          push: false
+          tags: pokebattle-migrate:ci
+          load: true
+
+      - name: Scan migrations image for vulnerabilities
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: pokebattle-migrate:ci
           severity: CRITICAL,HIGH
           exit-code: "1"
 
@@ -163,6 +186,14 @@ jobs:
           context: backend
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/pokebattle-api:${{ github.sha }}
+
+      - name: Build and push migrations
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          target: migrate
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/pokebattle-migrate:${{ github.sha }}
 
       - name: Build and push web
         uses: docker/build-push-action@v6
