@@ -354,17 +354,20 @@ Para Catch, causar o máximo de dano não é desejável. Um candidato que deixa 
 
 ## 16. Auditoria e persistência
 
-- Auditoria na Application (o domínio não a conhece): `BattlePredictionRequested`, `BattlePredictionCompleted`, com User, Target, Objective, Progression, Candidates, Result, Timestamp
-- Banco relacional (Postgres) só para dados de usuário: `Users`, `AuditLog`
+- Auditoria na Application (o domínio não a conhece): `PredictBattleOutcomeUseCase.ExecuteAsync` grava `BattlePredictionRequested` e `BattlePredictionCompleted` por `IAuditLog`, com usuário, alvo, área, método, versão, marco, objetivo, candidatos (em ordem de ranking) e horário. A Infrastructure (`EfAuditLog`) grava na tabela `AuditLog`; se a gravação falhar, a requisição falha, em vez de perder o registro em silêncio
+- **Login opcional:** prever não exige conta. Com JWT válido, a auditoria grava o usuário; sem token, grava sem usuário. Contas com ASP.NET Identity (`AddIdentityCore`): `POST /api/v1/auth/register`, `POST /api/v1/auth/login` (devolve JWT HS256 de 1 h) e `GET /api/v1/auth/me` (exige token). Senha com no mínimo 8 caracteres, sem regras de composição; bloqueio de 5 min após 5 erros
+- Banco relacional (Postgres, EF Core + Npgsql) só para dados de usuário: tabelas do Identity e `AuditLog`
+- Migrations em `Infrastructure/Persistence/Migrations`, aplicadas pelo bundle do EF Core no serviço `migrate` do compose, nunca no startup da API. A esteira falha se o modelo tiver mudança sem migration
+- Segredos só por ambiente: `ConnectionStrings__Default` e `Jwt__SigningKey` (mínimo de 32 bytes); sem eles a API não sobe
 - Dados do jogo ficam no pacote estático (seção 8), carregados em memória
 - Futuro: `UserPokedex`, `UserPokemon`, `CustomMoveset`, `SavedBattle`, `SavedPrediction`
 - Sem cache de PokeAPI em runtime, já que a API não a consulta
 
 ## 16.1 Containers e esteira
 
-- Imagens: `api` (multi-stage `sdk:10.0` → `aspnet:10.0`, não-root, `HEALTHCHECK`, pacote de dados copiado), `web` (node → nginx, proxy `/api`), `db` (Postgres, a partir da auditoria)
+- Imagens: `api` (multi-stage `sdk:10.0` → `aspnet:10.0`, não-root, `HEALTHCHECK`, pacote de dados copiado), `web` (node → nginx, proxy `/api`), `migrate` (bundle de migrations, `runtime-deps:10.0`, roda e sai), `db` (Postgres com volume e healthcheck)
 - `docker-compose.yml` sobe o ambiente completo; override para desenvolvimento
-- Health checks: `/health/live` e `/health/ready` (inclui banco quando houver)
+- Health checks: `/health/live` (processo) e `/health/ready` (inclui o banco)
 - GitHub Actions: em PR roda format, build com warnings como erro, testes, gate de cobertura no `Core`, lint/typecheck do frontend, verificação do pacote de dados (`data-check`), build e scan das imagens, dependency review e CodeQL; em `main` publica as imagens no GHCR; deploy por tag, destino a definir
 - Migrations do EF aplicadas por passo explícito, nunca no startup da API
 

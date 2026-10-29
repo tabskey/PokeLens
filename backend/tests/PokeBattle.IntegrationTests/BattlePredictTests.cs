@@ -2,12 +2,13 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
-using Microsoft.AspNetCore.Mvc.Testing;
+using PokeBattle.IntegrationTests.TestUtils;
 
 namespace PokeBattle.IntegrationTests;
 
 /// <summary>The battle endpoints against the committed data/gen3-frlg package.</summary>
-public class BattlePredictTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[Collection(ApiTests.Name)]
+public class BattlePredictTests(ApiFactory factory)
 {
     private const string Path = "/api/v1/battles/predict";
 

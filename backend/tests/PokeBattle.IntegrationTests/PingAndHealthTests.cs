@@ -1,10 +1,11 @@
 using System.Net;
 
-using Microsoft.AspNetCore.Mvc.Testing;
+using PokeBattle.IntegrationTests.TestUtils;
 
 namespace PokeBattle.IntegrationTests;
 
-public class PingAndHealthTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+[Collection(ApiTests.Name)]
+public class PingAndHealthTests(ApiFactory factory)
 {
     [Theory]
     [InlineData("/api/v1/ping")]

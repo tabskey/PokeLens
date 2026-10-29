@@ -487,7 +487,9 @@ e registre os marcos escolhidos em docs/revisao-especialista.md para conferênci
 
 ---
 
-### Etapa 9 — Login e auditoria (`X019Auth`) · M
+### Etapa 9 — Login e auditoria (`X019Auth`) · M — **feita**
+
+Decidido: login **opcional** (prever não exige conta; a auditoria grava o usuário quando há token) e só backend nesta etapa; telas de login e cadastro ficam para depois.
 
 **Prompt:**
 

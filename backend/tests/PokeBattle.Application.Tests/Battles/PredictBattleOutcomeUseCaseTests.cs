@@ -1,3 +1,4 @@
+using PokeBattle.Application.Auditing;
 using PokeBattle.Application.Battles.PredictBattleOutcome;
 using PokeBattle.Application.GameData;
 using PokeBattle.Core.Battles;
@@ -45,7 +46,39 @@ public class PredictBattleOutcomeUseCaseTests
             [new AreaUnlock("route-a", "start", "Route A"), new AreaUnlock("route-b", "badge-1", "Route B")],
             [new Unlock("tm01", "badge-1")]));
 
-    private readonly PredictBattleOutcomeUseCase useCase = new(Package);
+    private static readonly DateTimeOffset Now = new(2026, 10, 28, 12, 0, 0, TimeSpan.Zero);
+
+    private readonly RecordingAuditLog auditLog = new();
+    private readonly PredictBattleOutcomeUseCase useCase;
+
+    public PredictBattleOutcomeUseCaseTests()
+    {
+        useCase = new(Package, auditLog, new FixedClock(Now));
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_RecordsRequestAndCompletionWithUserAndCandidates()
+    {
+        var response = await useCase.ExecuteAsync(Request(), "user-1", CancellationToken.None);
+
+        var candidates = response.Candidates.Select(c => c.Pokemon).ToList();
+        Assert.Equal(
+            [
+                new AuditEntry(AuditEvents.BattlePredictionRequested, "user-1", "pidgey", "route-a", "walk", "firered", "start", BattleObjective.Defeat, [], Now),
+                new AuditEntry(AuditEvents.BattlePredictionCompleted, "user-1", "pidgey", "route-a", "walk", "firered", "start", BattleObjective.Defeat, candidates, Now),
+            ],
+            auditLog.Entries,
+            AuditComparer);
+        Assert.NotEmpty(candidates);
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_Anonymous_RecordsNoUser()
+    {
+        await useCase.ExecuteAsync(Request(), null, CancellationToken.None);
+
+        Assert.All(auditLog.Entries, entry => Assert.Null(entry.UserId));
+    }
 
     [Fact]
     public void Execute_PokemonAvailableOnlyLater_IsNotRecommended()
@@ -138,6 +171,25 @@ public class PredictBattleOutcomeUseCaseTests
         => new(id, name, types, baseStats, [], captureRate, learnset);
 
     private static LearnsetEntry Level(string move) => new(move, LearnMethod.LevelUp, 1);
+
+    private static readonly IEqualityComparer<AuditEntry> AuditComparer = EqualityComparer<AuditEntry>.Create(
+        (x, y) => x! with { Candidates = [] } == y! with { Candidates = [] } && x.Candidates.SequenceEqual(y.Candidates));
+
+    private sealed class RecordingAuditLog : IAuditLog
+    {
+        public List<AuditEntry> Entries { get; } = [];
+
+        public Task RecordAsync(AuditEntry entry, CancellationToken cancellationToken)
+        {
+            Entries.Add(entry);
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class FixedClock(DateTimeOffset now) : TimeProvider
+    {
+        public override DateTimeOffset GetUtcNow() => now;
+    }
 
     private static EncounterData Walk(string area, string version, string pokemon)
         => Encounter(area, version, pokemon, "walk", 2, 5);
