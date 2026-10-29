@@ -10,15 +10,22 @@
     "milestoneHint": "Só sugerimos Pokémon e golpes que você já consegue obter até aqui.",
     "choose": "Escolha…",
     "loading": "Carregando…",
-    "area": "Onde está o Pokémon-alvo?",
-    "areaPlaceholder": "Escolha a área…",
     "target": "Pokémon-alvo",
-    "targetPlaceholder": "Escolha o Pokémon…",
     "objective": "Objetivo",
     "rankBy": "Ordenar sugestões por",
     "rankHint": "Mais seguro usa o cenário pessimista; maior potencial, o otimista. Os três aparecem sempre.",
     "submit": "PREVER BATALHA",
-    "submitting": "CALCULANDO…"
+    "submitting": "CALCULANDO…",
+    "searchPlaceholder": "Busque um Pokémon ou uma rota…",
+    "searchHint": "Só aparece o que você já encontra até aqui."
+  },
+  "search": {
+    "pokemon": "Pokémon",
+    "routes": "Rotas",
+    "empty": "Nada encontrado até aqui.",
+    "choose": "Onde você vai encontrá-lo?",
+    "chance": "{{chance}}% dos encontros",
+    "requires": "Requer {{item}}"
   },
   "page": {
     "simulating": "Simulando os três cenários…",
@@ -31,8 +38,8 @@
     "options": "Não foi possível carregar as opções.",
     "unexpected": "Erro inesperado.",
     "milestoneRequired": "Escolha até onde você chegou.",
-    "areaRequired": "Escolha a área.",
-    "targetRequired": "Escolha o Pokémon-alvo."
+    "targetRequired": "Escolha o Pokémon-alvo.",
+    "encounterRequired": "Escolha onde encontrar o Pokémon."
   },
   "objective": {
     "Defeat": "Derrotar",
@@ -65,11 +72,29 @@
     "start": "Início (Pallet Town)",
     "pokedex": "Recebeu a Pokédex",
     "boulder-badge": "Insígnia Boulder (Brock)",
-    "cascade-badge": "Insígnia Cascade (Misty)"
+    "cascade-badge": "Insígnia Cascade (Misty)",
+    "ss-anne": "S.S. Anne (HM01 Cut)",
+    "thunder-badge": "Insígnia Thunder (Lt. Surge)",
+    "rainbow-badge": "Insígnia Rainbow (Erika)",
+    "silph-scope": "Silph Scope (Rocket Hideout)",
+    "poke-flute": "Poké Flute (Pokémon Tower)",
+    "soul-badge": "Insígnia Soul (Koga) e Surf",
+    "marsh-badge": "Insígnia Marsh (Sabrina)",
+    "volcano-badge": "Insígnia Volcano (Blaine)",
+    "tri-pass": "Tri-Pass (Ilhas Sevii 1–3)",
+    "earth-badge": "Insígnia Earth (Giovanni)",
+    "elite-four": "Elite Four",
+    "rainbow-pass": "Rainbow Pass (Ilhas Sevii 4–7)",
+    "national-dex": "Pokédex Nacional"
   },
   "method": {
     "walk": "grama/caverna",
-    "gift": "presente"
+    "gift": "presente",
+    "surf": "Surf",
+    "old-rod": "Vara Velha",
+    "good-rod": "Vara Boa",
+    "super-rod": "Super Vara",
+    "rock-smash": "Rock Smash"
   },
   "results": {
     "wildTarget": "Alvo selvagem · objetivo: {{objective}}",

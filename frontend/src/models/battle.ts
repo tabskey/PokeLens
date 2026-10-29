@@ -1,4 +1,4 @@
-// Mirrors the backend contracts in PokeBattle.Application (PredictBattleOutcomeContracts, GameOptionsQuery).
+// Mirrors the backend contracts in PokeBattle.Application (PredictBattleOutcomeContracts, ListTargetsContracts, GameOptions).
 
 export type Version = 'firered' | 'leafgreen'
 export type Objective = 'Defeat' | 'Catch'
@@ -13,6 +13,8 @@ export type PokemonType =
 export interface PredictRequest {
   target: string
   area: string
+  /** Wild encounter method in that area (walk, surf, old-rod...); the target's levels come from the pair. */
+  method: string
   version: Version
   milestone: string
   objective: Objective
@@ -81,14 +83,23 @@ export interface PredictResponse {
   candidates: CandidateResult[]
 }
 
-export interface AreaOption {
-  area: string
-  /** Null when the area is not in the curated progression yet. */
-  milestone: string | null
-  pokemon: string[]
-}
-
 export interface GameOptions {
   milestones: string[]
-  areas: AreaOption[]
+}
+
+/** One way to meet a target: chance is the species' encounter rate there, summed over its slots. */
+export interface TargetEncounter {
+  area: string
+  displayName: string
+  method: string
+  minLevel: number
+  maxLevel: number
+  chance: number
+}
+
+/** A Pokémon the player can meet at the milestone. Id is the National Pokédex number. */
+export interface TargetOption {
+  pokemon: string
+  id: number
+  encounters: TargetEncounter[]
 }

@@ -5,18 +5,20 @@ using PokeBattle.Core.Types;
 
 namespace PokeBattle.Application.Tests.Battles;
 
-// A tiny hand-made package: route-a is open from the start, route-b and TM01 (Body Slam) only after
-// the first badge; Ekans is FireRed only and Sandshrew LeafGreen only on route-a.
+// A tiny hand-made package: route-a is open from the start, route-b, the Old Rod and TM01 (Body Slam)
+// only after the first badge; Ekans is FireRed only and Sandshrew LeafGreen only on route-a. Rattata
+// is also fished on route-a at higher levels, Pidgey also walks on route-b and Eevee is a gift.
 public class PredictBattleOutcomeUseCaseTests
 {
     internal static readonly GamePackage Package = new(
         Species:
         [
-            Species("pidgey", [PokemonType.Normal, PokemonType.Flying], new(40, 45, 40, 35, 35, 56), 255, Level("tackle")),
-            Species("rattata", [PokemonType.Normal], new(30, 56, 35, 25, 35, 72), 255, Level("tackle"), new LearnsetEntry("body-slam", LearnMethod.Machine, 0)),
-            Species("ekans", [PokemonType.Poison], new(35, 60, 44, 40, 54, 55), 255, Level("tackle")),
-            Species("sandshrew", [PokemonType.Ground], new(50, 75, 85, 20, 30, 40), 255, Level("tackle")),
-            Species("spearow", [PokemonType.Normal, PokemonType.Flying], new(40, 60, 30, 31, 31, 70), 255, Level("tackle")),
+            Species(16, "pidgey", [PokemonType.Normal, PokemonType.Flying], new(40, 45, 40, 35, 35, 56), 255, Level("tackle")),
+            Species(19, "rattata", [PokemonType.Normal], new(30, 56, 35, 25, 35, 72), 255, Level("tackle"), new LearnsetEntry("body-slam", LearnMethod.Machine, 0)),
+            Species(23, "ekans", [PokemonType.Poison], new(35, 60, 44, 40, 54, 55), 255, Level("tackle")),
+            Species(27, "sandshrew", [PokemonType.Ground], new(50, 75, 85, 20, 30, 40), 255, Level("tackle")),
+            Species(21, "spearow", [PokemonType.Normal, PokemonType.Flying], new(40, 60, 30, 31, 31, 70), 255, Level("tackle")),
+            Species(133, "eevee", [PokemonType.Normal], new(55, 55, 50, 45, 65, 55), 45, Level("tackle")),
         ],
         Moves:
         [
@@ -32,11 +34,15 @@ public class PredictBattleOutcomeUseCaseTests
             Walk("route-a", "leafgreen", "rattata"),
             Walk("route-a", "leafgreen", "sandshrew"),
             Walk("route-b", "firered", "spearow"),
+            Walk("route-b", "firered", "spearow"),
+            Walk("route-b", "firered", "pidgey"),
+            Encounter("route-a", "firered", "rattata", "old-rod", 10, 15),
+            Encounter("route-a", "firered", "eevee", "gift", 25, 25),
         ],
         Progression: new ProgressionData(
             ["start", "badge-1"],
-            [new Unlock("walk", "start")],
-            [new Unlock("route-a", "start"), new Unlock("route-b", "badge-1")],
+            [new Unlock("walk", "start"), new Unlock("gift", "start"), new Unlock("old-rod", "badge-1")],
+            [new AreaUnlock("route-a", "start", "Route A"), new AreaUnlock("route-b", "badge-1", "Route B")],
             [new Unlock("tm01", "badge-1")]));
 
     private readonly PredictBattleOutcomeUseCase useCase = new(Package);
@@ -81,7 +87,7 @@ public class PredictBattleOutcomeUseCaseTests
     [Fact]
     public void Validate_ReportsEachInvalidField()
     {
-        var errors = useCase.Validate(new PredictBattleOutcomeRequest("mew", "route-a", "ruby", "earth-badge", (BattleObjective)9, (ScenarioKind)9));
+        var errors = useCase.Validate(new PredictBattleOutcomeRequest("mew", "route-a", "walk", "ruby", "earth-badge", (BattleObjective)9, (ScenarioKind)9));
 
         Assert.Equal(["milestone", "objective", "scenario", "target", "version"], errors.Keys.Order());
     }
@@ -95,8 +101,32 @@ public class PredictBattleOutcomeUseCaseTests
         Assert.Throws<ArgumentException>(() => useCase.Execute(Request() with { Area = "route-b" }));
     }
 
+    [Fact]
+    public void Validate_MethodNotUnlocked_ReportsMethod()
+    {
+        var errors = useCase.Validate(Request() with { Target = "rattata", Method = "old-rod" });
+
+        Assert.Equal(["method"], errors.Keys);
+    }
+
+    [Fact]
+    public void Validate_GiftIsNotAWildMethod_ReportsMethod()
+    {
+        Assert.Equal(["method"], useCase.Validate(Request() with { Target = "eevee", Method = "gift" }).Keys);
+    }
+
+    [Theory]
+    [InlineData("walk", 2, 5)]
+    [InlineData("old-rod", 10, 15)]
+    public void Execute_TargetLevels_ComeFromTheChosenAreaAndMethod(string method, int min, int max)
+    {
+        var response = useCase.Execute(Request(milestone: "badge-1") with { Target = "rattata", Method = method });
+
+        Assert.Equal((min, max), (response.TargetMinLevel, response.TargetMaxLevel));
+    }
+
     private static PredictBattleOutcomeRequest Request(string version = "firered", string milestone = "start")
-        => new("pidgey", "route-a", version, milestone, BattleObjective.Defeat, ScenarioKind.Pessimistic);
+        => new("pidgey", "route-a", "walk", version, milestone, BattleObjective.Defeat, ScenarioKind.Pessimistic);
 
     private List<string> Candidates(PredictBattleOutcomeRequest request)
         => [.. useCase.Execute(request).Candidates.Select(candidate => candidate.Pokemon)];
@@ -104,11 +134,14 @@ public class PredictBattleOutcomeUseCaseTests
     private CandidateResult Rattata(PredictBattleOutcomeRequest request)
         => useCase.Execute(request).Candidates.Single(candidate => candidate.Pokemon == "rattata");
 
-    private static SpeciesData Species(string name, IReadOnlyList<PokemonType> types, StatSpread baseStats, int captureRate, params LearnsetEntry[] learnset)
-        => new(0, name, types, baseStats, [], captureRate, learnset);
+    private static SpeciesData Species(int id, string name, IReadOnlyList<PokemonType> types, StatSpread baseStats, int captureRate, params LearnsetEntry[] learnset)
+        => new(id, name, types, baseStats, [], captureRate, learnset);
 
     private static LearnsetEntry Level(string move) => new(move, LearnMethod.LevelUp, 1);
 
     private static EncounterData Walk(string area, string version, string pokemon)
-        => new(area, area, version, pokemon, "walk", 2, 5, 20, []);
+        => Encounter(area, version, pokemon, "walk", 2, 5);
+
+    private static EncounterData Encounter(string area, string version, string pokemon, string method, int minLevel, int maxLevel)
+        => new(area, area, version, pokemon, method, minLevel, maxLevel, 20, []);
 }

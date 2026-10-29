@@ -10,15 +10,22 @@
     "milestoneHint": "We only suggest Pokémon and moves you can already get by this point.",
     "choose": "Choose…",
     "loading": "Loading…",
-    "area": "Where is the target Pokémon?",
-    "areaPlaceholder": "Choose the area…",
     "target": "Target Pokémon",
-    "targetPlaceholder": "Choose the Pokémon…",
     "objective": "Goal",
     "rankBy": "Rank suggestions by",
     "rankHint": "Safest uses the pessimistic scenario; highest potential, the optimistic one. All three are always shown.",
     "submit": "PREDICT BATTLE",
-    "submitting": "CALCULATING…"
+    "submitting": "CALCULATING…",
+    "searchPlaceholder": "Search a Pokémon or a route…",
+    "searchHint": "Only what you can already find up to here shows up."
+  },
+  "search": {
+    "pokemon": "Pokémon",
+    "routes": "Routes",
+    "empty": "Nothing found up to here.",
+    "choose": "Where will you find it?",
+    "chance": "{{chance}}% of encounters",
+    "requires": "Needs {{item}}"
   },
   "page": {
     "simulating": "Simulating the three scenarios…",
@@ -31,8 +38,8 @@
     "options": "Could not load the options.",
     "unexpected": "Unexpected error.",
     "milestoneRequired": "Choose how far you have got.",
-    "areaRequired": "Choose the area.",
-    "targetRequired": "Choose the target Pokémon."
+    "targetRequired": "Choose the target Pokémon.",
+    "encounterRequired": "Choose where to find the Pokémon."
   },
   "objective": {
     "Defeat": "Defeat",
@@ -65,11 +72,29 @@
     "start": "Start (Pallet Town)",
     "pokedex": "Got the Pokédex",
     "boulder-badge": "Boulder Badge (Brock)",
-    "cascade-badge": "Cascade Badge (Misty)"
+    "cascade-badge": "Cascade Badge (Misty)",
+    "ss-anne": "S.S. Anne (HM01 Cut)",
+    "thunder-badge": "Thunder Badge (Lt. Surge)",
+    "rainbow-badge": "Rainbow Badge (Erika)",
+    "silph-scope": "Silph Scope (Rocket Hideout)",
+    "poke-flute": "Poké Flute (Pokémon Tower)",
+    "soul-badge": "Soul Badge (Koga) and Surf",
+    "marsh-badge": "Marsh Badge (Sabrina)",
+    "volcano-badge": "Volcano Badge (Blaine)",
+    "tri-pass": "Tri-Pass (Sevii Islands 1–3)",
+    "earth-badge": "Earth Badge (Giovanni)",
+    "elite-four": "Elite Four",
+    "rainbow-pass": "Rainbow Pass (Sevii Islands 4–7)",
+    "national-dex": "National Pokédex"
   },
   "method": {
     "walk": "grass/cave",
-    "gift": "gift"
+    "gift": "gift",
+    "surf": "Surf",
+    "old-rod": "Old Rod",
+    "good-rod": "Good Rod",
+    "super-rod": "Super Rod",
+    "rock-smash": "Rock Smash"
   },
   "results": {
     "wildTarget": "Wild target · goal: {{objective}}",

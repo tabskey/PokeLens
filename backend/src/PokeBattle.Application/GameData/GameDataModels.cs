@@ -58,7 +58,22 @@ public sealed record EncounterData(
 public sealed record ProgressionData(
     IReadOnlyList<string> Milestones,
     IReadOnlyList<Unlock> EncounterMethods,
-    IReadOnlyList<Unlock> Areas,
-    IReadOnlyList<Unlock> Machines);
+    IReadOnlyList<AreaUnlock> Areas,
+    IReadOnlyList<Unlock> Machines)
+{
+    /// <summary>Names of the unlocks already available at <paramref name="milestone"/>.</summary>
+    public HashSet<string> UnlockedAt(IEnumerable<Unlock> unlocks, string milestone)
+    {
+        var order = Milestones.ToList();
+        var reached = order.IndexOf(milestone);
+        return unlocks.Where(u => order.IndexOf(u.Milestone) <= reached).Select(u => u.Name).ToHashSet(StringComparer.Ordinal);
+    }
+}
 
-public sealed record Unlock(string Name, string Milestone);
+public record Unlock(string Name, string Milestone);
+
+/// <param name="DisplayName">Name shown in the target search (e.g. "Route 2 (South)").</param>
+public sealed record AreaUnlock(string Name, string Milestone, string DisplayName) : Unlock(Name, Milestone);
+
+/// <summary>Milestones in game order, for the progression picker. Areas come with the targets (GET /targets).</summary>
+public sealed record GameOptions(IReadOnlyList<string> Milestones);

@@ -5,6 +5,7 @@ import { Hint } from '../atoms/Hint'
 import { Label } from '../atoms/Label'
 import { SegmentedControl } from '../atoms/SegmentedControl'
 import { Field } from '../molecules/Field'
+import { TargetSearch } from '../molecules/TargetSearch'
 
 export function PredictionForm({ form }: { form: PredictionFormViewModel }) {
   const { t } = useTranslation()
@@ -31,24 +32,7 @@ export function PredictionForm({ form }: { form: PredictionFormViewModel }) {
         errors={form.fieldErrors.milestone}
         disabled={!form.optionsLoaded}
       />
-      <Field
-        label={t('form.area')}
-        value={form.area}
-        options={form.areaOptions}
-        placeholder={t('form.areaPlaceholder')}
-        onChange={form.setArea}
-        errors={form.fieldErrors.area}
-        disabled={form.areaOptions.length === 0}
-      />
-      <Field
-        label={t('form.target')}
-        value={form.target}
-        options={form.targetOptions}
-        placeholder={t('form.targetPlaceholder')}
-        onChange={form.setTarget}
-        errors={form.fieldErrors.target}
-        disabled={form.targetOptions.length === 0}
-      />
+      <TargetSearch search={form.search} disabled={!form.optionsLoaded} />
 
       <Label>{t('form.objective')}</Label>
       <SegmentedControl label={t('form.objective')} options={form.objectives} value={form.objective} onChange={form.setObjective} />

@@ -183,7 +183,7 @@ A PokeAPI devolve dados modernos. Antes de chegar ao `Core`, todo dado passa pel
 
 `backend/data/gen3-frlg/` tem quatro arquivos: `species.json` (tipos, base stats, habilidades, taxa de captura e learnset FRLG), `moves.json`, `encounters.json` (slots por área e versão, com o método da PokeAPI: `walk`, `surf`, `gift`, `npc-trade`...) e `progression.json` (cópia validada do curado). Presentes e trocas já vêm da PokeAPI como encontros (`gift`, `npc-trade`).
 
-`backend/data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. Cada área também leva um `displayName` (nome mostrado na busca do alvo, §7.1). O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Hoje cobre até Cerulean (`start`, `pokedex`, `boulder-badge`, `cascade-badge`). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
+`backend/data/curated/progression.json` lista os **marcos** em ordem do jogo e, para cada área, método de encontro e TM/HM, o marco a partir do qual fica disponível. Cada área também leva um `displayName` (nome mostrado na busca do alvo, §7.1). O que não está listado é tratado como **indisponível** (erro conservador: nunca recomenda o inacessível). Cobre o jogo inteiro, de `start` a `national-dex` (17 marcos, Kanto e Ilhas Sevii); as escolhas de marco estão em `revisao-especialista.md` §6.10. Ficam de fora só áreas de evento ou estáticas (Altering Cave B–I, Birth Island, Navel Rock, roaming). Como o pacote só tem golpes de dano, TMs de status (ex.: TM05 Roar, TM45 Attract) não entram. O importador e a API recusam o pacote se alguma referência não existir.
 
 ## 9. BattleObjective
 
@@ -427,7 +427,7 @@ src/
 ```
 
 - **Organização:** MVVM com Atomic Design. As Views só recebem dados prontos do ViewModel; `pages/` liga os dois.
-- **Opções do formulário:** vêm de `GET /api/v1/game-data/options?version=`, que traz os marcos e as áreas com os Pokémon de cada uma. O formulário só oferece as áreas liberadas no marco escolhido, o mesmo filtro que o backend aplica aos candidatos.
+- **Opções do formulário:** os marcos vêm de `GET /api/v1/game-data/options`; áreas e alvos vêm de `GET /api/v1/targets?version=&milestone=` (§7.1), que só traz o que está liberado no marco, o mesmo filtro que o backend aplica aos candidatos.
 - **Sprites:** o navegador carrega os sprites da FireRed/LeafGreen do repositório de sprites da PokeAPI (`PokeAPI/sprites`, `versions/generation-iii/firered-leafgreen/{id}.png`), usando o número da Pokédex que a API devolve. A API continua sem chamar a PokeAPI em runtime. Se a imagem não carregar, o card mostra as iniciais.
 - **Containers:** em produção, o nginx (imagem não-root) serve a SPA e faz proxy de `/api` para o serviço `api`. Em dev, o Vite faz o proxy para `localhost:5000`.
 

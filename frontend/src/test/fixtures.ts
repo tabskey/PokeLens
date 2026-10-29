@@ -1,12 +1,29 @@
-import type { AttackResult, CandidateResult, GameOptions, PredictResponse, ScenarioKind, ScenarioResult } from '../models/battle'
+import type { AttackResult, CandidateResult, GameOptions, PredictResponse, ScenarioKind, ScenarioResult, TargetEncounter, TargetOption } from '../models/battle'
 
 export const options: GameOptions = {
   milestones: ['start', 'pokedex', 'boulder-badge'],
-  areas: [
-    { area: 'pallet-town-area', milestone: 'start', pokemon: ['bulbasaur'] },
-    { area: 'kanto-route-1-area', milestone: 'pokedex', pokemon: ['pidgey', 'rattata'] },
-    { area: 'mt-moon-1f', milestone: 'boulder-badge', pokemon: ['geodude', 'zubat'] },
-    { area: 'seafoam-islands-1f', milestone: null, pokemon: ['seel'] },
+}
+
+const walk = (area: string, displayName: string, minLevel: number, maxLevel: number): TargetEncounter => ({
+  area, displayName, method: 'walk', minLevel, maxLevel, chance: 20,
+})
+
+/** GET /targets per milestone, as the backend filters it. */
+export const targetsByMilestone: Record<string, TargetOption[]> = {
+  start: [],
+  pokedex: [
+    { pokemon: 'pidgey', id: 16, encounters: [walk('kanto-route-1-area', 'Route 1', 2, 5)] },
+    { pokemon: 'rattata', id: 19, encounters: [walk('kanto-route-1-area', 'Route 1', 2, 4)] },
+  ],
+  'boulder-badge': [
+    { pokemon: 'pidgey', id: 16, encounters: [walk('kanto-route-1-area', 'Route 1', 2, 5)] },
+    { pokemon: 'rattata', id: 19, encounters: [walk('kanto-route-1-area', 'Route 1', 2, 4)] },
+    { pokemon: 'zubat', id: 41, encounters: [walk('mt-moon-1f', 'Mt. Moon 1F', 7, 10)] },
+    {
+      pokemon: 'geodude',
+      id: 74,
+      encounters: [walk('mt-moon-1f', 'Mt. Moon 1F', 7, 9), { ...walk('kanto-route-24-area', 'Route 24', 15, 25), method: 'super-rod' }],
+    },
   ],
 }
 

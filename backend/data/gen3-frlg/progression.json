@@ -3,7 +3,20 @@
     "start",
     "pokedex",
     "boulder-badge",
-    "cascade-badge"
+    "cascade-badge",
+    "ss-anne",
+    "thunder-badge",
+    "rainbow-badge",
+    "silph-scope",
+    "poke-flute",
+    "soul-badge",
+    "marsh-badge",
+    "volcano-badge",
+    "tri-pass",
+    "earth-badge",
+    "elite-four",
+    "rainbow-pass",
+    "national-dex"
   ],
   "encounterMethods": [
     {
@@ -13,64 +26,663 @@
     {
       "name": "walk",
       "milestone": "pokedex"
+    },
+    {
+      "name": "old-rod",
+      "milestone": "cascade-badge"
+    },
+    {
+      "name": "good-rod",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "super-rod",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "surf",
+      "milestone": "soul-badge"
+    },
+    {
+      "name": "rock-smash",
+      "milestone": "tri-pass"
     }
   ],
   "areas": [
     {
+      "displayName": "Pallet Town",
       "name": "pallet-town-area",
       "milestone": "start"
     },
     {
+      "displayName": "Route 1",
       "name": "kanto-route-1-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Viridian City",
+      "name": "viridian-city-area",
+      "milestone": "pokedex"
+    },
+    {
+      "displayName": "Route 22",
       "name": "kanto-route-22-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 2 (South)",
       "name": "kanto-route-2-south-towards-viridian-city",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Viridian Forest",
       "name": "viridian-forest-area",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 2 (North)",
       "name": "kanto-route-2-north-towards-pewter-city",
       "milestone": "pokedex"
     },
     {
+      "displayName": "Route 3",
       "name": "kanto-route-3-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 3 (Pok\u00E9mon Center)",
+      "name": "kanto-route-3-pokemon-center",
+      "milestone": "boulder-badge"
+    },
+    {
+      "displayName": "Route 4 (Pok\u00E9mon Center)",
       "name": "kanto-route-4-pokemon-center",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon 1F",
       "name": "mt-moon-1f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon B1F",
       "name": "mt-moon-b1f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Mt. Moon B2F",
       "name": "mt-moon-b2f",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 4",
       "name": "kanto-route-4-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Cerulean City",
+      "name": "cerulean-city-area",
+      "milestone": "boulder-badge"
+    },
+    {
+      "displayName": "Route 24",
       "name": "kanto-route-24-area",
       "milestone": "boulder-badge"
     },
     {
+      "displayName": "Route 25",
       "name": "kanto-route-25-area",
       "milestone": "boulder-badge"
+    },
+    {
+      "displayName": "Route 5",
+      "name": "kanto-route-5-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Underground Path (Routes 5\u20136)",
+      "name": "kanto-underground-path-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Route 6",
+      "name": "kanto-route-6-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Vermilion City",
+      "name": "vermilion-city-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "S.S. Anne",
+      "name": "ss-anne-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Route 11",
+      "name": "kanto-route-11-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Diglett\u0027s Cave",
+      "name": "digletts-cave-area",
+      "milestone": "cascade-badge"
+    },
+    {
+      "displayName": "Route 9",
+      "name": "kanto-route-9-area",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Route 10",
+      "name": "kanto-route-10-area",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Rock Tunnel 1F",
+      "name": "rock-tunnel-1f",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Rock Tunnel B1F",
+      "name": "rock-tunnel-b1f",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Route 8",
+      "name": "kanto-route-8-area",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Route 7",
+      "name": "kanto-route-7-area",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Celadon City",
+      "name": "celadon-city-area",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Celadon Mansion",
+      "name": "celadon-city-celadon-mansion",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Celadon Game Corner",
+      "name": "celadon-city-prize-corner",
+      "milestone": "ss-anne"
+    },
+    {
+      "displayName": "Pok\u00E9mon Tower 3F",
+      "name": "pokemon-tower-3f",
+      "milestone": "silph-scope"
+    },
+    {
+      "displayName": "Pok\u00E9mon Tower 4F",
+      "name": "pokemon-tower-4f",
+      "milestone": "silph-scope"
+    },
+    {
+      "displayName": "Pok\u00E9mon Tower 5F",
+      "name": "pokemon-tower-5f",
+      "milestone": "silph-scope"
+    },
+    {
+      "displayName": "Pok\u00E9mon Tower 6F",
+      "name": "pokemon-tower-6f",
+      "milestone": "silph-scope"
+    },
+    {
+      "displayName": "Pok\u00E9mon Tower 7F",
+      "name": "pokemon-tower-7f",
+      "milestone": "silph-scope"
+    },
+    {
+      "displayName": "Route 12",
+      "name": "kanto-route-12-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 13",
+      "name": "kanto-route-13-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 14",
+      "name": "kanto-route-14-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 15",
+      "name": "kanto-route-15-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 16",
+      "name": "kanto-route-16-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 17",
+      "name": "kanto-route-17-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Route 18",
+      "name": "kanto-route-18-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Fuchsia City",
+      "name": "fuchsia-city-area",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Safari Zone (Center)",
+      "name": "kanto-safari-zone-middle",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Safari Zone (East)",
+      "name": "kanto-safari-zone-area-1-east",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Safari Zone (North)",
+      "name": "kanto-safari-zone-area-2-north",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Safari Zone (West)",
+      "name": "kanto-safari-zone-area-3-west",
+      "milestone": "poke-flute"
+    },
+    {
+      "displayName": "Power Plant",
+      "name": "kanto-power-plant-area",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Route 19",
+      "name": "kanto-sea-route-19-area",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Route 20",
+      "name": "kanto-sea-route-20-area",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Seafoam Islands 1F",
+      "name": "seafoam-islands-1f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Seafoam Islands B1F",
+      "name": "seafoam-islands-b1f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Seafoam Islands B2F",
+      "name": "seafoam-islands-b2f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Seafoam Islands B3F",
+      "name": "seafoam-islands-b3f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Seafoam Islands B4F",
+      "name": "seafoam-islands-b4f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Cinnabar Island",
+      "name": "cinnabar-island-area",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Cinnabar Lab",
+      "name": "cinnabar-island-cinnabar-lab",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Pok\u00E9mon Mansion 1F",
+      "name": "pokemon-mansion-1f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Pok\u00E9mon Mansion 2F",
+      "name": "pokemon-mansion-2f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Pok\u00E9mon Mansion 3F",
+      "name": "pokemon-mansion-3f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Pok\u00E9mon Mansion B1F",
+      "name": "pokemon-mansion-b1f",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Route 21",
+      "name": "kanto-sea-route-21-area",
+      "milestone": "soul-badge"
+    },
+    {
+      "displayName": "Fighting Dojo",
+      "name": "saffron-city-fighting-dojo",
+      "milestone": "marsh-badge"
+    },
+    {
+      "displayName": "Silph Co. 7F",
+      "name": "saffron-city-silph-co-7f",
+      "milestone": "marsh-badge"
+    },
+    {
+      "displayName": "One Island",
+      "name": "one-island-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Kindle Road",
+      "name": "kindle-road-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Treasure Beach",
+      "name": "treasure-beach-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Mt. Ember",
+      "name": "mt-ember-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Cave)",
+      "name": "mt-ember-cave",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Summit)",
+      "name": "mt-ember-summit",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Cape Brink",
+      "name": "cape-brink-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Three Isle Port",
+      "name": "three-isle-port-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Bond Bridge",
+      "name": "bond-bridge-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Berry Forest",
+      "name": "berry-forest-area",
+      "milestone": "tri-pass"
+    },
+    {
+      "displayName": "Route 23",
+      "name": "kanto-route-23-area",
+      "milestone": "earth-badge"
+    },
+    {
+      "displayName": "Victory Road 1F",
+      "name": "kanto-victory-road-2-1f",
+      "milestone": "earth-badge"
+    },
+    {
+      "displayName": "Victory Road 2F",
+      "name": "kanto-victory-road-2-2f",
+      "milestone": "earth-badge"
+    },
+    {
+      "displayName": "Victory Road 3F",
+      "name": "kanto-victory-road-2-3f",
+      "milestone": "earth-badge"
+    },
+    {
+      "displayName": "Mt. Ember (Ruby Path 1F)",
+      "name": "mt-ember-inside",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Ruby Path, Rocket cave)",
+      "name": "mt-ember-1f-cave-behind-team-rocket",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Ruby Path B1F)",
+      "name": "mt-ember-b1f",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Ruby Path B2F)",
+      "name": "mt-ember-b2f",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Mt. Ember (Ruby Path B3F)",
+      "name": "mt-ember-b3f",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Four Island",
+      "name": "four-island-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Icefall Cave (Entrance)",
+      "name": "icefall-cave-entrance",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Icefall Cave 1F",
+      "name": "icefall-cave-1f",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Icefall Cave B1F",
+      "name": "icefall-cave-b1f",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Icefall Cave (Waterfall)",
+      "name": "icefall-cave-waterfall",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Five Island",
+      "name": "five-island-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Five Isle Meadow",
+      "name": "five-isle-meadow-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Memorial Pillar",
+      "name": "memorial-pillar-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Water Labyrinth",
+      "name": "water-labyrinth-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Resort Gorgeous",
+      "name": "resort-gorgeous-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 1)",
+      "name": "lost-cave-room-1",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 2)",
+      "name": "lost-cave-room-2",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 3)",
+      "name": "lost-cave-room-3",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 4)",
+      "name": "lost-cave-room-4",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 5)",
+      "name": "lost-cave-room-5",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 6)",
+      "name": "lost-cave-room-6",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 7)",
+      "name": "lost-cave-room-7",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 8)",
+      "name": "lost-cave-room-8",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 9)",
+      "name": "lost-cave-room-9",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Room 10)",
+      "name": "lost-cave-room-10",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Lost Cave (Item Rooms)",
+      "name": "lost-cave-item-rooms",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Water Path",
+      "name": "water-path-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Ruin Valley",
+      "name": "ruin-valley-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Green Path",
+      "name": "green-path-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Outcast Island",
+      "name": "outcast-island-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Pattern Bush",
+      "name": "pattern-bush-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Altering Cave",
+      "name": "kanto-altering-cave-a",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Trainer Tower",
+      "name": "trainer-tower-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Canyon Entrance",
+      "name": "canyon-entrance-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Sevault Canyon",
+      "name": "sevault-canyon-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Tanoby Ruins",
+      "name": "tanoby-ruins-area",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "displayName": "Cerulean Cave 1F",
+      "name": "cerulean-cave-1f",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Cerulean Cave 2F",
+      "name": "cerulean-cave-2f",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Cerulean Cave B1F",
+      "name": "cerulean-cave-b1f",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Monean Chamber",
+      "name": "monean-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Liptoo Chamber",
+      "name": "liptoo-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Weepth Chamber",
+      "name": "weepth-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Dilford Chamber",
+      "name": "dilford-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Scufib Chamber",
+      "name": "scufib-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Rixy Chamber",
+      "name": "rixy-chamber-area",
+      "milestone": "national-dex"
+    },
+    {
+      "displayName": "Viapos Chamber",
+      "name": "viapos-chamber-area",
+      "milestone": "national-dex"
     }
   ],
   "machines": [
@@ -93,6 +705,118 @@
     {
       "name": "tm03",
       "milestone": "cascade-badge"
+    },
+    {
+      "name": "hm01",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm31",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm40",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm15",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm13",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm23",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm24",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm30",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm35",
+      "milestone": "ss-anne"
+    },
+    {
+      "name": "tm34",
+      "milestone": "thunder-badge"
+    },
+    {
+      "name": "tm19",
+      "milestone": "rainbow-badge"
+    },
+    {
+      "name": "hm02",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "hm03",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "hm04",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "tm47",
+      "milestone": "poke-flute"
+    },
+    {
+      "name": "tm14",
+      "milestone": "soul-badge"
+    },
+    {
+      "name": "tm22",
+      "milestone": "soul-badge"
+    },
+    {
+      "name": "tm25",
+      "milestone": "soul-badge"
+    },
+    {
+      "name": "tm01",
+      "milestone": "marsh-badge"
+    },
+    {
+      "name": "tm29",
+      "milestone": "marsh-badge"
+    },
+    {
+      "name": "tm38",
+      "milestone": "marsh-badge"
+    },
+    {
+      "name": "hm06",
+      "milestone": "tri-pass"
+    },
+    {
+      "name": "tm26",
+      "milestone": "earth-badge"
+    },
+    {
+      "name": "tm02",
+      "milestone": "earth-badge"
+    },
+    {
+      "name": "tm50",
+      "milestone": "earth-badge"
+    },
+    {
+      "name": "hm07",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "name": "tm36",
+      "milestone": "rainbow-pass"
+    },
+    {
+      "name": "tm42",
+      "milestone": "rainbow-pass"
     }
   ]
 }

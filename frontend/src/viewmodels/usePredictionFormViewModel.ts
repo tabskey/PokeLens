@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { ApiError, getOptions, postPredict } from '../models/api'
-import type { GameOptions, Objective, PredictResponse, ScenarioKind, Version } from '../models/battle'
+import { ApiError, getOptions, getTargets, postPredict } from '../models/api'
+import type { GameOptions, Objective, PredictResponse, ScenarioKind, TargetEncounter, TargetOption, Version } from '../models/battle'
 import { useTranslation } from '../i18n/useTranslation'
-import { areaName, milestoneLabel, pokemonName, versionLabels } from '../models/labels'
+import { methodLabel, milestoneLabel, pokemonName, versionLabels } from '../models/labels'
+import { range } from './usePredictionResultViewModel'
 
 export interface Option<T extends string = string> {
   value: T
@@ -11,7 +12,39 @@ export interface Option<T extends string = string> {
   activeClassName?: string
 }
 
+/** A search suggestion: `id` is "pokemon:<slug>" or "area:<slug>". */
+export interface Suggestion {
+  id: string
+  label: string
+  /** Where a Pokémon shows up, e.g. "Route 1, Route 2 (South)". */
+  detail?: string
+}
+
+export interface SuggestionGroup {
+  label: string
+  options: Suggestion[]
+}
+
+/** One way to meet the picked target; the player chooses when there is more than one. */
+export interface EncounterChoice {
+  id: string
+  area: string
+  method: string
+  /** "Requer Super Vara" for methods that need an item; null for walking. */
+  requirement: string | null
+  levels: string
+  chance: string
+}
+
 type FieldErrors = Record<string, string[]>
+
+// Methods that need an item or HM; walking needs nothing (docs/arquitetura.md §7.1).
+const itemMethods = new Set(['surf', 'old-rod', 'good-rod', 'super-rod', 'rock-smash'])
+
+// Accents and punctuation are ignored: "mt moon" finds "Mt. Moon 1F", "pokemon" finds "Pokémon".
+const normalize = (text: string) =>
+  text.normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/[^\p{L}\p{N}]+/gu, ' ').toLowerCase().trim()
+const encounterId = (e: TargetEncounter) => `${e.area}|${e.method}`
 
 const versions: Option<Version>[] = [
   { value: 'firered', label: versionLabels.firered.toUpperCase(), activeClassName: 'bg-firered' },
@@ -19,17 +52,22 @@ const versions: Option<Version>[] = [
 ]
 
 /**
- * State and actions of the prediction form. Only areas unlocked at the chosen milestone are offered,
- * mirroring the progression filter the backend applies to candidates.
+ * State and actions of the prediction form. The target is found with a single search over GET /targets
+ * (docs/arquitetura.md §7.1), which only lists what is unlocked at the chosen milestone. A target with
+ * one encounter is ready at once; with several, the player picks the area and method.
  */
 export function usePredictionFormViewModel() {
   const { t } = useTranslation()
   const [version, setVersionState] = useState<Version>('firered')
   const [options, setOptions] = useState<GameOptions | null>(null)
+  const [targetList, setTargetList] = useState<TargetOption[]>([])
   const [optionsError, setOptionsError] = useState<string | null>(null)
-  const [milestone, setMilestoneState] = useState('')
-  const [area, setAreaState] = useState('')
-  const [target, setTarget] = useState('')
+  const [milestone, setMilestone] = useState('')
+  const [query, setQueryState] = useState('')
+  const [picked, setPicked] = useState('')
+  // Area the player searched before picking the Pokémon; narrows its encounters to that route.
+  const [route, setRoute] = useState('')
+  const [chosenEncounter, setChosenEncounter] = useState('')
   const [objective, setObjective] = useState<Objective>('Defeat')
   const [scenario, setScenario] = useState<ScenarioKind>('Neutral')
   const [loading, setLoading] = useState(false)
@@ -39,14 +77,14 @@ export function usePredictionFormViewModel() {
 
   useEffect(() => {
     let cancelled = false
-    getOptions(version)
+    getOptions()
       .then((loaded) => {
         if (cancelled) {
           return
         }
         setOptions(loaded)
         setOptionsError(null)
-        setMilestoneState((current) => (loaded.milestones.includes(current) ? current : (loaded.milestones[0] ?? '')))
+        setMilestone(loaded.milestones[0] ?? '')
       })
       .catch((reason: unknown) => {
         if (!cancelled) {
@@ -56,46 +94,101 @@ export function usePredictionFormViewModel() {
     return () => {
       cancelled = true
     }
-  }, [version])
+  }, [])
+
+  useEffect(() => {
+    if (!milestone) {
+      return
+    }
+    let cancelled = false
+    getTargets(version, milestone)
+      .then((loaded) => {
+        if (cancelled) {
+          return
+        }
+        setTargetList(loaded)
+        setOptionsError(null)
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) {
+          setOptionsError(reason instanceof ApiError ? reason.message : 'errors.options')
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [version, milestone])
 
   const milestones = useMemo(() => options?.milestones ?? [], [options])
 
-  const areas = useMemo(() => {
-    const reached = milestones.indexOf(milestone)
-    return (options?.areas ?? [])
-      .filter((option) => option.milestone !== null && milestones.indexOf(option.milestone) <= reached)
-      .sort((a, b) => milestones.indexOf(a.milestone!) - milestones.indexOf(b.milestone!) || a.area.localeCompare(b.area))
-  }, [options, milestones, milestone])
+  const areaNames = useMemo(
+    () => new Map(targetList.flatMap((option) => option.encounters.map((e): [string, string] => [e.area, e.displayName]))),
+    [targetList],
+  )
 
-  const targets = useMemo(() => areas.find((option) => option.area === area)?.pokemon ?? [], [areas, area])
+  const groups = useMemo((): SuggestionGroup[] => {
+    const needle = normalize(query)
+    if (!needle || picked) {
+      return []
+    }
+    const matches = (text: string) => normalize(text).includes(needle)
+    // A Pokémon also matches by the routes it shows up in, so searching a route lists its Pokémon.
+    const pokemon = targetList
+      .filter((option) => matches(pokemonName(option.pokemon)) || option.encounters.some((e) => matches(e.displayName)))
+      .map((option): Suggestion => ({
+        id: `pokemon:${option.pokemon}`,
+        label: pokemonName(option.pokemon),
+        detail: [...new Set(option.encounters.map((e) => e.displayName))].join(', '),
+      }))
+    const routes = [...areaNames]
+      .filter(([, name]) => matches(name))
+      .sort(([, a], [, b]) => a.localeCompare(b))
+      .map(([area, name]): Suggestion => ({ id: `area:${area}`, label: name }))
+    return [
+      { label: t('search.pokemon'), options: pokemon },
+      { label: t('search.routes'), options: routes },
+    ].filter((group) => group.options.length > 0)
+  }, [query, picked, targetList, areaNames, t])
+
+  // Going back in progression (or switching version) drops a pick that is no longer open.
+  const target = targetList.find((option) => option.pokemon === picked)
+  const encounters = useMemo(() => {
+    const all = target?.encounters ?? []
+    const onRoute = all.filter((e) => e.area === route)
+    return onRoute.length > 0 ? onRoute : all
+  }, [target, route])
+  const selected = encounters.length === 1 ? encounters[0] : encounters.find((e) => encounterId(e) === chosenEncounter)
+
+  const setQuery = (next: string) => {
+    setQueryState(next)
+    setPicked('')
+    setRoute('')
+    setChosenEncounter('')
+  }
+
+  const pick = (id: string) => {
+    const [kind, slug = ''] = id.split(':')
+    if (kind === 'area') {
+      setQuery(areaNames.get(slug) ?? '')
+      return
+    }
+    const searched = [...areaNames].find(([, name]) => normalize(name) === normalize(query))
+    setQueryState(pokemonName(slug))
+    setPicked(slug)
+    setRoute(searched?.[0] ?? '')
+    setChosenEncounter('')
+  }
 
   const setVersion = (next: Version) => {
     setVersionState(next)
-    setAreaState('')
-    setTarget('')
     setResult(null)
-  }
-
-  const setMilestone = (next: string) => {
-    setMilestoneState(next)
-    const reached = milestones.indexOf(next)
-    const stillOpen = options?.areas.some((option) => option.area === area && option.milestone !== null && milestones.indexOf(option.milestone) <= reached)
-    if (!stillOpen) {
-      setAreaState('')
-      setTarget('')
-    }
-  }
-
-  const setArea = (next: string) => {
-    setAreaState(next)
-    setTarget('')
   }
 
   const submit = async () => {
     const missing: FieldErrors = {}
     if (!milestone) missing.milestone = ['errors.milestoneRequired']
-    if (!area) missing.area = ['errors.areaRequired']
     if (!target) missing.target = ['errors.targetRequired']
+    else if (!selected) missing.target = ['errors.encounterRequired']
     setFieldErrors(missing)
     setError(null)
     if (Object.keys(missing).length > 0) {
@@ -104,7 +197,7 @@ export function usePredictionFormViewModel() {
 
     setLoading(true)
     try {
-      setResult(await postPredict({ target, area, version, milestone, objective, scenario }))
+      setResult(await postPredict({ target: target!.pokemon, area: selected!.area, method: selected!.method, version, milestone, objective, scenario }))
     } catch (reason) {
       setResult(null)
       if (reason instanceof ApiError) {
@@ -118,30 +211,47 @@ export function usePredictionFormViewModel() {
     }
   }
 
+  const translate = (messages: string[] = []) => messages.map((message) => t(message))
+
   return {
     version,
     milestone,
-    area,
-    target,
     objective,
     scenario,
     versions,
     objectives: (['Defeat', 'Catch'] as const).map((value): Option<Objective> => ({ value, label: t(`objective.${value}`) })),
     scenarios: (['Pessimistic', 'Neutral', 'Optimistic'] as const).map((value): Option<ScenarioKind> => ({ value, label: t(`ranking.${value}`) })),
     milestoneOptions: milestones.map((value): Option => ({ value, label: milestoneLabel(value, t) })),
-    areaOptions: areas.map((option): Option => ({ value: option.area, label: areaName(option.area) })),
-    targetOptions: targets.map((value): Option => ({ value, label: pokemonName(value) })),
+    search: {
+      query,
+      groups,
+      noMatches: normalize(query) !== '' && !picked && groups.length === 0,
+      choices: encounters.length > 1
+        ? encounters.map((e): EncounterChoice => ({
+            id: encounterId(e),
+            area: e.displayName,
+            method: methodLabel(e.method, t),
+            requirement: itemMethods.has(e.method) ? t('search.requires', { item: methodLabel(e.method, t) }) : null,
+            levels: t('results.level', { levels: range(e.minLevel, e.maxLevel) }),
+            chance: t('search.chance', { chance: e.chance }),
+          }))
+        : [],
+      chosen: selected ? encounterId(selected) : '',
+      // Backend errors about area or method are about this field too.
+      errors: [...translate(fieldErrors.target), ...translate(fieldErrors.area), ...translate(fieldErrors.method)],
+      setQuery,
+      pick,
+      choose: setChosenEncounter,
+    },
     optionsLoaded: options !== null,
     // Errors are kept as keys so they follow a language switch; backend messages pass through as-is.
     optionsError: optionsError && t(optionsError),
     loading,
     result,
     error: error && t(error),
-    fieldErrors: Object.fromEntries(Object.entries(fieldErrors).map(([field, messages]) => [field, messages.map((message) => t(message))])),
+    fieldErrors: Object.fromEntries(Object.entries(fieldErrors).map(([field, messages]) => [field, translate(messages)])),
     setVersion,
     setMilestone,
-    setArea,
-    setTarget,
     setObjective,
     setScenario,
     submit,
@@ -149,3 +259,4 @@ export function usePredictionFormViewModel() {
 }
 
 export type PredictionFormViewModel = ReturnType<typeof usePredictionFormViewModel>
+export type TargetSearchViewModel = PredictionFormViewModel['search']

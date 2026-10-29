@@ -38,20 +38,35 @@ public class GamePackageTests
     }
 
     [Fact]
+    public void EveryAreaWithWildEncounters_HasAMilestone()
+    {
+        // Altering Cave B–I only change through Mystery Gift events; the default layout is cave A.
+        var curated = Package.Progression.Areas.Select(a => a.Name).ToHashSet(StringComparer.Ordinal);
+        var missing = Package.Encounters
+            .Where(e => GamePackage.WildMethods.Contains(e.Method) && !e.Area.StartsWith("kanto-altering-cave-", StringComparison.Ordinal))
+            .Select(e => e.Area)
+            .Where(area => !curated.Contains(area))
+            .Distinct();
+
+        Assert.Empty(missing);
+    }
+
+    [Fact]
     public void Validate_ProgressionReferencingMissingData_ReportsEachProblem()
     {
         var broken = Package with
         {
             Progression = Package.Progression with
             {
-                Areas = [new Unlock("kanto-route-99-area", "start")],
-                Machines = [new Unlock("tm39", "earth-badge")],
+                Areas = [new AreaUnlock("kanto-route-99-area", "start", " ")],
+                Machines = [new Unlock("tm39", "zephyr-badge")],
             },
         };
 
         var errors = broken.Validate();
 
         Assert.Contains(errors, e => e.Contains("kanto-route-99-area", StringComparison.Ordinal));
-        Assert.Contains(errors, e => e.Contains("earth-badge", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("zephyr-badge", StringComparison.Ordinal));
+        Assert.Contains(errors, e => e.Contains("displayName", StringComparison.Ordinal));
     }
 }

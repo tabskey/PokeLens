@@ -11,8 +11,6 @@ namespace PokeBattle.Application.Battles.PredictBattleOutcome;
 /// </summary>
 public sealed class PredictBattleOutcomeUseCase
 {
-    public static readonly IReadOnlyList<string> Versions = ["firered", "leafgreen"];
-
     private readonly GamePackage package;
     private readonly Dictionary<string, SpeciesData> species;
     private readonly Dictionary<string, (MoveData Data, Move Move)> moves;
@@ -36,24 +34,22 @@ public sealed class PredictBattleOutcomeUseCase
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var errors = new Dictionary<string, string[]>();
-        if (!Versions.Contains(request.Version))
-        {
-            errors["version"] = ["Versão deve ser 'firered' ou 'leafgreen'."];
-        }
-
-        if (request.Milestone is null || !package.Progression.Milestones.Contains(request.Milestone))
-        {
-            errors["milestone"] = [$"Ponto de progressão desconhecido. Valores aceitos: {string.Join(", ", package.Progression.Milestones)}."];
-        }
-
+        var errors = package.ValidateProgress(request.Version, request.Milestone);
         if (request.Target is null || !species.ContainsKey(request.Target))
         {
             errors["target"] = ["Pokémon-alvo desconhecido."];
         }
-        else if (!errors.ContainsKey("version") && !TargetEncounters(request).Any())
+        else if (errors.Count == 0)
         {
-            errors["area"] = ["O Pokémon-alvo não aparece nessa área nessa versão."];
+            if (request.Method is null || !GamePackage.WildMethods.Contains(request.Method)
+                || !package.Progression.UnlockedAt(package.Progression.EncounterMethods, request.Milestone).Contains(request.Method))
+            {
+                errors["method"] = ["Método de encontro não liberado nesse ponto de progressão."];
+            }
+            else if (!TargetEncounters(request).Any())
+            {
+                errors["area"] = ["O Pokémon-alvo não aparece nessa área com esse método nesse ponto de progressão."];
+            }
         }
 
         if (!Enum.IsDefined(request.Objective))
@@ -84,15 +80,11 @@ public sealed class PredictBattleOutcomeUseCase
         // A wild target knows its level-up moves only; the highest level is the conservative assumption.
         var targetMoves = Moves(targetData, targetLevels.Max, machines: []);
 
-        var milestone = MilestoneIndex(request.Milestone);
-        var areas = Unlocked(package.Progression.Areas, milestone);
-        var methods = Unlocked(package.Progression.EncounterMethods, milestone);
-        var machines = Unlocked(package.Progression.Machines, milestone);
+        var machines = package.Progression.UnlockedAt(package.Progression.Machines, request.Milestone);
 
         // shortcut: encounter conditions (story flags, trades, starter choice) are ignored; the curated
         // progression decides availability. Upgrade when progression.json models them.
-        var candidates = package.Encounters
-            .Where(e => e.Version == request.Version && areas.Contains(e.Area) && methods.Contains(e.Method))
+        var candidates = package.UnlockedEncounters(request.Version, request.Milestone)
             .GroupBy(e => e.Pokemon, StringComparer.Ordinal)
             .Select(group => group
                 .OrderByDescending(e => e.MinLevel)
@@ -129,13 +121,10 @@ public sealed class PredictBattleOutcomeUseCase
             [.. ranked.Select(evaluation => ToResult(evaluation, candidates[evaluation.Name]))]);
     }
 
+    /// <summary>The target's slots for the chosen (area, method) pair; its level range comes from them only.</summary>
     private IEnumerable<EncounterData> TargetEncounters(PredictBattleOutcomeRequest request)
-        => package.Encounters.Where(e => e.Pokemon == request.Target && e.Area == request.Area && e.Version == request.Version);
-
-    private int MilestoneIndex(string milestone) => package.Progression.Milestones.ToList().IndexOf(milestone);
-
-    private HashSet<string> Unlocked(IEnumerable<Unlock> unlocks, int milestone)
-        => unlocks.Where(u => MilestoneIndex(u.Milestone) <= milestone).Select(u => u.Name).ToHashSet(StringComparer.Ordinal);
+        => package.UnlockedEncounters(request.Version, request.Milestone)
+            .Where(e => e.Pokemon == request.Target && e.Area == request.Area && e.Method == request.Method);
 
     /// <summary>
     /// Level-up moves up to <paramref name="level"/> plus the machine moves already obtained. Egg and
