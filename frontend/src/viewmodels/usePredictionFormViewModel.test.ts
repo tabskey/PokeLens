@@ -28,7 +28,8 @@ describe('usePredictionFormViewModel', () => {
   const reach = async (result: { current: ReturnType<typeof usePredictionFormViewModel> }, milestone: string) => {
     act(() => result.current.setMilestone(milestone))
     await waitFor(() => expect(urls()).toContain(`/api/v1/targets?version=${result.current.version}&milestone=${milestone}`))
-    await waitFor(() => expect(result.current.areaOptions.length).toBeGreaterThan(0))
+    // Lets the fetched targets land in state.
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)))
   }
 
   const loaded = async () => {
@@ -37,47 +38,102 @@ describe('usePredictionFormViewModel', () => {
     return hook
   }
 
-  it('starts at the first milestone and offers the areas of the unlocked targets', async () => {
-    const { result } = await loaded()
+  const pokemonIn = (result: { current: ReturnType<typeof usePredictionFormViewModel> }) =>
+    result.current.search.groups.find((g) => g.label === 'Pokémon')?.options.map((o) => o.label) ?? []
 
+  it('starts at the first milestone and searches only what is unlocked', async () => {
+    const { result } = await loaded()
     await waitFor(() => expect(urls()).toEqual(['/api/v1/game-data/options', '/api/v1/targets?version=firered&milestone=start']))
     expect(result.current.milestone).toBe('start')
-    expect(result.current.areaOptions).toEqual([])
-
-    await reach(result, 'boulder-badge')
-
-    expect(result.current.areaOptions.map((o) => o.label)).toEqual(['Mt. Moon 1F', 'Route 1', 'Route 24'])
-    act(() => result.current.setArea('mt-moon-1f'))
-    expect(result.current.targetOptions.map((o) => o.value)).toEqual(['zubat', 'geodude'])
-  })
-
-  it('going back in progression clears an area that is no longer open', async () => {
-    const { result } = await loaded()
-    await reach(result, 'boulder-badge')
-    act(() => result.current.setArea('mt-moon-1f'))
-    act(() => result.current.setTarget('geodude'))
 
     await reach(result, 'pokedex')
-    await waitFor(() => expect(result.current.areaOptions).toHaveLength(1))
+    act(() => result.current.search.setQuery('geo'))
+    expect(result.current.search.noMatches).toBe(true)
 
-    expect(result.current.area).toBe('')
-    expect(result.current.target).toBe('')
+    await reach(result, 'boulder-badge')
+    expect(pokemonIn(result)).toEqual(['Geodude'])
   })
 
-  it('requires area and target before calling the API', async () => {
+  it('groups suggestions in Pokémon and routes; a route lists its Pokémon', async () => {
     const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+
+    act(() => result.current.search.setQuery('mt moon'))
+
+    expect(result.current.search.groups.map((g) => g.label)).toEqual(['Pokémon', 'Rotas'])
+    expect(pokemonIn(result)).toEqual(['Zubat', 'Geodude'])
+    expect(result.current.search.groups[1]!.options).toEqual([{ id: 'area:mt-moon-1f', label: 'Mt. Moon 1F' }])
+    expect(result.current.search.groups[0]!.options[1]!.detail).toBe('Mt. Moon 1F, Route 24')
+  })
+
+  it('a target with one option is ready without a choice', async () => {
+    const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+
+    act(() => result.current.search.setQuery('zub'))
+    act(() => result.current.search.pick('pokemon:zubat'))
+
+    expect(result.current.search.query).toBe('Zubat')
+    expect(result.current.search.groups).toEqual([])
+    expect(result.current.search.choices).toEqual([])
+    expect(result.current.search.chosen).toBe('mt-moon-1f|walk')
+  })
+
+  it('a target with several options asks where, with method, levels and chance', async () => {
+    const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+
+    act(() => result.current.search.pick('pokemon:geodude'))
+
+    expect(result.current.search.chosen).toBe('')
+    expect(result.current.search.choices).toEqual([
+      { id: 'mt-moon-1f|walk', area: 'Mt. Moon 1F', method: 'grama/caverna', requirement: null, levels: 'Nv. 7–9', chance: '20% dos encontros' },
+      { id: 'kanto-route-24-area|super-rod', area: 'Route 24', method: 'Super Vara', requirement: 'Requer Super Vara', levels: 'Nv. 15–25', chance: '20% dos encontros' },
+    ])
+  })
+
+  it('picking a Pokémon after searching its route skips the choice', async () => {
+    const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+
+    act(() => result.current.search.pick('area:kanto-route-24-area'))
+    expect(result.current.search.query).toBe('Route 24')
+    act(() => result.current.search.pick('pokemon:geodude'))
+
+    expect(result.current.search.choices).toEqual([])
+    expect(result.current.search.chosen).toBe('kanto-route-24-area|super-rod')
+  })
+
+  it('going back in progression drops a target that is no longer open', async () => {
+    const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+    act(() => result.current.search.pick('pokemon:zubat'))
+
+    await reach(result, 'pokedex')
+    await waitFor(() => expect(result.current.search.chosen).toBe(''))
 
     await act(() => result.current.submit())
+    expect(result.current.search.errors).toEqual(['Escolha o Pokémon-alvo.'])
+  })
 
-    expect(result.current.fieldErrors).toEqual({ area: ['Escolha a área.'], target: ['Escolha o Pokémon-alvo.'] })
+  it('requires the target, and the encounter when there are several', async () => {
+    const { result } = await loaded()
+    await reach(result, 'boulder-badge')
+
+    await act(() => result.current.submit())
+    expect(result.current.search.errors).toEqual(['Escolha o Pokémon-alvo.'])
+
+    act(() => result.current.search.pick('pokemon:geodude'))
+    await act(() => result.current.submit())
+    expect(result.current.search.errors).toEqual(['Escolha onde encontrar o Pokémon.'])
     expect(predictCalls()).toHaveLength(0)
   })
 
-  it('posts the request and keeps the response', async () => {
+  it('posts the chosen area and method and keeps the response', async () => {
     const { result } = await loaded()
     await reach(result, 'boulder-badge')
-    act(() => result.current.setArea('kanto-route-24-area'))
-    act(() => result.current.setTarget('geodude'))
+    act(() => result.current.search.pick('pokemon:geodude'))
+    act(() => result.current.search.choose('kanto-route-24-area|super-rod'))
     act(() => result.current.setObjective('Catch'))
 
     await act(() => result.current.submit())
@@ -89,17 +145,16 @@ describe('usePredictionFormViewModel', () => {
     expect(result.current.result?.target).toBe('geodude')
   })
 
-  it('maps API validation errors to fields', async () => {
+  it('shows API errors on area or method under the search', async () => {
     const { result } = await loaded()
     await reach(result, 'pokedex')
-    fetchMock.mockImplementation(() => json({ title: 'One or more validation errors occurred.', errors: { area: ['O Pokémon-alvo não aparece nessa área nessa versão.'] } }, 400))
-    act(() => result.current.setArea('kanto-route-1-area'))
-    act(() => result.current.setTarget('pidgey'))
+    fetchMock.mockImplementation(() => json({ title: 'One or more validation errors occurred.', errors: { method: ['Método de encontro não liberado nesse ponto de progressão.'] } }, 400))
+    act(() => result.current.search.pick('pokemon:pidgey'))
 
     await act(() => result.current.submit())
 
     expect(result.current.error).toBe('Confira os campos destacados.')
-    expect(result.current.fieldErrors.area).toEqual(['O Pokémon-alvo não aparece nessa área nessa versão.'])
+    expect(result.current.search.errors).toEqual(['Método de encontro não liberado nesse ponto de progressão.'])
     expect(result.current.result).toBeNull()
   })
 

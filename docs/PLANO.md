@@ -416,7 +416,7 @@ distintas (pacote de teste); predict com método não liberado devolve 400.
 
 ---
 
-### Etapa 8b — Busca do alvo no frontend (`X017TargetSearchUi`) · M — **próxima**
+### Etapa 8b — Busca do alvo no frontend (`X017TargetSearchUi`) · M — **feita**
 
 O formulário da Etapa 8 escolhe área e depois Pokémon. Esta etapa troca isso pela busca única de `docs/arquitetura.md` §7.1.
 
@@ -466,7 +466,7 @@ no job publish-image do ci.yml. Dependabot para npm.
 
 ---
 
-### Etapa 8.1 — Progressão completa (`X018Progression`) · G
+### Etapa 8.1 — Progressão completa (`X018Progression`) · G — **próxima**
 
 Hoje o `backend/data/curated/progression.json` só vai até a Insígnia Cascade: 4 marcos, 14 áreas (Pallet Town até as Routes 24/25) e 5 TMs. O formulário esconde as áreas fora da curadoria, então o app fica limitado ao começo do jogo.
 
