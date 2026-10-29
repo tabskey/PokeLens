@@ -183,5 +183,24 @@
       "objective": "Goal",
       "candidates": "Candidates"
     }
+  },
+  "favorites": {
+    "heading": "FAVORITES",
+    "save": "Save to favorites",
+    "remove": "Remove from favorites",
+    "count_one": "{{count}} of {{limit}} favorites",
+    "count_other": "{{count}} of {{limit}} favorites",
+    "empty": "No favorites yet. Use the star ☆ on a prediction result.",
+    "loading": "Loading your favorites…",
+    "loginToSee": "Log in to see and save favorites.",
+    "name": "Favorite name",
+    "namePlaceholder": "Leave empty for the automatic description",
+    "saveName": "Save",
+    "cancel": "Cancel",
+    "unavailable": "No longer available",
+    "candidates": "Suggestions when saved: {{candidates}}",
+    "open": "Open",
+    "rename": "Rename",
+    "delete": "Remove"
   }
 }

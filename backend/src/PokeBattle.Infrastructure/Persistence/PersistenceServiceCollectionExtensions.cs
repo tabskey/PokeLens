@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using PokeBattle.Application.Auditing;
+using PokeBattle.Application.Favorites;
 using PokeBattle.Infrastructure.Auditing;
+using PokeBattle.Infrastructure.Favorites;
 
 namespace PokeBattle.Infrastructure.Persistence;
 
@@ -14,6 +16,7 @@ public static class PersistenceServiceCollectionExtensions
         // The factory also registers the context as scoped, which is what the Identity stores use.
         services.AddDbContextFactory<PokeBattleDbContext>(options => options.UseNpgsql(connectionString));
         services.AddSingleton<IAuditLog, EfAuditLog>();
+        services.AddSingleton<IFavoriteStore, EfFavoriteStore>();
         return services;
     }
 }
