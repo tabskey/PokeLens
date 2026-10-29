@@ -48,11 +48,13 @@ builder.Services
         options.Lockout.MaxFailedAccessAttempts = 5;
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<PokeBattleDbContext>()
     .AddSignInManager()
     .AddErrorDescriber<PortugueseIdentityErrorDescriber>();
 
 builder.Services.AddSingleton(jwt);
+builder.Services.AddSingleton(AdminEmails.Load(builder.Configuration));
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -60,7 +62,8 @@ builder.Services
         options.MapInboundClaims = false;
         options.TokenValidationParameters = jwt.ValidationParameters();
     });
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(AdminEndpoints.Policy, policy => policy.RequireRole(PokeBattleDbContext.AdminRole));
 builder.Services.AddSingleton(GamePackageLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "gen3-frlg")));
 builder.Services.AddSingleton<PredictBattleOutcomeUseCase>();
 builder.Services.AddSingleton<ListTargetsUseCase>();
@@ -85,6 +88,7 @@ app.MapHealthChecks("/health/ready");
 app.MapPingEndpoints();
 app.MapBattleEndpoints();
 app.MapAuthEndpoints();
+app.MapAdminEndpoints();
 
 app.Run();
 

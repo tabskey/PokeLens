@@ -2,7 +2,10 @@
   "app": {
     "version": "Game version",
     "language": "Language",
-    "darkTheme": "Dark theme"
+    "darkTheme": "Dark theme",
+    "login": "Log in",
+    "logout": "Log out",
+    "admin": "ADMIN"
   },
   "form": {
     "heading": "YOUR BATTLE",
@@ -39,7 +42,11 @@
     "unexpected": "Unexpected error.",
     "milestoneRequired": "Choose how far you have got.",
     "targetRequired": "Choose the target Pokémon.",
-    "encounterRequired": "Choose where to find the Pokémon."
+    "encounterRequired": "Choose where to find the Pokémon.",
+    "emailRequired": "Enter your e-mail.",
+    "passwordRequired": "Enter your password.",
+    "unauthorized": "Your session expired. Log in again.",
+    "forbidden": "Only admins can see this page."
   },
   "objective": {
     "Defeat": "Defeat",
@@ -142,5 +149,39 @@
     "chancePerBall": "Chance per ball",
     "ballsFor": "Balls for 50 / 90 / 95 / 99%",
     "ballsForCell": "{{balls}} balls for {{confidence}}"
+  },
+  "auth": {
+    "loginHeading": "LOG IN",
+    "registerHeading": "CREATE ACCOUNT",
+    "optional": "An account is optional: it only records your predictions under your name.",
+    "email": "E-mail",
+    "password": "Password",
+    "passwordHint": "At least 8 characters.",
+    "submitLogin": "LOG IN",
+    "submitRegister": "CREATE ACCOUNT",
+    "submitting": "PLEASE WAIT…",
+    "noAccount": "No account? Create one",
+    "haveAccount": "Already have an account? Log in"
+  },
+  "audit": {
+    "heading": "AUDIT LOG",
+    "subtitle": "Latest 100 entries, newest first.",
+    "loading": "Loading the audit log…",
+    "empty": "No predictions recorded yet.",
+    "anonymous": "Anonymous",
+    "events": {
+      "BattlePredictionRequested": "Requested",
+      "BattlePredictionCompleted": "Completed"
+    },
+    "columns": {
+      "when": "When",
+      "event": "Event",
+      "user": "User",
+      "target": "Target",
+      "where": "Where",
+      "progress": "Progress",
+      "objective": "Goal",
+      "candidates": "Candidates"
+    }
   }
 }

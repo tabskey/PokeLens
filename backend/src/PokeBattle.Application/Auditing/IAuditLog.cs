@@ -6,6 +6,9 @@ namespace PokeBattle.Application.Auditing;
 public interface IAuditLog
 {
     Task RecordAsync(AuditEntry entry, CancellationToken cancellationToken);
+
+    /// <summary>The most recent entries first, for the admin screen.</summary>
+    Task<IReadOnlyList<AuditLogItem>> LatestAsync(int count, CancellationToken cancellationToken);
 }
 
 public static class AuditEvents
@@ -19,6 +22,21 @@ public static class AuditEvents
 public sealed record AuditEntry(
     string Event,
     string? UserId,
+    string Target,
+    string Area,
+    string Method,
+    string Version,
+    string Milestone,
+    BattleObjective Objective,
+    IReadOnlyList<string> Candidates,
+    DateTimeOffset OccurredAt);
+
+/// <summary>A recorded entry as the admin sees it: the user by e-mail instead of id.</summary>
+/// <param name="UserEmail">Null for anonymous players.</param>
+public sealed record AuditLogItem(
+    long Id,
+    string Event,
+    string? UserEmail,
     string Target,
     string Area,
     string Method,

@@ -184,6 +184,9 @@ public class PredictBattleOutcomeUseCaseTests
             Entries.Add(entry);
             return Task.CompletedTask;
         }
+
+        public Task<IReadOnlyList<AuditLogItem>> LatestAsync(int count, CancellationToken cancellationToken)
+            => throw new NotSupportedException();
     }
 
     private sealed class FixedClock(DateTimeOffset now) : TimeProvider

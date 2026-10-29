@@ -40,6 +40,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__Default=Host=db;Database=pokebattle;Username=pokebattle;Password=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
       - Jwt__SigningKey=${JWT_SIGNING_KEY:?set JWT_SIGNING_KEY in .env}
+      - Auth__AdminEmails=${ADMIN_EMAILS:-}
     depends_on:
       db:
         condition: service_healthy

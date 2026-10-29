@@ -43,4 +43,6 @@ docker compose up --build
 
 `GET /api/v1/ping`, `GET /health/live` e `GET /health/ready` (inclui o banco) validam o pipeline da Api.
 
-Contas são opcionais: `POST /api/v1/auth/register` e `POST /api/v1/auth/login` (JWT). Com o token em `Authorization: Bearer`, as previsões ficam registradas no `AuditLog` com o usuário; sem ele, como anônimas.
+Contas são opcionais: no app, **Entrar** / **Criar conta** (API: `POST /api/v1/auth/register` e `POST /api/v1/auth/login`, JWT). Logado, as previsões ficam no `AuditLog` com o seu usuário; sem conta, como anônimas.
+
+Admins: os e-mails em `ADMIN_EMAILS` (no `.env`, separados por `;`) ganham a role Admin no próximo login e veem a tela de auditoria (`#/admin`, API `GET /api/v1/admin/audit`).

@@ -12,6 +12,9 @@ namespace PokeBattle.IntegrationTests.TestUtils;
 /// <summary>The API against a throwaway Postgres (Testcontainers), migrated the way the bundle does it.</summary>
 public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
+    /// <summary>Configured as admin; tests that register it get the Admin role at login.</summary>
+    public const string AdminEmail = "admin@pokebattle.test";
+
     private readonly PostgreSqlContainer database = new PostgreSqlBuilder("postgres:17.6-alpine").Build();
 
     public async Task InitializeAsync()
@@ -32,6 +35,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         builder.UseSetting("ConnectionStrings:Default", database.GetConnectionString());
         builder.UseSetting("Jwt:SigningKey", "integration-tests-signing-key-32-bytes-or-more");
+        builder.UseSetting("Auth:AdminEmails", AdminEmail);
     }
 
     async Task IAsyncLifetime.DisposeAsync()

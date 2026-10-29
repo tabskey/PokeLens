@@ -1,20 +1,18 @@
-import { languages } from '../../i18n/translator'
 import { useTranslation } from '../../i18n/useTranslation'
 import { usePredictionFormViewModel } from '../../viewmodels/usePredictionFormViewModel'
 import { usePredictionResultViewModel } from '../../viewmodels/usePredictionResultViewModel'
-import { useThemeViewModel } from '../../viewmodels/useThemeViewModel'
+import { useSessionViewModel } from '../../viewmodels/useSessionViewModel'
 import { Spinner } from '../atoms/Spinner'
 import { PredictionForm } from '../organisms/PredictionForm'
 import { ResultsList } from '../organisms/ResultsList'
 import { PredictorLayout } from '../templates/PredictorLayout'
-
-const languageOptions = languages.map((value) => ({ value, label: value.toUpperCase() }))
+import { SiteHeader } from './SiteHeader'
 
 export function PredictorPage() {
   const form = usePredictionFormViewModel()
   const result = usePredictionResultViewModel(form.result)
-  const { t, language, setLanguage } = useTranslation()
-  const theme = useThemeViewModel()
+  const session = useSessionViewModel()
+  const { t } = useTranslation()
 
   let results
   if (form.loading) {
@@ -27,14 +25,7 @@ export function PredictorPage() {
 
   return (
     <PredictorLayout
-      versions={form.versions}
-      version={form.version}
-      onVersionChange={form.setVersion}
-      languages={languageOptions}
-      language={language}
-      onLanguageChange={setLanguage}
-      dark={theme.dark}
-      onToggleTheme={theme.toggleTheme}
+      header={<SiteHeader session={session} versions={{ options: form.versions, value: form.version, onChange: form.setVersion }} />}
       form={<PredictionForm form={form} />}
       results={results}
     />

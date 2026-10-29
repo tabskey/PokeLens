@@ -2,7 +2,10 @@
   "app": {
     "version": "Versão do jogo",
     "language": "Idioma",
-    "darkTheme": "Tema escuro"
+    "darkTheme": "Tema escuro",
+    "login": "Entrar",
+    "logout": "Sair",
+    "admin": "ADMIN"
   },
   "form": {
     "heading": "SUA BATALHA",
@@ -39,7 +42,11 @@
     "unexpected": "Erro inesperado.",
     "milestoneRequired": "Escolha até onde você chegou.",
     "targetRequired": "Escolha o Pokémon-alvo.",
-    "encounterRequired": "Escolha onde encontrar o Pokémon."
+    "encounterRequired": "Escolha onde encontrar o Pokémon.",
+    "emailRequired": "Informe o e-mail.",
+    "passwordRequired": "Informe a senha.",
+    "unauthorized": "Sua sessão expirou. Entre de novo.",
+    "forbidden": "Só administradores veem esta página."
   },
   "objective": {
     "Defeat": "Derrotar",
@@ -142,5 +149,39 @@
     "chancePerBall": "Chance por bola",
     "ballsFor": "Bolas para 50 / 90 / 95 / 99%",
     "ballsForCell": "{{balls}} bolas para {{confidence}}"
+  },
+  "auth": {
+    "loginHeading": "ENTRAR",
+    "registerHeading": "CRIAR CONTA",
+    "optional": "A conta é opcional: ela só registra suas previsões no seu nome.",
+    "email": "E-mail",
+    "password": "Senha",
+    "passwordHint": "Pelo menos 8 caracteres.",
+    "submitLogin": "ENTRAR",
+    "submitRegister": "CRIAR CONTA",
+    "submitting": "AGUARDE…",
+    "noAccount": "Não tem conta? Crie uma",
+    "haveAccount": "Já tem conta? Entre"
+  },
+  "audit": {
+    "heading": "AUDITORIA",
+    "subtitle": "Últimas 100 entradas, da mais recente para a mais antiga.",
+    "loading": "Carregando a auditoria…",
+    "empty": "Nenhuma previsão registrada ainda.",
+    "anonymous": "Anônimo",
+    "events": {
+      "BattlePredictionRequested": "Pedido",
+      "BattlePredictionCompleted": "Concluído"
+    },
+    "columns": {
+      "when": "Quando",
+      "event": "Evento",
+      "user": "Usuário",
+      "target": "Alvo",
+      "where": "Onde",
+      "progress": "Progresso",
+      "objective": "Objetivo",
+      "candidates": "Candidatos"
+    }
   }
 }
