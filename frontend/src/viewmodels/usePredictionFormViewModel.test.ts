@@ -2,6 +2,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { options, response, targetsByMilestone } from '../test/fixtures'
+import { predictionHref } from '../routing'
 import { usePredictionFormViewModel } from './usePredictionFormViewModel'
 
 const json = (body: unknown, status = 200) => Promise.resolve(new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } }))
@@ -156,6 +157,24 @@ describe('usePredictionFormViewModel', () => {
     expect(result.current.error).toBe('Confira os campos destacados.')
     expect(result.current.search.errors).toEqual(['Método de encontro não liberado nesse ponto de progressão.'])
     expect(result.current.result).toBeNull()
+  })
+
+  it('an opened favorite fills the form and runs right away', async () => {
+    window.location.hash = predictionHref({ target: 'geodude', area: 'kanto-route-24-area', method: 'super-rod', version: 'leafgreen', milestone: 'boulder-badge', objective: 'Catch', scenario: 'Optimistic' })
+    try {
+      const { result } = renderHook(() => usePredictionFormViewModel())
+
+      await waitFor(() => expect(predictCalls()).toHaveLength(1))
+      expect(JSON.parse(String(predictCalls()[0]![1]?.body))).toEqual({
+        target: 'geodude', area: 'kanto-route-24-area', method: 'super-rod', version: 'leafgreen', milestone: 'boulder-badge', objective: 'Catch', scenario: 'Optimistic',
+      })
+      await waitFor(() => expect(result.current.prediction?.target).toBe('geodude'))
+      expect(result.current).toMatchObject({ version: 'leafgreen', milestone: 'boulder-badge', objective: 'Catch', scenario: 'Optimistic' })
+      expect(result.current.search.query).toBe('Geodude')
+      await waitFor(() => expect(result.current.search.chosen).toBe('kanto-route-24-area|super-rod'))
+    } finally {
+      window.location.hash = ''
+    }
   })
 
   it('switching version reloads the targets', async () => {

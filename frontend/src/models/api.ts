@@ -1,4 +1,5 @@
 import type { AuditItem, Me, TokenResponse } from './auth'
+import type { FavoriteItem } from './favorites'
 import type { GameOptions, PredictRequest, PredictResponse, TargetOption, Version } from './battle'
 
 /**
@@ -67,8 +68,8 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   throw new ApiError(message, problem?.errors ?? {}, response.status)
 }
 
-const json = (body: unknown): RequestInit => ({
-  method: 'POST',
+const json = (body: unknown, method = 'POST'): RequestInit => ({
+  method,
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(body),
 })
@@ -100,4 +101,22 @@ export function getMe(): Promise<Me> {
 
 export function getAudit(limit: number): Promise<AuditItem[]> {
   return request<AuditItem[]>(`/api/v1/admin/audit?limit=${limit}`)
+}
+
+export function getFavorites(): Promise<FavoriteItem[]> {
+  return request<FavoriteItem[]>('/api/v1/favorites')
+}
+
+/** Saving the same prediction again returns the existing favorite. */
+export function saveFavorite(prediction: PredictRequest): Promise<FavoriteItem> {
+  return request<FavoriteItem>('/api/v1/favorites', json({ prediction }))
+}
+
+/** An empty name goes back to the automatic description. */
+export function renameFavorite(id: number, name: string): Promise<FavoriteItem> {
+  return request<FavoriteItem>(`/api/v1/favorites/${id}`, json({ name }, 'PATCH'))
+}
+
+export function deleteFavorite(id: number): Promise<void> {
+  return request<void>(`/api/v1/favorites/${id}`, { method: 'DELETE' })
 }

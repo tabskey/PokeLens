@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ApiError, getOptions, getTargets, postPredict } from '../models/api'
-import type { GameOptions, Objective, PredictResponse, ScenarioKind, TargetEncounter, TargetOption, Version } from '../models/battle'
+import type { GameOptions, Objective, PredictRequest, PredictResponse, ScenarioKind, TargetEncounter, TargetOption, Version } from '../models/battle'
+import { predictionFromHash } from '../routing'
 import { useTranslation } from '../i18n/useTranslation'
 import { methodLabel, milestoneLabel, pokemonName, versionLabels } from '../models/labels'
 import { range } from './usePredictionResultViewModel'
@@ -55,23 +56,27 @@ const versions: Option<Version>[] = [
  * State and actions of the prediction form. The target is found with a single search over GET /targets
  * (docs/arquitetura.md §7.1), which only lists what is unlocked at the chosen milestone. A target with
  * one encounter is ready at once; with several, the player picks the area and method.
+ * A prediction in the URL (an opened favorite) fills the form and runs right away.
  */
 export function usePredictionFormViewModel() {
   const { t } = useTranslation()
-  const [version, setVersionState] = useState<Version>('firered')
+  const [opened] = useState(predictionFromHash)
+  const [version, setVersionState] = useState<Version>(opened?.version ?? 'firered')
   const [options, setOptions] = useState<GameOptions | null>(null)
   const [targetList, setTargetList] = useState<TargetOption[]>([])
   const [optionsError, setOptionsError] = useState<string | null>(null)
-  const [milestone, setMilestone] = useState('')
-  const [query, setQueryState] = useState('')
-  const [picked, setPicked] = useState('')
+  const [milestone, setMilestone] = useState(opened?.milestone ?? '')
+  const [query, setQueryState] = useState(opened ? pokemonName(opened.target) : '')
+  const [picked, setPicked] = useState(opened?.target ?? '')
   // Area the player searched before picking the Pokémon; narrows its encounters to that route.
-  const [route, setRoute] = useState('')
-  const [chosenEncounter, setChosenEncounter] = useState('')
-  const [objective, setObjective] = useState<Objective>('Defeat')
-  const [scenario, setScenario] = useState<ScenarioKind>('Neutral')
-  const [loading, setLoading] = useState(false)
+  const [route, setRoute] = useState(opened?.area ?? '')
+  const [chosenEncounter, setChosenEncounter] = useState(opened ? `${opened.area}|${opened.method}` : '')
+  const [objective, setObjective] = useState<Objective>(opened?.objective ?? 'Defeat')
+  const [scenario, setScenario] = useState<ScenarioKind>(opened?.scenario ?? 'Neutral')
+  const [loading, setLoading] = useState(opened !== null)
   const [result, setResult] = useState<PredictResponse | null>(null)
+  // The question behind the result on screen, e.g. to save it as a favorite.
+  const [prediction, setPrediction] = useState<PredictRequest | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
 
@@ -84,7 +89,7 @@ export function usePredictionFormViewModel() {
         }
         setOptions(loaded)
         setOptionsError(null)
-        setMilestone(loaded.milestones[0] ?? '')
+        setMilestone((current) => current || (loaded.milestones[0] ?? ''))
       })
       .catch((reason: unknown) => {
         if (!cancelled) {
@@ -184,6 +189,40 @@ export function usePredictionFormViewModel() {
     setResult(null)
   }
 
+  // Only state setters inside, so it is stable and the opened prediction can use it.
+  const fail = useCallback((reason: unknown) => {
+    setResult(null)
+    setPrediction(null)
+    if (reason instanceof ApiError) {
+      setError(reason.message)
+      setFieldErrors(reason.fieldErrors)
+    } else {
+      setError('errors.unexpected')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!opened) {
+      return
+    }
+    let cancelled = false
+    postPredict(opened)
+      .then((response) => {
+        if (cancelled) return
+        setResult(response)
+        setPrediction(opened)
+      })
+      .catch((reason: unknown) => {
+        if (!cancelled) fail(reason)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [opened, fail])
+
   const submit = async () => {
     const missing: FieldErrors = {}
     if (!milestone) missing.milestone = ['errors.milestoneRequired']
@@ -195,17 +234,13 @@ export function usePredictionFormViewModel() {
       return
     }
 
+    const request: PredictRequest = { target: target!.pokemon, area: selected!.area, method: selected!.method, version, milestone, objective, scenario }
     setLoading(true)
     try {
-      setResult(await postPredict({ target: target!.pokemon, area: selected!.area, method: selected!.method, version, milestone, objective, scenario }))
+      setResult(await postPredict(request))
+      setPrediction(request)
     } catch (reason) {
-      setResult(null)
-      if (reason instanceof ApiError) {
-        setError(reason.message)
-        setFieldErrors(reason.fieldErrors)
-      } else {
-        setError('errors.unexpected')
-      }
+      fail(reason)
     } finally {
       setLoading(false)
     }
@@ -248,6 +283,7 @@ export function usePredictionFormViewModel() {
     optionsError: optionsError && t(optionsError),
     loading,
     result,
+    prediction,
     error: error && t(error),
     fieldErrors: Object.fromEntries(Object.entries(fieldErrors).map(([field, messages]) => [field, translate(messages)])),
     setVersion,

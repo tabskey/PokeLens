@@ -1,4 +1,4 @@
-import { LocateFixed, LogIn, LogOut, Moon, ShieldCheck, Sun } from 'lucide-react'
+import { LocateFixed, LogIn, LogOut, Moon, ShieldCheck, Star, Sun } from 'lucide-react'
 
 import { useTranslation } from '../../i18n/useTranslation'
 import { routeHref } from '../../routing'
@@ -41,6 +41,9 @@ export function AppHeader<T extends string, L extends string>({ versions, langua
         </button>
         {session.email ? (
           <>
+            <a href={routeHref('favorites')} aria-label={t('favorites.heading')} title={t('favorites.heading')} className={iconButton}>
+              <Star size={16} aria-hidden="true" />
+            </a>
             {session.isAdmin && (
               <a href={routeHref('admin')} className="flex items-center gap-1.5 rounded-lg border border-white/30 px-2.5 py-2 font-mono text-[11px] font-medium tracking-wider">
                 <ShieldCheck size={14} aria-hidden="true" />

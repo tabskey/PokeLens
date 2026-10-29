@@ -183,5 +183,24 @@
       "objective": "Objetivo",
       "candidates": "Candidatos"
     }
+  },
+  "favorites": {
+    "heading": "FAVORITOS",
+    "save": "Salvar nos favoritos",
+    "remove": "Remover dos favoritos",
+    "count_one": "{{count}} de {{limit}} favoritos",
+    "count_other": "{{count}} de {{limit}} favoritos",
+    "empty": "Nenhum favorito ainda. Use a estrela ☆ no resultado de uma previsão.",
+    "loading": "Carregando os favoritos…",
+    "loginToSee": "Entre na sua conta para ver e salvar favoritos.",
+    "name": "Nome do favorito",
+    "namePlaceholder": "Deixe vazio para a descrição automática",
+    "saveName": "Salvar",
+    "cancel": "Cancelar",
+    "unavailable": "Não disponível mais",
+    "candidates": "Sugestões quando salvo: {{candidates}}",
+    "open": "Abrir",
+    "rename": "Renomear",
+    "delete": "Remover"
   }
 }

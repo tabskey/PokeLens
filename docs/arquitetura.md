@@ -362,7 +362,8 @@ Para Catch, causar o máximo de dano não é desejável. Um candidato que deixa 
 - Migrations em `Infrastructure/Persistence/Migrations`, aplicadas pelo bundle do EF Core no serviço `migrate` do compose, nunca no startup da API. A esteira falha se o modelo tiver mudança sem migration
 - Segredos só por ambiente: `ConnectionStrings__Default` e `Jwt__SigningKey` (mínimo de 32 bytes); sem eles a API não sobe
 - Dados do jogo ficam no pacote estático (seção 8), carregados em memória
-- Futuro: `UserPokedex`, `UserPokemon`, `CustomMoveset`, `SavedBattle`, `SavedPrediction`
+- **Favoritos** (`SavedPrediction`, só com login): guardam a **pergunta** (alvo, área, método, versão, marco, objetivo, ordenação), não a resposta; abrir um favorito roda a previsão de novo, então correções de dados ou fórmulas aparecem. Os nomes dos candidatos de quando foi salvo ficam só para descrever o favorito na lista. Até 50 por usuário, um por pergunta (salvar de novo devolve o existente), com nome opcional de até 60 caracteres. Um favorito que deixa de validar (ex.: a progressão mudou) aparece como "Não disponível mais". `GET/POST /api/v1/favorites`, `PATCH/DELETE /api/v1/favorites/{id}`; cada usuário só enxerga os seus. No frontend: estrela no resultado e tela `#/favorites`; abrir usa um link `#/?target=…` que preenche o formulário e já roda
+- Futuro: `UserPokedex`, `UserPokemon`, `CustomMoveset`, `SavedBattle`
 - Sem cache de PokeAPI em runtime, já que a API não a consulta
 
 ## 16.1 Containers e esteira

@@ -45,4 +45,6 @@ docker compose up --build
 
 Contas são opcionais: no app, **Entrar** / **Criar conta** (API: `POST /api/v1/auth/register` e `POST /api/v1/auth/login`, JWT). Logado, as previsões ficam no `AuditLog` com o seu usuário; sem conta, como anônimas.
 
+Favoritos: logado, a estrela ☆ no resultado salva a previsão (até 50); a tela **Favoritos** (`#/favorites`) abre, renomeia e remove.
+
 Admins: os e-mails em `ADMIN_EMAILS` (no `.env`, separados por `;`) ganham a role Admin no próximo login e veem a tela de auditoria (`#/admin`, API `GET /api/v1/admin/audit`).

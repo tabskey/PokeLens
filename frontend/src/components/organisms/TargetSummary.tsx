@@ -1,9 +1,20 @@
+import { Star } from 'lucide-react'
+
 import { useTranslation } from '../../i18n/useTranslation'
 import type { ResultView } from '../../viewmodels/usePredictionResultViewModel'
 import { Avatar } from '../atoms/Avatar'
+import { Hint } from '../atoms/Hint'
 import { TypeBadge } from '../atoms/TypeBadge'
 
-export function TargetSummary({ result }: { result: ResultView }) {
+/** Star on the result, only for logged-in players. */
+export interface FavoriteToggle {
+  saved: boolean
+  busy: boolean
+  error: string | null
+  onToggle: () => void
+}
+
+export function TargetSummary({ result, favorite }: { result: ResultView; favorite?: FavoriteToggle }) {
   const { t } = useTranslation()
 
   return (
@@ -19,7 +30,21 @@ export function TargetSummary({ result }: { result: ResultView }) {
             <TypeBadge key={type} type={type} />
           ))}
         </div>
+        {favorite?.error && <Hint error>{favorite.error}</Hint>}
       </div>
+      {favorite && (
+        <button
+          type="button"
+          aria-pressed={favorite.saved}
+          aria-label={t(favorite.saved ? 'favorites.remove' : 'favorites.save')}
+          title={t(favorite.saved ? 'favorites.remove' : 'favorites.save')}
+          disabled={favorite.busy}
+          onClick={favorite.onToggle}
+          className="ml-auto grid size-10 shrink-0 cursor-pointer place-items-center self-start rounded-lg border border-line text-muted aria-pressed:border-neutral aria-pressed:text-neutral disabled:cursor-wait disabled:opacity-60"
+        >
+          <Star size={18} aria-hidden="true" fill={favorite.saved ? 'currentColor' : 'none'} />
+        </button>
+      )}
     </div>
   )
 }

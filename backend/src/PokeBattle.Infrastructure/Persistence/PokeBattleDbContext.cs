@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using PokeBattle.Infrastructure.Auditing;
+using PokeBattle.Infrastructure.Favorites;
 
 namespace PokeBattle.Infrastructure.Persistence;
 
@@ -13,6 +14,8 @@ public sealed class PokeBattleDbContext(DbContextOptions<PokeBattleDbContext> op
     public const string AdminRole = "Admin";
 
     public DbSet<AuditLogEntry> AuditLog => Set<AuditLogEntry>();
+
+    public DbSet<SavedPrediction> SavedPredictions => Set<SavedPrediction>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -40,6 +43,24 @@ public sealed class PokeBattleDbContext(DbContextOptions<PokeBattleDbContext> op
             entry.Property(e => e.Objective).HasConversion<string>().HasMaxLength(16);
             entry.HasIndex(e => e.OccurredAt);
             entry.HasIndex(e => e.UserId);
+        });
+
+        builder.Entity<SavedPrediction>(favorite =>
+        {
+            favorite.ToTable("SavedPrediction");
+            favorite.Property(f => f.Name).HasMaxLength(60);
+            favorite.Property(f => f.Target).HasMaxLength(64);
+            favorite.Property(f => f.Area).HasMaxLength(128);
+            favorite.Property(f => f.Method).HasMaxLength(32);
+            favorite.Property(f => f.Version).HasMaxLength(16);
+            favorite.Property(f => f.Milestone).HasMaxLength(64);
+            favorite.Property(f => f.Objective).HasConversion<string>().HasMaxLength(16);
+            favorite.Property(f => f.Scenario).HasConversion<string>().HasMaxLength(16);
+            // Deleting an account deletes its favorites.
+            favorite.HasOne<IdentityUser>().WithMany().HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);
+            favorite.HasIndex(f => new { f.UserId, f.CreatedAt });
+            // One favorite per question and user; saving it again returns the existing one.
+            favorite.HasIndex(f => new { f.UserId, f.Target, f.Area, f.Method, f.Version, f.Milestone, f.Objective, f.Scenario }).IsUnique();
         });
     }
 }

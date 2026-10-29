@@ -509,6 +509,10 @@ Não implemente Pokédex pessoal (é V2).
 
 Telas de entrar e criar conta no frontend, role Admin (e-mails em `Auth__AdminEmails`, sincronizada no login) e tela de auditoria só para admin (`GET /api/v1/admin/audit`).
 
+### Etapa 9c — Favoritos (`X021Favorites`) · M — **feita**
+
+Favoritar previsões (só com login): guarda a pergunta e roda de novo ao abrir; até 50 por usuário, renomeáveis, marcados quando ficam indisponíveis. Decisões em `docs/arquitetura.md` §16.
+
 ---
 
 ## 7. Riscos

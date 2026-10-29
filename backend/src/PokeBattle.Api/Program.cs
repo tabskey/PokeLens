@@ -7,6 +7,7 @@ using PokeBattle.Api.Auth;
 using PokeBattle.Api.Endpoints;
 using PokeBattle.Application.Battles.ListTargets;
 using PokeBattle.Application.Battles.PredictBattleOutcome;
+using PokeBattle.Application.Favorites;
 using PokeBattle.Application.GameData;
 using PokeBattle.Infrastructure.GameData;
 using PokeBattle.Infrastructure.Persistence;
@@ -67,6 +68,7 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddSingleton(GamePackageLoader.Load(Path.Combine(AppContext.BaseDirectory, "data", "gen3-frlg")));
 builder.Services.AddSingleton<PredictBattleOutcomeUseCase>();
 builder.Services.AddSingleton<ListTargetsUseCase>();
+builder.Services.AddSingleton<FavoritesUseCase>();
 builder.Services.ConfigureHttpJsonOptions(options => options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
@@ -89,6 +91,7 @@ app.MapPingEndpoints();
 app.MapBattleEndpoints();
 app.MapAuthEndpoints();
 app.MapAdminEndpoints();
+app.MapFavoritesEndpoints();
 
 app.Run();
 
