@@ -72,7 +72,20 @@
     "start": "Início (Pallet Town)",
     "pokedex": "Recebeu a Pokédex",
     "boulder-badge": "Insígnia Boulder (Brock)",
-    "cascade-badge": "Insígnia Cascade (Misty)"
+    "cascade-badge": "Insígnia Cascade (Misty)",
+    "ss-anne": "S.S. Anne (HM01 Cut)",
+    "thunder-badge": "Insígnia Thunder (Lt. Surge)",
+    "rainbow-badge": "Insígnia Rainbow (Erika)",
+    "silph-scope": "Silph Scope (Rocket Hideout)",
+    "poke-flute": "Poké Flute (Pokémon Tower)",
+    "soul-badge": "Insígnia Soul (Koga) e Surf",
+    "marsh-badge": "Insígnia Marsh (Sabrina)",
+    "volcano-badge": "Insígnia Volcano (Blaine)",
+    "tri-pass": "Tri-Pass (Ilhas Sevii 1–3)",
+    "earth-badge": "Insígnia Earth (Giovanni)",
+    "elite-four": "Elite Four",
+    "rainbow-pass": "Rainbow Pass (Ilhas Sevii 4–7)",
+    "national-dex": "Pokédex Nacional"
   },
   "method": {
     "walk": "grama/caverna",

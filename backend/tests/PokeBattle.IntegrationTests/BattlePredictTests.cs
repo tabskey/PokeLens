@@ -69,7 +69,7 @@ public class BattlePredictTests(WebApplicationFactory<Program> factory) : IClass
             area = "kanto-route-24-area",
             method = "old-rod",
             version = "firered",
-            milestone = "cascade-badge",
+            milestone = "boulder-badge",
             objective = "Defeat",
             scenario = "Neutral",
         });

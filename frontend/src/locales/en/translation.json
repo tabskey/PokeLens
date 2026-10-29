@@ -72,7 +72,20 @@
     "start": "Start (Pallet Town)",
     "pokedex": "Got the Pokédex",
     "boulder-badge": "Boulder Badge (Brock)",
-    "cascade-badge": "Cascade Badge (Misty)"
+    "cascade-badge": "Cascade Badge (Misty)",
+    "ss-anne": "S.S. Anne (HM01 Cut)",
+    "thunder-badge": "Thunder Badge (Lt. Surge)",
+    "rainbow-badge": "Rainbow Badge (Erika)",
+    "silph-scope": "Silph Scope (Rocket Hideout)",
+    "poke-flute": "Poké Flute (Pokémon Tower)",
+    "soul-badge": "Soul Badge (Koga) and Surf",
+    "marsh-badge": "Marsh Badge (Sabrina)",
+    "volcano-badge": "Volcano Badge (Blaine)",
+    "tri-pass": "Tri-Pass (Sevii Islands 1–3)",
+    "earth-badge": "Earth Badge (Giovanni)",
+    "elite-four": "Elite Four",
+    "rainbow-pass": "Rainbow Pass (Sevii Islands 4–7)",
+    "national-dex": "National Pokédex"
   },
   "method": {
     "walk": "grass/cave",

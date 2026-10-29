@@ -385,6 +385,23 @@ O jogador busca o **Pokémon** (ou a rota) num campo só. Se o alvo aparece em m
 
 ✅ / ❌ / 💬 — Ver perguntas 18 e 19 na seção 10.
 
+### 6.10 Marcos de progressão (Etapa 8.1)
+
+A pergunta "até onde você chegou?" usa 17 marcos, em ordem: Início, Pokédex, Insígnias Boulder e Cascade, S.S. Anne (Cut), Insígnias Thunder e Rainbow, Silph Scope, Poké Flute, Insígnia Soul (com Surf), Insígnias Marsh e Volcano, Tri-Pass, Insígnia Earth, Elite Four, Rainbow Pass e Pokédex Nacional. Cada área, método de encontro e TM/HM fica disponível a partir de um marco. Locais das TMs/HMs conferidos na Serebii.
+
+Escolhas nossas que precisam de conferência:
+
+- **A ordem é uma só.** O jogo permite variar (Koga antes ou depois de Sabrina, por exemplo); usamos a ordem mais comum.
+- **Tudo que dá para alcançar conta, mesmo opcional:** Celadon (Mart, Game Corner) libera logo depois do Cut, pelo Rock Tunnel. As TMs do Game Corner (Ice Beam, Thunderbolt...) entram nesse marco, mesmo custando muitas fichas.
+- **Varas:** Old Rod com a Insígnia Cascade (Vermilion). Good Rod e Super Rod com a Poké Flute: Fuchsia e a casa da Route 12 ficam depois do Snorlax.
+- **Surf** junto com a Insígnia Soul: o HM03 está no Safari Zone, aberto antes de Koga, e só se usa fora de batalha com essa insígnia. Como golpe em batalha, o HM03 conta desde a Poké Flute. Não criamos marco separado para Strength: o HM04 vem do mesmo Safari Zone e a Insígnia Rainbow, que libera o uso, vem antes.
+- **Rock Smash** com o Tri-Pass (HM06 em One Island).
+- **Saffron** (Dojo, Silph Co., TM29 Psychic) só com a Insígnia Marsh. Dá para entrar antes, com o chá de Celadon; escolhemos o marco mais tarde por segurança.
+- **Ilhas Sevii:** Ilhas 1–3 com o Tri-Pass; Ilhas 4–7 e o Ruby Path do Mt. Ember com o Rainbow Pass. A Cerulean Cave e as câmaras de Tanoby (Unown) ficam na Pokédex Nacional.
+- **Fora da lista:** Altering Cave B–I (mudam só com evento), Birth Island, Navel Rock e lendários errantes.
+
+✅ / ❌ / 💬 — Ver perguntas 20 e 21 na seção 10.
+
 ---
 
 ## 7. Projeções de dano: o que a tela mostra
@@ -583,8 +600,12 @@ Consequência para o ranking: um candidato que deixa o alvo com 19–21 de HP e 
 18. Mostrar o encontro de vara assim que a vara fica obtenível (com a tag "Requer"), mesmo para quem pulou o item, é melhor do que esconder? Em que marco você considera cada vara e o Surf obtidos em FR/LG?
 19. Faz falta poder escolher Pokémon de presente, estático (Snorlax, lendários) ou troca como alvo já na V1?
 
+**Marcos de progressão (6.10)**
+20. A ordem dos marcos bate com o jeito que você joga? Algum marco faz falta ou sobra (ex.: um marco só para Strength)?
+21. Liberar o Game Corner e o Celadon Mart logo depois do Cut está certo, ou o jogador comum só chega lá depois da Insígnia Thunder?
+
 **Geral**
-20. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
+22. Algum caso de jogo que você conhece de cor (ex.: "Charmander L5 contra Brock") e que gostaria de ver o app calcular, para conferir?
 
 ---
 

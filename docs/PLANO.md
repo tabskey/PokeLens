@@ -466,7 +466,7 @@ no job publish-image do ci.yml. Dependabot para npm.
 
 ---
 
-### Etapa 8.1 — Progressão completa (`X018Progression`) · G — **próxima**
+### Etapa 8.1 — Progressão completa (`X018Progression`) · G — **feita**
 
 Hoje o `backend/data/curated/progression.json` só vai até a Insígnia Cascade: 4 marcos, 14 áreas (Pallet Town até as Routes 24/25) e 5 TMs. O formulário esconde as áreas fora da curadoria, então o app fica limitado ao começo do jogo.
 
@@ -525,7 +525,7 @@ Não implemente Pokédex pessoal (é V2).
 - [ ] Critério de "vencer" (Etapa 5): em revisão com jogadores, provisório = faixas de turnos sem sobreposição, sem Speed (`docs/decisoes-simulacao.md` §2). Golpe do oponente (sempre o melhor) e precisão (fora da V1) decididos
 - [x] Banco: **Postgres** (decidido). O SQL Server da `X005DatabaseInfra` sai na Etapa 1, junto com os pacotes `Microsoft.EntityFrameworkCore.SqlServer` e a connection string com `Trusted_Connection`
 - [ ] Teste de confronto em massa do dano: tamanho da amostra e local do script gerador (`docs/validacao-dano.md` §7)
-- [ ] Progressão curada completa (Etapa 8.1, `X018Progression`): hoje só até a Insígnia Cascade, sem marco de vara nem de Surf
+- [x] Progressão curada completa (Etapa 8.1, `X018Progression`): 17 marcos até a Pokédex Nacional; conferência com jogadores em `docs/revisao-especialista.md` §6.10
 - [ ] Destino de deploy: nenhum por ora, VPS com compose, ou um serviço gerenciado de containers (define o job `deploy`)
 
 ## 9. Uso no Claude Code
