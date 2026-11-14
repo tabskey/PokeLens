@@ -32,7 +32,7 @@ HEALTHCHECK NONE
 ENTRYPOINT ["./efbundle"]
 
 # Last stage, so a plain `docker build` still produces the API image.
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS runtime
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/* \
