@@ -22,7 +22,7 @@ RUN dotnet tool restore \
         --startup-project src/PokeBattle.Infrastructure \
         --self-contained -r linux-x64 -o /app/efbundle
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:10.0 AS migrate
+FROM mcr.microsoft.com/dotnet/runtime-deps:11.0 AS migrate
 RUN useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin appuser
 WORKDIR /app
 COPY --from=bundle /app/efbundle .
